@@ -24,7 +24,7 @@ public static class DateTimeExtensions
     /// Remove the seconds and everything after the seconds
     /// </summary>
     /// <param name="dateTime">The value to process.</param>
-    /// <returns>A new DateTime equal to the passed in value without milliseconds</returns>
+    /// <returns>A new DateTime equal to the passed in value without seconds and milliseconds</returns>
     public static System.DateTime TruncateSeconds(this System.DateTime dateTime)
         => new(dateTime.Year, dateTime.Month, dateTime.Day, dateTime.Hour, dateTime.Minute, 0);
 
