@@ -25,7 +25,9 @@
 		<ApplicationIcon>icon.ico</ApplicationIcon>
 	</PropertyGroup>
 
-	<PropertyGroup Condition="'$(TargetFramework)' == 'net8.0' OR&#xD;&#xA;							  '$(TargetFramework)' == 'net10.0'&#xD;&#xA;							  ">
+	<PropertyGroup Condition="'$(TargetFramework)' == 'net8.0' OR
+							  '$(TargetFramework)' == 'net10.0'
+							  ">
 		<ImplicitUsings>enable</ImplicitUsings>
 	</PropertyGroup>
 
