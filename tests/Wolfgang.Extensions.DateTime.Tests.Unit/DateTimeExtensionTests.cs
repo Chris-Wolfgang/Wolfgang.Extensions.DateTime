@@ -46,7 +46,7 @@ using Xunit;
 
 
         [Fact]
-        public void TruncateSeconds_remove_milliseconds_from_value()
+        public void TruncateSeconds_removes_seconds_from_value()
         {
             var now = DateTime.Now;
 
