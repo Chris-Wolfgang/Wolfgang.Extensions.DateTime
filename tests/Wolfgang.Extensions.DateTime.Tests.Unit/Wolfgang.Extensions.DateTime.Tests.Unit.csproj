@@ -110,7 +110,6 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\src\Wolfgang.Extensions.DateTime\Wolfgang.Extensions.DateTime.csproj" />
-		<ProjectReference Include="..\Wolfgang.Extensions.DateTime\Wolfgang.Extensions.DateTime.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
