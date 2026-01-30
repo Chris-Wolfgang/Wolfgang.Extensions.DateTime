@@ -110,7 +110,7 @@ We welcome contributions! If you'd like to contribute to Wolfgang.Extensions.Dat
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](../../LICENSE) file for details.
+This project is licensed under the MIT License. See the [LICENSE](https://github.com/Chris-Wolfgang/Wolfgang.Extensions.DateTime/blob/main/LICENSE) file for details.
 
 ---
 
