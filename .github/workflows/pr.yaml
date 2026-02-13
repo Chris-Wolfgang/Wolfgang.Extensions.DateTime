@@ -433,7 +433,7 @@ jobs:
           $testProjects | ForEach-Object { Write-Host $_.FullName -ForegroundColor White }
           Write-Host ""
           
-          $frameworks = @('net462', 'net472', 'net48', 'net481')
+          $frameworks = @('net462', 'net47', 'net471', 'net472', 'net48', 'net481')
           
           foreach ($testProj in $testProjects) {
             Write-Host "==========================================" -ForegroundColor Cyan
