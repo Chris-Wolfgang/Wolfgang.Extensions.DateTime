@@ -141,7 +141,7 @@ reportgenerator -reports:"TestResults/**/coverage.cobertura.xml" \
 dotnet test --filter ClassName=DateTimeExtensionsTests
 
 # Run a specific test method
-dotnet test --filter MethodName=TruncateMilliseconds_RemovesMilliseconds
+dotnet test --filter MethodName=TruncateMilliseconds_successfully_removes_milliseconds_from_value
 ```
 
 ## Code Quality
