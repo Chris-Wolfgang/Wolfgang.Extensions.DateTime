@@ -39,7 +39,7 @@ The API reference provides detailed documentation for each extension method, inc
 - Usage examples
 - Remarks and considerations
 
-Access the API reference at: [Wolfgang.Extensions.DateTime API](../api/Wolfgang.Extensions.DateTime.DateTimeExtensions.yml)
+The API reference will be available in the API section of your generated DocFX site once metadata generation has been configured for your projects.
 
 ## Quick Reference
 
