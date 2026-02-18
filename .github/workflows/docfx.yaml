@@ -33,11 +33,11 @@ jobs:
         run: dotnet tool update docfx --global
 
       - name: Build DocFx Metadata
-        run: docfx metadata 
+        run: docfx metadata
         working-directory: docfx_project
 
       - name: Build Docs
-        run: docfx build 
+        run: docfx build
         working-directory: docfx_project
 
       - name: Verify build output
@@ -47,7 +47,8 @@ jobs:
             exit 1
           fi
           if [ ! -f "docs/index.html" ]; then
-            echo "Error: docs/index.html not found - DocFX build may have failed!"
+            echo "Error: docs/index.html not found"
+            echo "DocFX build may have failed!"
             exit 1
           fi
           echo "Build successful. Contents of docs:"
@@ -56,7 +57,8 @@ jobs:
             echo "API documentation:"
             ls -la docs/api
           else
-            echo "Note: No API documentation generated (this is expected if there are no public APIs yet)"
+            echo "Note: No API documentation generated"
+            echo "(this is expected if there are no public APIs yet)"
           fi
 
       - name: Deploy to GitHub Pages
