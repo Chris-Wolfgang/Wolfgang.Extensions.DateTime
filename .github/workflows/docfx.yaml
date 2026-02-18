@@ -46,20 +46,21 @@ jobs:
             echo "Error: _site directory not found!"
             exit 1
           fi
-          if [ ! -f "docs/index.html" ]; then
-            echo "Error: docs/index.html not found"
+          if [ ! -f "_site/index.html" ]; then
+            echo "Error: _site/index.html not found"
             echo "DocFX build may have failed!"
             exit 1
           fi
-          echo "Build successful. Contents of docs:"
-          ls -la docs
-          if [ -d "docs/api" ]; then
+          echo "Build successful. Contents of _site:"
+          ls -la _site
+          if [ -d "_site/api" ]; then
             echo "API documentation:"
-            ls -la docs/api
+            ls -la _site/api
           else
             echo "Note: No API documentation generated"
             echo "(this is expected if there are no public APIs yet)"
           fi
+        working-directory: docfx_project
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
