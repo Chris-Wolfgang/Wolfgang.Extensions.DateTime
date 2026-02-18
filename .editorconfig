@@ -26,8 +26,10 @@ indent_size = 2
 indent_size = 2
 
 # PowerShell files
-# PowerShell uses CRLF to maintain compatibility with Windows and PowerShell conventions
-# This overrides the global end_of_line = lf setting and aligns with .gitattributes line 14
+# PowerShell scripts: CRLF line endings (intentional override)
+# Both .editorconfig and .gitattributes consistently configure PowerShell files
+# to use CRLF (Windows-style) line endings for PowerShell convention compliance.
+# See .gitattributes line 16 for the matching Git configuration.
 [*.ps1]
 indent_size = 4
 end_of_line = crlf
