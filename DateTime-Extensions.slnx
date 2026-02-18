@@ -3,15 +3,12 @@
     <File Path="BannedSymbols.txt" />
     <File Path="CODE_OF_CONDUCT.md" />
     <File Path="CONTRIBUTING.md" />
-    <File Path="DateTime Extensions.sln.DotSettings.user.original" />
-    <File Path="DateTime Extensions.slnx.original" />
     <File Path="Directory.Build.props" />
     <File Path="format.ps1" />
     <File Path="LICENSE" />
     <File Path="LICENSE-SELECTION.md" />
     <File Path="README-FORMATTING.md" />
     <File Path="README.md" />
-    <File Path="README.md.original" />
     <File Path="RELEASE-WORKFLOW-SETUP.md" />
     <File Path="REPO-INSTRUCTIONS.md" />
     <File Path="TEMPLATE-PLACEHOLDERS.md" />
