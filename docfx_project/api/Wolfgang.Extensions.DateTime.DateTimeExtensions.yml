@@ -1,0 +1,813 @@
+### YamlMime:ManagedReference
+items:
+- uid: Wolfgang.Extensions.DateTime.DateTimeExtensions
+  commentId: T:Wolfgang.Extensions.DateTime.DateTimeExtensions
+  id: DateTimeExtensions
+  parent: Wolfgang.Extensions.DateTime
+  children:
+  - Wolfgang.Extensions.DateTime.DateTimeExtensions.EndOfMonth(System.DateTime)
+  - Wolfgang.Extensions.DateTime.DateTimeExtensions.EndOfWeek(System.DateTime)
+  - Wolfgang.Extensions.DateTime.DateTimeExtensions.EndOfWeek(System.DateTime,System.DayOfWeek)
+  - Wolfgang.Extensions.DateTime.DateTimeExtensions.EndOfYear(System.DateTime)
+  - Wolfgang.Extensions.DateTime.DateTimeExtensions.FirstOfMonth(System.DateTime)
+  - Wolfgang.Extensions.DateTime.DateTimeExtensions.FirstOfWeek(System.DateTime)
+  - Wolfgang.Extensions.DateTime.DateTimeExtensions.FirstOfWeek(System.DateTime,System.DayOfWeek)
+  - Wolfgang.Extensions.DateTime.DateTimeExtensions.FirstOfYear(System.DateTime)
+  - Wolfgang.Extensions.DateTime.DateTimeExtensions.TruncateMilliseconds(System.DateTime)
+  - Wolfgang.Extensions.DateTime.DateTimeExtensions.TruncateSeconds(System.DateTime)
+  langs:
+  - csharp
+  - vb
+  name: DateTimeExtensions
+  nameWithType: DateTimeExtensions
+  fullName: Wolfgang.Extensions.DateTime.DateTimeExtensions
+  type: Class
+  source:
+    remote:
+      path: src/Wolfgang.Extensions.DateTime/DateTimeExtensions.cs
+      branch: Standardize-repo
+      repo: https://github.com/Chris-Wolfgang/DateTime-Extensions.git
+    id: DateTimeExtensions
+    path: ../src/Wolfgang.Extensions.DateTime/DateTimeExtensions.cs
+    startLine: 9
+  assemblies:
+  - Wolfgang.Extensions.DateTime
+  namespace: Wolfgang.Extensions.DateTime
+  summary: A collection of extension methods for DateTime
+  example: []
+  syntax:
+    content: public static class DateTimeExtensions
+    content.vb: Public Module DateTimeExtensions
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Wolfgang.Extensions.DateTime.DateTimeExtensions.TruncateMilliseconds(System.DateTime)
+  commentId: M:Wolfgang.Extensions.DateTime.DateTimeExtensions.TruncateMilliseconds(System.DateTime)
+  id: TruncateMilliseconds(System.DateTime)
+  isExtensionMethod: true
+  parent: Wolfgang.Extensions.DateTime.DateTimeExtensions
+  langs:
+  - csharp
+  - vb
+  name: TruncateMilliseconds(DateTime)
+  nameWithType: DateTimeExtensions.TruncateMilliseconds(DateTime)
+  fullName: Wolfgang.Extensions.DateTime.DateTimeExtensions.TruncateMilliseconds(System.DateTime)
+  type: Method
+  source:
+    remote:
+      path: src/Wolfgang.Extensions.DateTime/DateTimeExtensions.cs
+      branch: Standardize-repo
+      repo: https://github.com/Chris-Wolfgang/DateTime-Extensions.git
+    id: TruncateMilliseconds
+    path: ../src/Wolfgang.Extensions.DateTime/DateTimeExtensions.cs
+    startLine: 17
+  assemblies:
+  - Wolfgang.Extensions.DateTime
+  namespace: Wolfgang.Extensions.DateTime
+  summary: Remove the milliseconds and everything after the milliseconds
+  example: []
+  syntax:
+    content: public static DateTime TruncateMilliseconds(this DateTime dateTime)
+    parameters:
+    - id: dateTime
+      type: System.DateTime
+      description: The value to process.
+    return:
+      type: System.DateTime
+      description: A new DateTime equal to the passed in value without milliseconds
+    content.vb: Public Shared Function TruncateMilliseconds(dateTime As Date) As Date
+  overload: Wolfgang.Extensions.DateTime.DateTimeExtensions.TruncateMilliseconds*
+  nameWithType.vb: DateTimeExtensions.TruncateMilliseconds(Date)
+  fullName.vb: Wolfgang.Extensions.DateTime.DateTimeExtensions.TruncateMilliseconds(Date)
+  name.vb: TruncateMilliseconds(Date)
+- uid: Wolfgang.Extensions.DateTime.DateTimeExtensions.TruncateSeconds(System.DateTime)
+  commentId: M:Wolfgang.Extensions.DateTime.DateTimeExtensions.TruncateSeconds(System.DateTime)
+  id: TruncateSeconds(System.DateTime)
+  isExtensionMethod: true
+  parent: Wolfgang.Extensions.DateTime.DateTimeExtensions
+  langs:
+  - csharp
+  - vb
+  name: TruncateSeconds(DateTime)
+  nameWithType: DateTimeExtensions.TruncateSeconds(DateTime)
+  fullName: Wolfgang.Extensions.DateTime.DateTimeExtensions.TruncateSeconds(System.DateTime)
+  type: Method
+  source:
+    remote:
+      path: src/Wolfgang.Extensions.DateTime/DateTimeExtensions.cs
+      branch: Standardize-repo
+      repo: https://github.com/Chris-Wolfgang/DateTime-Extensions.git
+    id: TruncateSeconds
+    path: ../src/Wolfgang.Extensions.DateTime/DateTimeExtensions.cs
+    startLine: 27
+  assemblies:
+  - Wolfgang.Extensions.DateTime
+  namespace: Wolfgang.Extensions.DateTime
+  summary: Remove the seconds and everything after the seconds
+  example: []
+  syntax:
+    content: public static DateTime TruncateSeconds(this DateTime dateTime)
+    parameters:
+    - id: dateTime
+      type: System.DateTime
+      description: The value to process.
+    return:
+      type: System.DateTime
+      description: A new DateTime equal to the passed in value without seconds and milliseconds
+    content.vb: Public Shared Function TruncateSeconds(dateTime As Date) As Date
+  overload: Wolfgang.Extensions.DateTime.DateTimeExtensions.TruncateSeconds*
+  nameWithType.vb: DateTimeExtensions.TruncateSeconds(Date)
+  fullName.vb: Wolfgang.Extensions.DateTime.DateTimeExtensions.TruncateSeconds(Date)
+  name.vb: TruncateSeconds(Date)
+- uid: Wolfgang.Extensions.DateTime.DateTimeExtensions.FirstOfMonth(System.DateTime)
+  commentId: M:Wolfgang.Extensions.DateTime.DateTimeExtensions.FirstOfMonth(System.DateTime)
+  id: FirstOfMonth(System.DateTime)
+  isExtensionMethod: true
+  parent: Wolfgang.Extensions.DateTime.DateTimeExtensions
+  langs:
+  - csharp
+  - vb
+  name: FirstOfMonth(DateTime)
+  nameWithType: DateTimeExtensions.FirstOfMonth(DateTime)
+  fullName: Wolfgang.Extensions.DateTime.DateTimeExtensions.FirstOfMonth(System.DateTime)
+  type: Method
+  source:
+    remote:
+      path: src/Wolfgang.Extensions.DateTime/DateTimeExtensions.cs
+      branch: Standardize-repo
+      repo: https://github.com/Chris-Wolfgang/DateTime-Extensions.git
+    id: FirstOfMonth
+    path: ../src/Wolfgang.Extensions.DateTime/DateTimeExtensions.cs
+    startLine: 38
+  assemblies:
+  - Wolfgang.Extensions.DateTime
+  namespace: Wolfgang.Extensions.DateTime
+  summary: >-
+    Returns a new DateTime that represents the first day of the
+
+    month specified by the DateTime passed in.
+  example: []
+  syntax:
+    content: public static DateTime FirstOfMonth(this DateTime dateTime)
+    parameters:
+    - id: dateTime
+      type: System.DateTime
+      description: The value to process.
+    return:
+      type: System.DateTime
+      description: A new DateTime representing the first of the month.
+    content.vb: Public Shared Function FirstOfMonth(dateTime As Date) As Date
+  overload: Wolfgang.Extensions.DateTime.DateTimeExtensions.FirstOfMonth*
+  nameWithType.vb: DateTimeExtensions.FirstOfMonth(Date)
+  fullName.vb: Wolfgang.Extensions.DateTime.DateTimeExtensions.FirstOfMonth(Date)
+  name.vb: FirstOfMonth(Date)
+- uid: Wolfgang.Extensions.DateTime.DateTimeExtensions.EndOfMonth(System.DateTime)
+  commentId: M:Wolfgang.Extensions.DateTime.DateTimeExtensions.EndOfMonth(System.DateTime)
+  id: EndOfMonth(System.DateTime)
+  isExtensionMethod: true
+  parent: Wolfgang.Extensions.DateTime.DateTimeExtensions
+  langs:
+  - csharp
+  - vb
+  name: EndOfMonth(DateTime)
+  nameWithType: DateTimeExtensions.EndOfMonth(DateTime)
+  fullName: Wolfgang.Extensions.DateTime.DateTimeExtensions.EndOfMonth(System.DateTime)
+  type: Method
+  source:
+    remote:
+      path: src/Wolfgang.Extensions.DateTime/DateTimeExtensions.cs
+      branch: Standardize-repo
+      repo: https://github.com/Chris-Wolfgang/DateTime-Extensions.git
+    id: EndOfMonth
+    path: ../src/Wolfgang.Extensions.DateTime/DateTimeExtensions.cs
+    startLine: 49
+  assemblies:
+  - Wolfgang.Extensions.DateTime
+  namespace: Wolfgang.Extensions.DateTime
+  summary: >-
+    Returns a new DateTime that represents the last day of the
+
+    month specified by the DateTime passed in.
+  example: []
+  syntax:
+    content: public static DateTime EndOfMonth(this DateTime dateTime)
+    parameters:
+    - id: dateTime
+      type: System.DateTime
+      description: The value to process.
+    return:
+      type: System.DateTime
+      description: A new DateTime representing the end of the month.
+    content.vb: Public Shared Function EndOfMonth(dateTime As Date) As Date
+  overload: Wolfgang.Extensions.DateTime.DateTimeExtensions.EndOfMonth*
+  nameWithType.vb: DateTimeExtensions.EndOfMonth(Date)
+  fullName.vb: Wolfgang.Extensions.DateTime.DateTimeExtensions.EndOfMonth(Date)
+  name.vb: EndOfMonth(Date)
+- uid: Wolfgang.Extensions.DateTime.DateTimeExtensions.FirstOfYear(System.DateTime)
+  commentId: M:Wolfgang.Extensions.DateTime.DateTimeExtensions.FirstOfYear(System.DateTime)
+  id: FirstOfYear(System.DateTime)
+  isExtensionMethod: true
+  parent: Wolfgang.Extensions.DateTime.DateTimeExtensions
+  langs:
+  - csharp
+  - vb
+  name: FirstOfYear(DateTime)
+  nameWithType: DateTimeExtensions.FirstOfYear(DateTime)
+  fullName: Wolfgang.Extensions.DateTime.DateTimeExtensions.FirstOfYear(System.DateTime)
+  type: Method
+  source:
+    remote:
+      path: src/Wolfgang.Extensions.DateTime/DateTimeExtensions.cs
+      branch: Standardize-repo
+      repo: https://github.com/Chris-Wolfgang/DateTime-Extensions.git
+    id: FirstOfYear
+    path: ../src/Wolfgang.Extensions.DateTime/DateTimeExtensions.cs
+    startLine: 59
+  assemblies:
+  - Wolfgang.Extensions.DateTime
+  namespace: Wolfgang.Extensions.DateTime
+  summary: >-
+    Returns a new DateTime that represents the first day of the
+
+    year specified by the DateTime passed in.
+  example: []
+  syntax:
+    content: public static DateTime FirstOfYear(this DateTime dateTime)
+    parameters:
+    - id: dateTime
+      type: System.DateTime
+      description: The value to process.
+    return:
+      type: System.DateTime
+      description: A new DateTime representing the first of the year.
+    content.vb: Public Shared Function FirstOfYear(dateTime As Date) As Date
+  overload: Wolfgang.Extensions.DateTime.DateTimeExtensions.FirstOfYear*
+  nameWithType.vb: DateTimeExtensions.FirstOfYear(Date)
+  fullName.vb: Wolfgang.Extensions.DateTime.DateTimeExtensions.FirstOfYear(Date)
+  name.vb: FirstOfYear(Date)
+- uid: Wolfgang.Extensions.DateTime.DateTimeExtensions.EndOfYear(System.DateTime)
+  commentId: M:Wolfgang.Extensions.DateTime.DateTimeExtensions.EndOfYear(System.DateTime)
+  id: EndOfYear(System.DateTime)
+  isExtensionMethod: true
+  parent: Wolfgang.Extensions.DateTime.DateTimeExtensions
+  langs:
+  - csharp
+  - vb
+  name: EndOfYear(DateTime)
+  nameWithType: DateTimeExtensions.EndOfYear(DateTime)
+  fullName: Wolfgang.Extensions.DateTime.DateTimeExtensions.EndOfYear(System.DateTime)
+  type: Method
+  source:
+    remote:
+      path: src/Wolfgang.Extensions.DateTime/DateTimeExtensions.cs
+      branch: Standardize-repo
+      repo: https://github.com/Chris-Wolfgang/DateTime-Extensions.git
+    id: EndOfYear
+    path: ../src/Wolfgang.Extensions.DateTime/DateTimeExtensions.cs
+    startLine: 70
+  assemblies:
+  - Wolfgang.Extensions.DateTime
+  namespace: Wolfgang.Extensions.DateTime
+  summary: >-
+    Returns a new DateTime that represents the last day of the
+
+    year specified by the DateTime passed in.
+  example: []
+  syntax:
+    content: public static DateTime EndOfYear(this DateTime dateTime)
+    parameters:
+    - id: dateTime
+      type: System.DateTime
+      description: The value to process.
+    return:
+      type: System.DateTime
+      description: A new DateTime representing the end of the year.
+    content.vb: Public Shared Function EndOfYear(dateTime As Date) As Date
+  overload: Wolfgang.Extensions.DateTime.DateTimeExtensions.EndOfYear*
+  nameWithType.vb: DateTimeExtensions.EndOfYear(Date)
+  fullName.vb: Wolfgang.Extensions.DateTime.DateTimeExtensions.EndOfYear(Date)
+  name.vb: EndOfYear(Date)
+- uid: Wolfgang.Extensions.DateTime.DateTimeExtensions.FirstOfWeek(System.DateTime)
+  commentId: M:Wolfgang.Extensions.DateTime.DateTimeExtensions.FirstOfWeek(System.DateTime)
+  id: FirstOfWeek(System.DateTime)
+  isExtensionMethod: true
+  parent: Wolfgang.Extensions.DateTime.DateTimeExtensions
+  langs:
+  - csharp
+  - vb
+  name: FirstOfWeek(DateTime)
+  nameWithType: DateTimeExtensions.FirstOfWeek(DateTime)
+  fullName: Wolfgang.Extensions.DateTime.DateTimeExtensions.FirstOfWeek(System.DateTime)
+  type: Method
+  source:
+    remote:
+      path: src/Wolfgang.Extensions.DateTime/DateTimeExtensions.cs
+      branch: Standardize-repo
+      repo: https://github.com/Chris-Wolfgang/DateTime-Extensions.git
+    id: FirstOfWeek
+    path: ../src/Wolfgang.Extensions.DateTime/DateTimeExtensions.cs
+    startLine: 82
+  assemblies:
+  - Wolfgang.Extensions.DateTime
+  namespace: Wolfgang.Extensions.DateTime
+  summary: >-
+    Returns a new DateTime that represents the first day of the
+
+    week specified by the DateTime passed in using the thread's
+
+    CurrentCulture FirstDayOfWeek
+  example: []
+  syntax:
+    content: public static DateTime FirstOfWeek(this DateTime dateTime)
+    parameters:
+    - id: dateTime
+      type: System.DateTime
+      description: The value to process.
+    return:
+      type: System.DateTime
+      description: A new DateTime representing the first of the week.
+    content.vb: Public Shared Function FirstOfWeek(dateTime As Date) As Date
+  overload: Wolfgang.Extensions.DateTime.DateTimeExtensions.FirstOfWeek*
+  nameWithType.vb: DateTimeExtensions.FirstOfWeek(Date)
+  fullName.vb: Wolfgang.Extensions.DateTime.DateTimeExtensions.FirstOfWeek(Date)
+  name.vb: FirstOfWeek(Date)
+- uid: Wolfgang.Extensions.DateTime.DateTimeExtensions.FirstOfWeek(System.DateTime,System.DayOfWeek)
+  commentId: M:Wolfgang.Extensions.DateTime.DateTimeExtensions.FirstOfWeek(System.DateTime,System.DayOfWeek)
+  id: FirstOfWeek(System.DateTime,System.DayOfWeek)
+  isExtensionMethod: true
+  parent: Wolfgang.Extensions.DateTime.DateTimeExtensions
+  langs:
+  - csharp
+  - vb
+  name: FirstOfWeek(DateTime, DayOfWeek)
+  nameWithType: DateTimeExtensions.FirstOfWeek(DateTime, DayOfWeek)
+  fullName: Wolfgang.Extensions.DateTime.DateTimeExtensions.FirstOfWeek(System.DateTime, System.DayOfWeek)
+  type: Method
+  source:
+    remote:
+      path: src/Wolfgang.Extensions.DateTime/DateTimeExtensions.cs
+      branch: Standardize-repo
+      repo: https://github.com/Chris-Wolfgang/DateTime-Extensions.git
+    id: FirstOfWeek
+    path: ../src/Wolfgang.Extensions.DateTime/DateTimeExtensions.cs
+    startLine: 95
+  assemblies:
+  - Wolfgang.Extensions.DateTime
+  namespace: Wolfgang.Extensions.DateTime
+  summary: >-
+    Returns a new DateTime that represents the first day of the
+
+    week specified by the DateTime passed in using the specified
+
+    firstDayOfWeek
+  example: []
+  syntax:
+    content: public static DateTime FirstOfWeek(this DateTime dateTime, DayOfWeek firstDayOfWeek)
+    parameters:
+    - id: dateTime
+      type: System.DateTime
+      description: The value to process.
+    - id: firstDayOfWeek
+      type: System.DayOfWeek
+      description: Specifies the first day of the week.
+    return:
+      type: System.DateTime
+      description: A new DateTime representing the first of the week.
+    content.vb: Public Shared Function FirstOfWeek(dateTime As Date, firstDayOfWeek As DayOfWeek) As Date
+  overload: Wolfgang.Extensions.DateTime.DateTimeExtensions.FirstOfWeek*
+  nameWithType.vb: DateTimeExtensions.FirstOfWeek(Date, DayOfWeek)
+  fullName.vb: Wolfgang.Extensions.DateTime.DateTimeExtensions.FirstOfWeek(Date, System.DayOfWeek)
+  name.vb: FirstOfWeek(Date, DayOfWeek)
+- uid: Wolfgang.Extensions.DateTime.DateTimeExtensions.EndOfWeek(System.DateTime)
+  commentId: M:Wolfgang.Extensions.DateTime.DateTimeExtensions.EndOfWeek(System.DateTime)
+  id: EndOfWeek(System.DateTime)
+  isExtensionMethod: true
+  parent: Wolfgang.Extensions.DateTime.DateTimeExtensions
+  langs:
+  - csharp
+  - vb
+  name: EndOfWeek(DateTime)
+  nameWithType: DateTimeExtensions.EndOfWeek(DateTime)
+  fullName: Wolfgang.Extensions.DateTime.DateTimeExtensions.EndOfWeek(System.DateTime)
+  type: Method
+  source:
+    remote:
+      path: src/Wolfgang.Extensions.DateTime/DateTimeExtensions.cs
+      branch: Standardize-repo
+      repo: https://github.com/Chris-Wolfgang/DateTime-Extensions.git
+    id: EndOfWeek
+    path: ../src/Wolfgang.Extensions.DateTime/DateTimeExtensions.cs
+    startLine: 115
+  assemblies:
+  - Wolfgang.Extensions.DateTime
+  namespace: Wolfgang.Extensions.DateTime
+  summary: >-
+    Returns a new DateTime that represents the last day of the
+
+    week specified by the DateTime passed in using the thread's
+
+    CurrentCulture FirstDayOfWeek
+  example: []
+  syntax:
+    content: public static DateTime EndOfWeek(this DateTime dateTime)
+    parameters:
+    - id: dateTime
+      type: System.DateTime
+      description: The value to process.
+    return:
+      type: System.DateTime
+      description: A new DateTime representing the end of the week.
+    content.vb: Public Shared Function EndOfWeek(dateTime As Date) As Date
+  overload: Wolfgang.Extensions.DateTime.DateTimeExtensions.EndOfWeek*
+  nameWithType.vb: DateTimeExtensions.EndOfWeek(Date)
+  fullName.vb: Wolfgang.Extensions.DateTime.DateTimeExtensions.EndOfWeek(Date)
+  name.vb: EndOfWeek(Date)
+- uid: Wolfgang.Extensions.DateTime.DateTimeExtensions.EndOfWeek(System.DateTime,System.DayOfWeek)
+  commentId: M:Wolfgang.Extensions.DateTime.DateTimeExtensions.EndOfWeek(System.DateTime,System.DayOfWeek)
+  id: EndOfWeek(System.DateTime,System.DayOfWeek)
+  isExtensionMethod: true
+  parent: Wolfgang.Extensions.DateTime.DateTimeExtensions
+  langs:
+  - csharp
+  - vb
+  name: EndOfWeek(DateTime, DayOfWeek)
+  nameWithType: DateTimeExtensions.EndOfWeek(DateTime, DayOfWeek)
+  fullName: Wolfgang.Extensions.DateTime.DateTimeExtensions.EndOfWeek(System.DateTime, System.DayOfWeek)
+  type: Method
+  source:
+    remote:
+      path: src/Wolfgang.Extensions.DateTime/DateTimeExtensions.cs
+      branch: Standardize-repo
+      repo: https://github.com/Chris-Wolfgang/DateTime-Extensions.git
+    id: EndOfWeek
+    path: ../src/Wolfgang.Extensions.DateTime/DateTimeExtensions.cs
+    startLine: 128
+  assemblies:
+  - Wolfgang.Extensions.DateTime
+  namespace: Wolfgang.Extensions.DateTime
+  summary: >-
+    Returns a new DateTime that represents the last day of the
+
+    week specified by the DateTime passed in using the specified
+
+    firstDayOfWeek
+  example: []
+  syntax:
+    content: public static DateTime EndOfWeek(this DateTime dateTime, DayOfWeek firstDayOfWeek)
+    parameters:
+    - id: dateTime
+      type: System.DateTime
+      description: The value to process.
+    - id: firstDayOfWeek
+      type: System.DayOfWeek
+      description: Specifies the first day of the week. Default is Sunday.
+    return:
+      type: System.DateTime
+      description: A new DateTime representing the end of the week.
+    content.vb: Public Shared Function EndOfWeek(dateTime As Date, firstDayOfWeek As DayOfWeek) As Date
+  overload: Wolfgang.Extensions.DateTime.DateTimeExtensions.EndOfWeek*
+  nameWithType.vb: DateTimeExtensions.EndOfWeek(Date, DayOfWeek)
+  fullName.vb: Wolfgang.Extensions.DateTime.DateTimeExtensions.EndOfWeek(Date, System.DayOfWeek)
+  name.vb: EndOfWeek(Date, DayOfWeek)
+references:
+- uid: Wolfgang.Extensions.DateTime
+  commentId: N:Wolfgang.Extensions.DateTime
+  href: Wolfgang.html
+  name: Wolfgang.Extensions.DateTime
+  nameWithType: Wolfgang.Extensions.DateTime
+  fullName: Wolfgang.Extensions.DateTime
+  spec.csharp:
+  - uid: Wolfgang
+    name: Wolfgang
+    href: Wolfgang.html
+  - name: .
+  - uid: Wolfgang.Extensions
+    name: Extensions
+    href: Wolfgang.Extensions.html
+  - name: .
+  - uid: Wolfgang.Extensions.DateTime
+    name: DateTime
+    href: Wolfgang.Extensions.DateTime.html
+  spec.vb:
+  - uid: Wolfgang
+    name: Wolfgang
+    href: Wolfgang.html
+  - name: .
+  - uid: Wolfgang.Extensions
+    name: Extensions
+    href: Wolfgang.Extensions.html
+  - name: .
+  - uid: Wolfgang.Extensions.DateTime
+    name: DateTime
+    href: Wolfgang.Extensions.DateTime.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Wolfgang.Extensions.DateTime.DateTimeExtensions.TruncateMilliseconds*
+  commentId: Overload:Wolfgang.Extensions.DateTime.DateTimeExtensions.TruncateMilliseconds
+  href: Wolfgang.Extensions.DateTime.DateTimeExtensions.html#Wolfgang_Extensions_DateTime_DateTimeExtensions_TruncateMilliseconds_System_DateTime_
+  name: TruncateMilliseconds
+  nameWithType: DateTimeExtensions.TruncateMilliseconds
+  fullName: Wolfgang.Extensions.DateTime.DateTimeExtensions.TruncateMilliseconds
+- uid: System.DateTime
+  commentId: T:System.DateTime
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.datetime
+  name: DateTime
+  nameWithType: DateTime
+  fullName: System.DateTime
+  nameWithType.vb: Date
+  fullName.vb: Date
+  name.vb: Date
+- uid: Wolfgang.Extensions.DateTime.DateTimeExtensions.TruncateSeconds*
+  commentId: Overload:Wolfgang.Extensions.DateTime.DateTimeExtensions.TruncateSeconds
+  href: Wolfgang.Extensions.DateTime.DateTimeExtensions.html#Wolfgang_Extensions_DateTime_DateTimeExtensions_TruncateSeconds_System_DateTime_
+  name: TruncateSeconds
+  nameWithType: DateTimeExtensions.TruncateSeconds
+  fullName: Wolfgang.Extensions.DateTime.DateTimeExtensions.TruncateSeconds
+- uid: Wolfgang.Extensions.DateTime.DateTimeExtensions.FirstOfMonth*
+  commentId: Overload:Wolfgang.Extensions.DateTime.DateTimeExtensions.FirstOfMonth
+  href: Wolfgang.Extensions.DateTime.DateTimeExtensions.html#Wolfgang_Extensions_DateTime_DateTimeExtensions_FirstOfMonth_System_DateTime_
+  name: FirstOfMonth
+  nameWithType: DateTimeExtensions.FirstOfMonth
+  fullName: Wolfgang.Extensions.DateTime.DateTimeExtensions.FirstOfMonth
+- uid: Wolfgang.Extensions.DateTime.DateTimeExtensions.EndOfMonth*
+  commentId: Overload:Wolfgang.Extensions.DateTime.DateTimeExtensions.EndOfMonth
+  href: Wolfgang.Extensions.DateTime.DateTimeExtensions.html#Wolfgang_Extensions_DateTime_DateTimeExtensions_EndOfMonth_System_DateTime_
+  name: EndOfMonth
+  nameWithType: DateTimeExtensions.EndOfMonth
+  fullName: Wolfgang.Extensions.DateTime.DateTimeExtensions.EndOfMonth
+- uid: Wolfgang.Extensions.DateTime.DateTimeExtensions.FirstOfYear*
+  commentId: Overload:Wolfgang.Extensions.DateTime.DateTimeExtensions.FirstOfYear
+  href: Wolfgang.Extensions.DateTime.DateTimeExtensions.html#Wolfgang_Extensions_DateTime_DateTimeExtensions_FirstOfYear_System_DateTime_
+  name: FirstOfYear
+  nameWithType: DateTimeExtensions.FirstOfYear
+  fullName: Wolfgang.Extensions.DateTime.DateTimeExtensions.FirstOfYear
+- uid: Wolfgang.Extensions.DateTime.DateTimeExtensions.EndOfYear*
+  commentId: Overload:Wolfgang.Extensions.DateTime.DateTimeExtensions.EndOfYear
+  href: Wolfgang.Extensions.DateTime.DateTimeExtensions.html#Wolfgang_Extensions_DateTime_DateTimeExtensions_EndOfYear_System_DateTime_
+  name: EndOfYear
+  nameWithType: DateTimeExtensions.EndOfYear
+  fullName: Wolfgang.Extensions.DateTime.DateTimeExtensions.EndOfYear
+- uid: Wolfgang.Extensions.DateTime.DateTimeExtensions.FirstOfWeek*
+  commentId: Overload:Wolfgang.Extensions.DateTime.DateTimeExtensions.FirstOfWeek
+  href: Wolfgang.Extensions.DateTime.DateTimeExtensions.html#Wolfgang_Extensions_DateTime_DateTimeExtensions_FirstOfWeek_System_DateTime_
+  name: FirstOfWeek
+  nameWithType: DateTimeExtensions.FirstOfWeek
+  fullName: Wolfgang.Extensions.DateTime.DateTimeExtensions.FirstOfWeek
+- uid: System.DayOfWeek
+  commentId: T:System.DayOfWeek
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.dayofweek
+  name: DayOfWeek
+  nameWithType: DayOfWeek
+  fullName: System.DayOfWeek
+- uid: Wolfgang.Extensions.DateTime.DateTimeExtensions.EndOfWeek*
+  commentId: Overload:Wolfgang.Extensions.DateTime.DateTimeExtensions.EndOfWeek
+  href: Wolfgang.Extensions.DateTime.DateTimeExtensions.html#Wolfgang_Extensions_DateTime_DateTimeExtensions_EndOfWeek_System_DateTime_
+  name: EndOfWeek
+  nameWithType: DateTimeExtensions.EndOfWeek
+  fullName: Wolfgang.Extensions.DateTime.DateTimeExtensions.EndOfWeek
