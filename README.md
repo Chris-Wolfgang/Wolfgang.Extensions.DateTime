@@ -1,6 +1,6 @@
 # Wolfgang.Extensions.DateTime
 
-A collection of extension methods for DateTime data type
+A collection of extension methods for `DateTime` data type in .Net
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![.NET](https://img.shields.io/badge/.NET-Multi--Targeted-purple.svg)](https://dotnet.microsoft.com/)
@@ -14,7 +14,7 @@ A collection of extension methods for DateTime data type
 dotnet add package Wolfgang.Extensions.DateTime
 ```
 
-**NuGet Package:** Available on NuGet.org
+**NuGet Package:** [Available on NuGet.org](https://www.nuget.org/packages/Wolfgang.Extensions.DateTime)
 
 ---
 
@@ -35,22 +35,39 @@ This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) f
 
 ## 🚀 Quick Start
 
-{{QUICK_START_EXAMPLE}}
+
 
 ---
 
 ## ✨ Features
 
-{{FEATURES_TABLE}}
+## Methods
+| Method | Description |
+|--------|-------------|
+| `TruncateMilliseconds` | Removes fractional seconds, returning a DateTime accurate to the whole second. |
+| `TruncateSeconds`| Strips seconds and smaller units, yielding a DateTime rounded down to the minute. |
+| `FirstOfMonth`| Produces a new `DateTime` set to the first day of the month at midnight of the specified `DateTime`. |
+| `EndOfMonth`| Computes the final tick of the month for the specified `DateTime`. |
+| `FirstOfYear`| Creates a `DateTime` corresponding to January 1 of the same year as the specified `DateTime`. |
+| `EndOfYear`| Returns the final tick of the year of the specified `DateTime`. |
+| `FirstOfWeek()`| Uses the current culture’s first day of the week to locate the week’s starting `DateTime`. |
+| `FirstOfWeek(DayOfWeek firstDayOfWeek)`| Uses the specified first day of the week to locate the week’s starting `DateTime`. |
+| `EndOfWeek()`| Uses the current culture’s first day, calculates the final tick of the week. |
+| `EndOfWeek(DayOfWeek firstDayOfWeek)`| Uses the specified first day, calculates the final tick of the week. |
+
+**Note** These are the methods present at the time the documentation was last updated. For a complete of methods see the [API Documentation](https://Chris-Wolfgang.github.io/DateTime-Extensions/)
 
 **Examples:**
-{{FEATURE_EXAMPLES}}
 
 ---
 
 ## 🎯 Target Frameworks
 
-{{TARGET_FRAMEWORKS}}
+| Framework | Versions |
+|-----------|----------|
+| .Net Framework | .net 4.6.2, .net 4.7.0, .net 4.7.1, .net 4.7.2, .net 4.8, .net 4.8.1 | 
+| .Net Core | |
+| .Net | .Net 5.0, .Net 6.0, .Net 7.0, .Net 8.0, .Net 9.0, .Net 10.0
 
 ---
 
@@ -68,19 +85,6 @@ This project enforces **strict code quality standards** through **7 specialized 
 6. **Meziantou.Analyzer** - Comprehensive code quality rules
 7. **SonarAnalyzer.CSharp** - Industry-standard code analysis
 
-### Async-First Enforcement
-
-This library uses **`BannedSymbols.txt`** to prohibit synchronous APIs and enforce async-first patterns:
-
-**Blocked APIs Include:**
-- ❌ `Task.Wait()`, `Task.Result` - Use `await` instead
-- ❌ `Thread.Sleep()` - Use `await Task.Delay()` instead
-- ❌ Synchronous file I/O (`File.ReadAllText`) - Use async versions
-- ❌ Synchronous stream operations - Use `ReadAsync()`, `WriteAsync()`
-- ❌ `Parallel.For/ForEach` - Use `Task.WhenAll()` or `Parallel.ForEachAsync()`
-- ❌ Obsolete APIs (`WebClient`, `BinaryFormatter`)
-
-**Why?** To ensure all code is **truly async** and **non-blocking** for optimal performance in async contexts.
 
 ---
 
@@ -173,5 +177,5 @@ Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for:
 
 ## 🙏 Acknowledgments
 
-{{ACKNOWLEDGMENTS}}
+
 
