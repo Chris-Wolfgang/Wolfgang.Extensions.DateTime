@@ -1,0 +1,74 @@
+<Solution>
+  <Folder Name="/.root/">
+    <File Path="BannedSymbols.txt" />
+    <File Path="CODE_OF_CONDUCT.md" />
+    <File Path="CONTRIBUTING.md" />
+    <File Path="DateTime Extensions.sln.DotSettings.user.original" />
+    <File Path="DateTime Extensions.slnx.original" />
+    <File Path="Directory.Build.props" />
+    <File Path="format.ps1" />
+    <File Path="LICENSE" />
+    <File Path="LICENSE-SELECTION.md" />
+    <File Path="README-FORMATTING.md" />
+    <File Path="README.md" />
+    <File Path="README.md.original" />
+    <File Path="RELEASE-WORKFLOW-SETUP.md" />
+    <File Path="REPO-INSTRUCTIONS.md" />
+    <File Path="TEMPLATE-PLACEHOLDERS.md" />
+    <File Path="TEMPLATE-REPO-PLACEHOLDERS-EXPLANATION.md" />
+  </Folder>
+  <Folder Name="/.root/.github/">
+    <File Path=".github/CODEOWNERS" />
+    <File Path=".github/copilot-instructions.md" />
+    <File Path=".github/dependabot.yml" />
+    <File Path=".github/pull_request_template.md" />
+  </Folder>
+  <Folder Name="/.root/.github/ISSUE_TEMPLATE/">
+    <File Path=".github/ISSUE_TEMPLATE/BUG_REPORT.yaml" />
+    <File Path=".github/ISSUE_TEMPLATE/feature_request.md" />
+  </Folder>
+  <Folder Name="/.root/.github/workflows/">
+    <File Path=".github/workflows/codeql.yml" />
+    <File Path=".github/workflows/create-labels.yaml" />
+    <File Path=".github/workflows/docfx.yaml" />
+    <File Path=".github/workflows/pr.yaml" />
+    <File Path=".github/workflows/release.yaml" />
+  </Folder>
+  <Folder Name="/.root/.vs/DateTime Extensions.slnx/FileContentIndex/">
+    <File Path=".vs/DateTime Extensions.slnx/FileContentIndex/0e9b7b7d-5dbe-4a4e-9191-2227d8993574.vsidx" />
+    <File Path=".vs/DateTime Extensions.slnx/FileContentIndex/73e04908-4293-4b4b-b13a-de5b9823733a.vsidx" />
+    <File Path=".vs/DateTime Extensions.slnx/FileContentIndex/a2b40526-06af-4620-b7ac-12229ba221e4.vsidx" />
+    <File Path=".vs/DateTime Extensions.slnx/FileContentIndex/ad18cf35-59d0-4b75-a3ff-9a210216a635.vsidx" />
+    <File Path=".vs/DateTime Extensions.slnx/FileContentIndex/d76faca7-15eb-4481-ac16-a2fe989ac87f.vsidx" />
+  </Folder>
+  <Folder Name="/.root/.vs/DateTime Extensions.slnx/v18/">
+    <File Path=".vs/DateTime Extensions.slnx/v18/DocumentLayout.backup.json" />
+    <File Path=".vs/DateTime Extensions.slnx/v18/DocumentLayout.json" />
+  </Folder>
+  <Folder Name="/.root/.vs/DateTime Extensions.slnx/v18/TestStore/0/">
+    <File Path=".vs/DateTime Extensions.slnx/v18/TestStore/0/018.testlog" />
+    <File Path=".vs/DateTime Extensions.slnx/v18/TestStore/0/testlog.manifest" />
+  </Folder>
+  <Folder Name="/.root/.vs/DateTime Extensions/CopilotIndices/18.0.981.45449/">
+    <File Path=".vs/DateTime Extensions/CopilotIndices/18.0.981.45449/CodeChunks.db" />
+    <File Path=".vs/DateTime Extensions/CopilotIndices/18.0.981.45449/CodeChunks.db-shm" />
+    <File Path=".vs/DateTime Extensions/CopilotIndices/18.0.981.45449/CodeChunks.db-wal" />
+    <File Path=".vs/DateTime Extensions/CopilotIndices/18.0.981.45449/SemanticSymbols.db" />
+    <File Path=".vs/DateTime Extensions/CopilotIndices/18.0.981.45449/SemanticSymbols.db-shm" />
+    <File Path=".vs/DateTime Extensions/CopilotIndices/18.0.981.45449/SemanticSymbols.db-wal" />
+  </Folder>
+  <Folder Name="/.root/assets/">
+    <File Path="assets/icon.ico" />
+    <File Path="assets/icon.png" />
+  </Folder>
+  <Folder Name="/.root/scripts/">
+    <File Path="scripts/Setup-BranchRuleset.ps1" />
+    <File Path="scripts/Setup-GitHubPages.ps1" />
+    <File Path="scripts/setup.ps1" />
+  </Folder>
+  <Folder Name="/benchmarks/" />
+  <Folder Name="/examples/" />
+  <Folder Name="/src/" />
+  <Folder Name="/tests/" />
+</Solution>
+
