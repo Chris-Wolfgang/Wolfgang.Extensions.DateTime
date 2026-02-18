@@ -2,17 +2,17 @@ name: Deploy DocFX Pages
 
 on:
   push:
+    tags:
+      - 'v*.*.*' # Trigger on version tags (e.g., v1.0.0)
     branches:
       - main # Your primary branch
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     permissions:
-      contents: read # Allow read access for checkout
-      pages: write      # Allow write access for Pages deployment
-      id-token: write   # Allow writing of ID tokens for deployment
+      contents: write # Allow write access for gh-pages branch
 
     steps:
       - name: Checkout repository
@@ -23,41 +23,48 @@ jobs:
         with:
           dotnet-version: '10.0.x'
 
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build solution
+        run: dotnet build --configuration Release --no-restore
+
       - name: Install DocFX
         run: dotnet tool update docfx --global
 
       - name: Build DocFx Metadata
-        run: docfx metadata 
+        run: docfx metadata
         working-directory: docfx_project
 
       - name: Build Docs
-        run: docfx build 
+        run: docfx build
         working-directory: docfx_project
 
       - name: Verify build output
         run: |
-          if [ ! -d "docfx_project/_site" ]; then
+          if [ ! -d "_site" ]; then
             echo "Error: _site directory not found!"
             exit 1
           fi
+          if [ ! -f "_site/index.html" ]; then
+            echo "Error: _site/index.html not found"
+            echo "DocFX build may have failed!"
+            exit 1
+          fi
           echo "Build successful. Contents of _site:"
-          ls -la docfx_project/_site
+          ls -la _site
+          if [ -d "_site/api" ]; then
+            echo "API documentation:"
+            ls -la _site/api
+          else
+            echo "Note: No API documentation generated"
+            echo "(this is expected if there are no public APIs yet)"
+          fi
+        working-directory: docfx_project
 
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: docfx_project/_site # The path to the folder to upload
-
-  deploy:
-    needs: build
-    permissions:
-      pages: write
-      id-token: write
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    steps:
       - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docfx_project/_site
+          force_orphan: true
