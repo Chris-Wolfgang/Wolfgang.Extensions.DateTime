@@ -33,34 +33,23 @@ jobs:
         run: dotnet tool update docfx --global
 
       - name: Build DocFx Metadata
-        run: docfx metadata
+        run: docfx metadata 
         working-directory: docfx_project
 
       - name: Build Docs
-        run: docfx build
+        run: docfx build 
         working-directory: docfx_project
 
       - name: Verify build output
         run: |
-          if [ ! -d "_site" ]; then
-            echo "Error: _site directory not found!"
-            exit 1
-          fi
-          if [ ! -f "_site/index.html" ]; then
-            echo "Error: _site/index.html not found"
-            echo "DocFX build may have failed!"
+          if [ ! -d "docfx_project/_site" ]; then
+            echo "Error: docfx_project/_site directory not found!"
             exit 1
           fi
           echo "Build successful. Contents of _site:"
-          ls -la _site
-          if [ -d "_site/api" ]; then
-            echo "API documentation:"
-            ls -la _site/api
-          else
-            echo "Note: No API documentation generated"
-            echo "(this is expected if there are no public APIs yet)"
-          fi
-        working-directory: docfx_project
+          ls -la docfx_project/_site
+          echo "API documentation:"
+          ls -la docfx_project/_site/api
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
