@@ -12,7 +12,7 @@ using Xunit;
         [Fact]
         public void TruncateMilliseconds_successfully_removes_milliseconds_from_value()
         {
-            var now = DateTime.Now;
+            var now = DateTime.UtcNow;
 
             var actualResult = now.TruncateMilliseconds();
 
@@ -34,7 +34,7 @@ using Xunit;
         [Fact]
         public void TruncateMilliseconds_returns_0_milliseconds()
         {
-            var now = DateTime.Now;
+            var now = DateTime.UtcNow;
 
 
             var actualResult = now.TruncateMilliseconds();
@@ -48,12 +48,19 @@ using Xunit;
         [Fact]
         public void TruncateSeconds_removes_seconds_from_value()
         {
-            var now = DateTime.Now;
+            var now = DateTime.UtcNow;
 
             var actualResult = now.TruncateSeconds();
 
-            var expectedResult = new DateTime(
-                now.Year, now.Month, now.Day, now.Hour, now.Minute, 0);
+            var expectedResult = new DateTime
+            (
+                now.Year,
+                now.Month,
+                now.Day,
+                now.Hour,
+                now.Minute,
+                0
+            );
 
             Assert.Equal(expectedResult, actualResult);
         }
@@ -63,7 +70,7 @@ using Xunit;
         [Fact]
         public void TruncateSeconds_returns_0_milliseconds()
         {
-            var now = DateTime.Now;
+            var now = DateTime.UtcNow;
 
 
             var actualResult = now.TruncateSeconds();
@@ -77,7 +84,7 @@ using Xunit;
         [Fact]
         public void TruncateSeconds_returns_0_seconds()
         {
-            var now = DateTime.Now;
+            var now = DateTime.UtcNow;
 
 
             var actualResult = now.TruncateSeconds();
@@ -292,7 +299,7 @@ using Xunit;
         (
             DateTime testValue,
             DayOfWeek firstDayOfWeek,
-            System.DateTime expectedResult
+            DateTime expectedResult
         )
         {
             var actualResult = testValue.EndOfWeek(firstDayOfWeek);
