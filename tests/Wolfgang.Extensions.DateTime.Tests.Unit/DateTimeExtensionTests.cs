@@ -300,4 +300,144 @@ using Xunit;
             Assert.Equal(expectedResult, actualResult);
         }
 
+
+
+        [Fact]
+        public void TruncateMilliseconds_returns_new_instance_and_does_not_modify_original()
+        {
+            var original = new DateTime(2024, 5, 15, 10, 30, 45, 123);
+            var originalCopy = original;
+
+            var result = original.TruncateMilliseconds();
+
+            Assert.NotEqual(original, result);
+            Assert.Equal(originalCopy, original);
+        }
+
+
+
+        [Fact]
+        public void TruncateSeconds_returns_new_instance_and_does_not_modify_original()
+        {
+            var original = new DateTime(2024, 5, 15, 10, 30, 45, 123);
+            var originalCopy = original;
+
+            var result = original.TruncateSeconds();
+
+            Assert.NotEqual(original, result);
+            Assert.Equal(originalCopy, original);
+        }
+
+
+
+        [Fact]
+        public void FirstOfMonth_returns_new_instance_and_does_not_modify_original()
+        {
+            var original = new DateTime(2024, 5, 15, 10, 30, 45, 123);
+            var originalCopy = original;
+
+            var result = original.FirstOfMonth();
+
+            Assert.NotEqual(original, result);
+            Assert.Equal(originalCopy, original);
+        }
+
+
+
+        [Fact]
+        public void EndOfMonth_returns_new_instance_and_does_not_modify_original()
+        {
+            var original = new DateTime(2024, 5, 15, 10, 30, 45, 123);
+            var originalCopy = original;
+
+            var result = original.EndOfMonth();
+
+            Assert.NotEqual(original, result);
+            Assert.Equal(originalCopy, original);
+        }
+
+
+
+        [Fact]
+        public void FirstOfYear_returns_new_instance_and_does_not_modify_original()
+        {
+            var original = new DateTime(2024, 5, 15, 10, 30, 45, 123);
+            var originalCopy = original;
+
+            var result = original.FirstOfYear();
+
+            Assert.NotEqual(original, result);
+            Assert.Equal(originalCopy, original);
+        }
+
+
+
+        [Fact]
+        public void EndOfYear_returns_new_instance_and_does_not_modify_original()
+        {
+            var original = new DateTime(2024, 5, 15, 10, 30, 45, 123);
+            var originalCopy = original;
+
+            var result = original.EndOfYear();
+
+            Assert.NotEqual(original, result);
+            Assert.Equal(originalCopy, original);
+        }
+
+
+
+        [Fact]
+        public void FirstOfWeek_returns_new_instance_and_does_not_modify_original()
+        {
+            var original = new DateTime(2024, 5, 15, 10, 30, 45, 123);
+            var originalCopy = original;
+
+            var result = original.FirstOfWeek();
+
+            Assert.NotEqual(original, result);
+            Assert.Equal(originalCopy, original);
+        }
+
+
+
+        [Fact]
+        public void FirstOfWeek_with_DayOfWeek_returns_new_instance_and_does_not_modify_original()
+        {
+            var original = new DateTime(2024, 5, 15, 10, 30, 45, 123);
+            var originalCopy = original;
+
+            var result = original.FirstOfWeek(DayOfWeek.Monday);
+
+            Assert.NotEqual(original, result);
+            Assert.Equal(originalCopy, original);
+        }
+
+
+
+        [Fact]
+        public void EndOfWeek_returns_new_instance_and_does_not_modify_original()
+        {
+            var original = new DateTime(2024, 5, 15, 10, 30, 45, 123);
+            var originalCopy = original;
+
+            var result = original.EndOfWeek();
+
+            Assert.NotEqual(original, result);
+            Assert.Equal(originalCopy, original);
+        }
+
+
+
+        [Fact]
+        public void EndOfWeek_with_DayOfWeek_returns_new_instance_and_does_not_modify_original()
+        {
+            var original = new DateTime(2024, 5, 15, 10, 30, 45, 123);
+            var originalCopy = original;
+
+            var result = original.EndOfWeek(DayOfWeek.Monday);
+
+            Assert.NotEqual(original, result);
+            Assert.Equal(originalCopy, original);
+        }
+
     }
