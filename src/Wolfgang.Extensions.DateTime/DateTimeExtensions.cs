@@ -83,6 +83,7 @@ public static class DateTimeExtensions
 
 
 
+
     /// <summary>
     /// Returns a new DateTime that represents the first day of the
     /// year specified by the DateTime passed in.
