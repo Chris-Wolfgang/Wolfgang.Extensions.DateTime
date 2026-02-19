@@ -51,6 +51,7 @@ public static class DateTimeExtensions
         => dateTime.FirstOfMonth().AddMonths(1).AddTicks(-1);
 
 
+
     /// <summary>
     /// Returns a new DateTime that represents the first day of the
     /// year specified by the DateTime passed in.
