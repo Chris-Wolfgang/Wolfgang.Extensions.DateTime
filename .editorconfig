@@ -48,6 +48,10 @@ dotnet_analyzer_diagnostic.severity = suggestion
 # Example: StyleCop rule as error (if StyleCop is installed)
 dotnet_diagnostic.sa1101.severity = error
 
+# Enforce that elements are separated by at least one blank line (SA1516: Elements should be separated by blank line)
+# Convention: use exactly 3 blank lines between methods. SA1516 warns when elements have no blank line separation at all.
+dotnet_diagnostic.SA1516.severity = warning
+
 # Suppress a specific warning (example: unused variable)
 dotnet_diagnostic.cs0168.severity = none
 
