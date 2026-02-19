@@ -16,7 +16,16 @@ public static class DateTimeExtensions
     /// <param name="dateTime">The value to process.</param>
     /// <returns>A new DateTime equal to the passed in value without milliseconds</returns>
     public static System.DateTime TruncateMilliseconds(this System.DateTime dateTime)
-        => new(dateTime.Year, dateTime.Month, dateTime.Day, dateTime.Hour, dateTime.Minute, dateTime.Second);
+        => new
+            (
+                dateTime.Year,
+                dateTime.Month,
+                dateTime.Day,
+                dateTime.Hour,
+                dateTime.Minute,
+                dateTime.Second,
+                dateTime.Kind
+            );
 
 
 
@@ -26,7 +35,17 @@ public static class DateTimeExtensions
     /// <param name="dateTime">The value to process.</param>
     /// <returns>A new DateTime equal to the passed in value without seconds and milliseconds</returns>
     public static System.DateTime TruncateSeconds(this System.DateTime dateTime)
-        => new(dateTime.Year, dateTime.Month, dateTime.Day, dateTime.Hour, dateTime.Minute, 0);
+        => new
+            (
+                dateTime.Year,
+                dateTime.Month,
+                dateTime.Day,
+                dateTime.Hour,
+                dateTime.Minute,
+                0,
+                0,
+                dateTime.Kind
+            );
 
 
 
@@ -37,7 +56,16 @@ public static class DateTimeExtensions
     /// <param name="dateTime">The value to process.</param>
     /// <returns>A new DateTime representing the first of the month.</returns>
     public static System.DateTime FirstOfMonth(this System.DateTime dateTime)
-        => new(dateTime.Year, dateTime.Month, 1);
+        => new
+            (
+                dateTime.Year,
+                dateTime.Month,
+                1,
+                0,
+                0,
+                0,
+                dateTime.Kind
+            );
 
 
 
@@ -48,7 +76,11 @@ public static class DateTimeExtensions
     /// <param name="dateTime">The value to process.</param>
     /// <returns>A new DateTime representing the end of the month.</returns>
     public static System.DateTime EndOfMonth(this System.DateTime dateTime)
-        => dateTime.FirstOfMonth().AddMonths(1).AddTicks(-1);
+        => dateTime
+            .FirstOfMonth()
+            .AddMonths(1)
+            .AddTicks(-1);
+
 
 
     /// <summary>
@@ -58,7 +90,16 @@ public static class DateTimeExtensions
     /// <param name="dateTime">The value to process.</param>
     /// <returns>A new DateTime representing the first of the year.</returns>
     public static System.DateTime FirstOfYear(this System.DateTime dateTime)
-        => new(dateTime.Year, 1, 1);
+        => new
+            (
+                dateTime.Year,
+                1,
+                1,
+                0,
+                0,
+                0,
+                dateTime.Kind
+            );
 
 
 
@@ -69,7 +110,10 @@ public static class DateTimeExtensions
     /// <param name="dateTime">The value to process.</param>
     /// <returns>A new DateTime representing the end of the year.</returns>
     public static System.DateTime EndOfYear(this System.DateTime dateTime)
-        => dateTime.FirstOfYear().AddYears(1).AddTicks(-1);
+        => dateTime
+            .FirstOfYear()
+            .AddYears(1)
+            .AddTicks(-1);
 
 
 
