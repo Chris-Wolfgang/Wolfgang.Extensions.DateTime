@@ -127,9 +127,48 @@ Both tests pass successfully.
 
 ## Maintenance
 
+### Making Changes to Protected Configuration Files
+
+To update protected configuration files (`.editorconfig`, `BannedSymbols.txt`, etc.), follow this workflow:
+
+1. **Create a PR with your configuration changes**
+   - Make changes to the configuration file(s) in your PR branch
+   - The PR workflow will still fetch and use the current main branch version for testing
+   - This means your PR will be tested against the **existing** configuration standards
+
+2. **Get your PR reviewed and merged to main**
+   - Once merged, your configuration changes become the new "trusted" version on main
+   - Future PRs will automatically use your updated configuration
+
+3. **Why this works:**
+   - Configuration changes are intentionally one commit behind during PR validation
+   - This ensures you can't weaken security standards in the same PR that adds problematic code
+   - After merge, the new standards apply to all subsequent PRs
+
+**Example Workflow:**
+```
+PR #1: Update .editorconfig to add new rule
+  ↓ (tested with old .editorconfig from main)
+  ↓ (approved and merged)
+  ↓
+Main: Now has updated .editorconfig
+
+PR #2: New feature
+  ↓ (tested with updated .editorconfig from main)
+  ↓ (builds/tests using new rules)
+```
+
+**Important Notes:**
+- If you need to relax a security rule AND add code that violates the old rule in the same change, you'll need two PRs:
+  1. First PR: Update the configuration file only
+  2. Second PR: Add the code that requires the relaxed rules
+- This is intentional security design to prevent simultaneous weakening of standards and addition of problematic code
+
+### Adding New Protected Configuration Files
+
 When adding new configuration files that control code quality or security:
 
-1. Add the file name to the `config_files` array in all workflow jobs
+1. Add the file name to the `config_files` array in all workflow jobs (detect-projects, test-linux-core, test-windows, test-macos-core, security-scan)
 2. Test that the file is correctly fetched from main branch
 3. Update this documentation
 
