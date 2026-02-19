@@ -63,7 +63,7 @@ public class DateTimeExtensionsTests
             now.Minute,
             0,
             0,
-            DateTimeKind.Unspecified
+            DateTimeKind.Utc
         );
 
         Assert.Equal(expectedResult, actualResult);
