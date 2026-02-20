@@ -24,6 +24,7 @@ public static class DateTimeExtensions
                 dateTime.Hour,
                 dateTime.Minute,
                 dateTime.Second,
+                0,
                 dateTime.Kind
             );
 
@@ -64,6 +65,7 @@ public static class DateTimeExtensions
                 0,
                 0,
                 0,
+                0,
                 dateTime.Kind
             );
 
@@ -96,6 +98,7 @@ public static class DateTimeExtensions
                 dateTime.Year,
                 1,
                 1,
+                0,
                 0,
                 0,
                 0,
