@@ -1,11 +1,8 @@
 name: Deploy DocFX Pages
 
 on:
-  push:
-    tags:
-      - 'v*.*.*' # Trigger on version tags (e.g., v1.0.0)
-    branches:
-      - main # Your primary branch
+  release:
+    types: [published]
 
 jobs:
   build-and-deploy:
@@ -51,9 +48,20 @@ jobs:
           echo "API documentation:"
           ls -la docfx_project/_site/api
 
-      - name: Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages (versioned)
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./docfx_project/_site
-          force_orphan: true
+          destination_dir: ${{ github.event.release.tag_name }}
+          keep_files: true
+          force_orphan: false
+
+      - name: Deploy to GitHub Pages (latest)
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docfx_project/_site
+          destination_dir: latest
+          keep_files: true
+          force_orphan: false
