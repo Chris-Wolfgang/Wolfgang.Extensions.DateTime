@@ -14,7 +14,7 @@ A collection of extension methods for `DateTime` data type in .Net
 dotnet add package Wolfgang.Extensions.DateTime
 ```
 
-**NuGet Package:** [Available on NuGet.org](https://www.nuget.org/packages/Wolfgang.Extensions.DateTime)
+**NuGet Package:** [Wolfgang.Extensions.DateTime](https://www.nuget.org/packages/Wolfgang.Extensions.DateTime)
 
 ---
 
