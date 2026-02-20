@@ -14,7 +14,7 @@ namespace Wolfgang.Extensions.DateTime.DotNet462.Example1
 
             Console.WriteLine($"\tFirst of the current month: {System.DateTime.Today.FirstOfMonth()}.");
             Console.WriteLine($"\t  End of the current month: {System.DateTime.Today.EndOfMonth()}.");
-            Console.WriteLine($"\t  End of Feb 2020 (leap year): {new System.DateTime(2020, 2, 15).EndOfMonth()}.");
+            Console.WriteLine($"\t  End of Feb 2020 (leap year): {new System.DateTime(2020, 2, 15, 0, 0, 0, DateTimeKind.Utc).EndOfMonth()}.");
             Console.WriteLine("\n");
 
             Console.WriteLine($"\tFirst of the current year: {System.DateTime.Today.FirstOfYear()}.");
@@ -29,7 +29,7 @@ namespace Wolfgang.Extensions.DateTime.DotNet462.Example1
             Console.WriteLine($"\t  End of the current week: {System.DateTime.Today.EndOfWeek(DayOfWeek.Saturday)} (Saturday as first of week).");
             Console.WriteLine("\n");
 
-            var now = System.DateTime.Now;
+            var now = System.DateTime.UtcNow;
             Console.WriteLine($"\t                 Now: {now:yyyy-MM-dd hh:mm:ss.fff tt}");
             Console.WriteLine($"\tTruncateMilliseconds: {now.TruncateMilliseconds():yyyy-MM-dd hh:mm:ss.fff tt}");
             Console.WriteLine($"\t     TruncateSeconds: {now.TruncateSeconds():yyyy-MM-dd hh:mm:ss.fff tt}");

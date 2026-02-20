@@ -1,0 +1,23 @@
+### YamlMime:ManagedReference
+items:
+- uid: Wolfgang.Extensions.DateTime
+  commentId: N:Wolfgang.Extensions.DateTime
+  id: Wolfgang.Extensions.DateTime
+  children:
+  - Wolfgang.Extensions.DateTime.DateTimeExtensions
+  langs:
+  - csharp
+  - vb
+  name: Wolfgang.Extensions.DateTime
+  nameWithType: Wolfgang.Extensions.DateTime
+  fullName: Wolfgang.Extensions.DateTime
+  type: Namespace
+  assemblies:
+  - Wolfgang.Extensions.DateTime
+references:
+- uid: Wolfgang.Extensions.DateTime.DateTimeExtensions
+  commentId: T:Wolfgang.Extensions.DateTime.DateTimeExtensions
+  href: Wolfgang.Extensions.DateTime.DateTimeExtensions.html
+  name: DateTimeExtensions
+  nameWithType: DateTimeExtensions
+  fullName: Wolfgang.Extensions.DateTime.DateTimeExtensions

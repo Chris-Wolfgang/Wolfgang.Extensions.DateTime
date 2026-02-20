@@ -13,7 +13,7 @@ internal static class Program
 
         Console.WriteLine($"\tFirst of the current month: {System.DateTime.Today.FirstOfMonth()}.");
         Console.WriteLine($"\t  End of the current month: {System.DateTime.Today.EndOfMonth()}.");
-        Console.WriteLine($"\t  End of the Feb 2020 (leap year): {new System.DateTime(2020, 2, 15).EndOfMonth()}.");
+        Console.WriteLine($"\t  End of the Feb 2020 (leap year): {new System.DateTime(2020, 2, 15, 0, 0, 0, DateTimeKind.Utc).EndOfMonth()}.");
 
 
         Console.WriteLine("\n");
@@ -31,7 +31,7 @@ internal static class Program
         Console.WriteLine($"\t  End of the current week: {System.DateTime.Today.EndOfWeek(DayOfWeek.Saturday)} (Saturday as first of week).");
 
 
-        var now = System.DateTime.Now;
+        var now = System.DateTime.UtcNow;
         Console.WriteLine($"\t                 Now: {now:yyyy-MM-dd hh:mm:ss.fff tt}");
         Console.WriteLine($"\tTruncateMilliseconds: {now.TruncateMilliseconds():yyyy-MM-dd hh:mm:ss.fff tt}");
         Console.WriteLine($"\t     TruncateSeconds: {now.TruncateSeconds():yyyy-MM-dd hh:mm:ss.fff tt}");

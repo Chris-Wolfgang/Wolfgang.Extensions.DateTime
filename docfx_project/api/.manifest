@@ -1,0 +1,14 @@
+{
+  "Wolfgang.Extensions.DateTime": "Wolfgang.Extensions.DateTime.yml",
+  "Wolfgang.Extensions.DateTime.DateTimeExtensions": "Wolfgang.Extensions.DateTime.DateTimeExtensions.yml",
+  "Wolfgang.Extensions.DateTime.DateTimeExtensions.EndOfMonth(System.DateTime)": "Wolfgang.Extensions.DateTime.DateTimeExtensions.yml",
+  "Wolfgang.Extensions.DateTime.DateTimeExtensions.EndOfWeek(System.DateTime)": "Wolfgang.Extensions.DateTime.DateTimeExtensions.yml",
+  "Wolfgang.Extensions.DateTime.DateTimeExtensions.EndOfWeek(System.DateTime,System.DayOfWeek)": "Wolfgang.Extensions.DateTime.DateTimeExtensions.yml",
+  "Wolfgang.Extensions.DateTime.DateTimeExtensions.EndOfYear(System.DateTime)": "Wolfgang.Extensions.DateTime.DateTimeExtensions.yml",
+  "Wolfgang.Extensions.DateTime.DateTimeExtensions.FirstOfMonth(System.DateTime)": "Wolfgang.Extensions.DateTime.DateTimeExtensions.yml",
+  "Wolfgang.Extensions.DateTime.DateTimeExtensions.FirstOfWeek(System.DateTime)": "Wolfgang.Extensions.DateTime.DateTimeExtensions.yml",
+  "Wolfgang.Extensions.DateTime.DateTimeExtensions.FirstOfWeek(System.DateTime,System.DayOfWeek)": "Wolfgang.Extensions.DateTime.DateTimeExtensions.yml",
+  "Wolfgang.Extensions.DateTime.DateTimeExtensions.FirstOfYear(System.DateTime)": "Wolfgang.Extensions.DateTime.DateTimeExtensions.yml",
+  "Wolfgang.Extensions.DateTime.DateTimeExtensions.TruncateMilliseconds(System.DateTime)": "Wolfgang.Extensions.DateTime.DateTimeExtensions.yml",
+  "Wolfgang.Extensions.DateTime.DateTimeExtensions.TruncateSeconds(System.DateTime)": "Wolfgang.Extensions.DateTime.DateTimeExtensions.yml"
+}

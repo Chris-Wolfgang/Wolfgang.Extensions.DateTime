@@ -1,0 +1,10 @@
+### YamlMime:TableOfContent
+items:
+- uid: Wolfgang.Extensions.DateTime
+  name: Wolfgang.Extensions.DateTime
+  type: Namespace
+  items:
+  - uid: Wolfgang.Extensions.DateTime.DateTimeExtensions
+    name: DateTimeExtensions
+    type: Class
+memberLayout: SamePage
