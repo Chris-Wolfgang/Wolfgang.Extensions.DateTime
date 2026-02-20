@@ -124,6 +124,7 @@ public class DateTimeExtensionsTests
                 12,
                 47,
                 0,
+                0,
                 DateTimeKind.Utc
             );
 
