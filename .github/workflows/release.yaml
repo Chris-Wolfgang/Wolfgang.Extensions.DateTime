@@ -5,7 +5,7 @@ on:
     types: [published]
 
 permissions:
-  contents: write  # Required for creating GitHub releases
+  contents: read  # Required for checking out repository contents during validation
 
 jobs:
   # Streamlined validation: All frameworks, Windows only
