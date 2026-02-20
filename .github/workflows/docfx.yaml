@@ -1,11 +1,18 @@
 name: Deploy DocFX Pages
 
 on:
-  push:
-    tags:
-      - 'v*.*.*' # Trigger on version tags (e.g., v1.0.0)
-    branches:
-      - main # Your primary branch
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version tag for documentation (e.g., v1.0.0-test)'
+        required: true
+        default: 'v0.0.0-test'
+      deploy_to_pages:
+        description: 'Deploy to GitHub Pages (uncheck for dry-run)'
+        type: boolean
+        default: true
 
 jobs:
   build-and-deploy:
@@ -51,9 +58,22 @@ jobs:
           echo "API documentation:"
           ls -la docfx_project/_site/api
 
-      - name: Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages (versioned)
+        if: inputs.deploy_to_pages == true || github.event_name == 'release'
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./docfx_project/_site
-          force_orphan: true
+          destination_dir: ${{ github.event_name == 'workflow_dispatch' && inputs.version || github.event.release.tag_name }}
+          keep_files: true
+          force_orphan: false
+
+      - name: Deploy to GitHub Pages (latest)
+        if: github.event_name == 'release'
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docfx_project/_site
+          destination_dir: latest
+          keep_files: true
+          force_orphan: false
