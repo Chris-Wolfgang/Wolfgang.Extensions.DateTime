@@ -41,6 +41,8 @@ This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) f
 
 ## ✨ Features
 
+**Note** These are the methods present at the time the documentation was last updated. For a complete of methods see the [API](https://chris-wolfgang.github.io/DateTime-Extensions/api/Wolfgang.Extensions.DateTime.DateTimeExtensions.html)
+
 ## Methods
 | Method | Description |
 |--------|-------------|
@@ -55,7 +57,7 @@ This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) f
 | `EndOfWeek()`| Uses the current culture’s first day, calculates the final tick of the week. |
 | `EndOfWeek(DayOfWeek firstDayOfWeek)`| Uses the specified first day, calculates the final tick of the week. |
 
-**Note** These are the methods present at the time the documentation was last updated. For a complete of methods see the [API Documentation](https://Chris-Wolfgang.github.io/DateTime-Extensions/)
+
 
 **Examples:**
 
