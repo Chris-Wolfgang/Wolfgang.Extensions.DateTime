@@ -1,65 +1,79 @@
-{
-  "$schema": "https://raw.githubusercontent.com/dotnet/docfx/main/schemas/docfx.schema.json",
-  "versioning": {
-    "groups": [
-      {
-        "version": "{tag}",
-        "tags": [ "v*" ],
-        "path": "."
-      }
-    ],
-    "disableGitFeatures": false
-  },
-  "metadata": [
-    {
-      "src": [
-        {
-          "files": [
-            "src/**/*.csproj"
-          ],
-          "src": "../"
-        }
-      ],
-      "dest": "api",
-      "properties": {
-        "TargetFramework": "net8.0"
-      }
-    }
-  ],
-  "build": {
-    "content": [
-      {
-        "files": [
-          "**/*.{md,yml}"
-        ],
-        "exclude": [
-          "_site/**"
-        ]
-      }
-    ],
-    "resource": [
-      {
-        "files": [
-          "images/**"
-        ]
-      }
-    ],
-    "output": "_site",
-    "template": [
-      "default",
-      "modern",
-      "modern-dark"
-    ],
-    "globalMetadata": {
-      "_appName": "Wolfgang.Extensions.DateTime",
-      "_appTitle": "Wolfgang.Extensions.DateTime Documentation",
-      "_enableSearch": true,
-      "_appFooter": "Made with DocFX",
-      "_disableSidebar": false,
-      "_disableTocFilter": false,
-      "_enableDarkMode": true,
-      "_baseUrl": "https://Chris-Wolfgang.github.io/DateTime-Extensions/",
-      "pdf": true
-    }
-  }
-}
+name: Deploy DocFX Pages
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version tag for documentation (e.g., v1.0.0-test)'
+        required: true
+        default: 'v0.0.0-test'
+      deploy_to_pages:
+        description: 'Deploy to GitHub Pages (uncheck for dry-run)'
+        type: boolean
+        default: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write # Allow write access for gh-pages branch
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build solution
+        run: dotnet build --configuration Release --no-restore
+
+      - name: Install DocFX
+        run: dotnet tool update docfx --global
+
+      - name: Build DocFx Metadata
+        run: docfx metadata 
+        working-directory: docfx_project
+
+      - name: Build Docs
+        run: docfx build 
+        working-directory: docfx_project
+
+      - name: Verify build output
+        run: |
+          if [ ! -d "docfx_project/_site" ]; then
+            echo "Error: docfx_project/_site directory not found!"
+            exit 1
+          fi
+          echo "Build successful. Contents of _site:"
+          ls -la docfx_project/_site
+          echo "API documentation:"
+          ls -la docfx_project/_site/api
+
+      - name: Deploy to GitHub Pages (versioned)
+        if: inputs.deploy_to_pages == true || github.event_name == 'release'
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docfx_project/_site
+          destination_dir: ${{ github.event_name == 'workflow_dispatch' && inputs.version || github.event.release.tag_name }}
+          keep_files: true
+          force_orphan: false
+
+      - name: Deploy to GitHub Pages (latest)
+        if: github.event_name == 'release'
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docfx_project/_site
+          destination_dir: latest
+          keep_files: true
+          force_orphan: false
