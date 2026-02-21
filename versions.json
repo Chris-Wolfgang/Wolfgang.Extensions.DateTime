@@ -1,12 +1,10 @@
 [
   {
     "v": "v1.0.0",
-    "href": "v1.0.0/",
-    "version": "v1.0.0",
-    "url": "/v1.0.0/"
+    "href": "v1.0.0/"
   },
   {
-    "version": "v1.0.0-documentation-update-1",
-    "url": "/v1.0.0-documentation-update-1/"
+    "v": "v1.0.0-documentation-update-1",
+    "href": "v1.0.0-documentation-update-1/"
   }
 ]
