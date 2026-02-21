@@ -59,7 +59,7 @@
       "_disableTocFilter": false,
       "_enableDarkMode": true,
       "_baseUrl": "https://Chris-Wolfgang.github.io/DateTime-Extensions/",
-      "_versionDropdown": true,
+      "_enableVersionDropdown": true,
       "_versionScheme": "docfx",
       "pdf": true
     }
