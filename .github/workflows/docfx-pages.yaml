@@ -1,14 +1,23 @@
 name: Deploy DocFX Pages (Versioned)
 
-# Triggers: manual run or called from another workflow (e.g., release.yaml).
+# Triggers: manual run or called from another workflow.
 # No automatic push or tag triggers — every deployment is intentional.
+#
+# This workflow is a lightweight companion to docfx.yaml.  It uses
+# github.ref_name as the destination folder so it works without any caller
+# needing to pass an explicit version string.  Use docfx.yaml (called by
+# release.yaml) when you need the full release flow: versions.json generation,
+# root deployment, and /latest/ alias.  Use this workflow for ad-hoc or
+# branch-based doc previews that do not require that extra machinery.
 on:
   # Allow maintainers to trigger a docs build and deploy manually from the
   # Actions tab, selecting any branch or tag as the source ref.
   workflow_dispatch:
 
-  # Allow other workflows (e.g., release.yaml) to invoke this workflow
-  # programmatically after a release is validated and published.
+  # Allow other workflows to invoke this workflow programmatically.
+  # No inputs are defined here because the destination directory is derived
+  # automatically from github.ref_name of the calling workflow's ref context,
+  # keeping invocation simple for callers that just need a versioned deploy.
   workflow_call:
 
 jobs:
@@ -49,14 +58,42 @@ jobs:
         run: docfx build
         working-directory: docfx_project
 
+      - name: Verify DocFX output
+        # Fail fast if the build did not produce the expected output directory,
+        # preventing a silent empty deployment to gh-pages.
+        run: |
+          if [ ! -d "_site" ]; then
+            echo "Error: DocFX output directory '_site' was not created."
+            exit 1
+          fi
+          if [ -z "$(ls -A "_site")" ]; then
+            echo "Error: DocFX output directory '_site' is empty."
+            exit 1
+          fi
+          echo "DocFX output verified. Contents of _site:"
+          ls -la _site
+        working-directory: docfx_project
+
       - name: Compute destination directory
-        # Sanitizes the ref name into a safe single-segment directory name:
-        # forward slashes are replaced with hyphens so the output is never
-        # mistaken for a nested path (e.g. "feature/docs" → "feature-docs").
+        # Sanitizes github.ref_name into a safe, single-segment directory name.
+        # Steps applied in order:
+        #   1. Replace forward slashes with hyphens (prevents nested paths,
+        #      e.g. "feature/docs" → "feature-docs").
+        #   2. Replace any character outside [A-Za-z0-9._-] with a hyphen.
+        #   3. Collapse consecutive hyphens into one.
+        #   4. Strip leading dots and hyphens (avoids hidden/awkward names).
+        #   5. Fall back to "latest" if the result is empty, ".", or "..".
         id: dest
         run: |
           RAW="${{ github.ref_name }}"
-          echo "dir=${RAW//\//-}" >> "$GITHUB_OUTPUT"
+          SANITIZED="${RAW//\//-}"
+          SANITIZED="$(printf '%s' "$SANITIZED" | sed 's/[^A-Za-z0-9._-]/-/g')"
+          SANITIZED="$(printf '%s' "$SANITIZED" | sed 's/-\{2,\}/-/g')"
+          SANITIZED="$(printf '%s' "$SANITIZED" | sed 's/^[.-]\+//')"
+          if [ -z "$SANITIZED" ] || [ "$SANITIZED" = "." ] || [ "$SANITIZED" = ".." ]; then
+            SANITIZED="latest"
+          fi
+          echo "dir=$SANITIZED" >> "$GITHUB_OUTPUT"
 
       - name: Deploy to GitHub Pages
         # Publishes the built site into a subfolder named after the triggering
