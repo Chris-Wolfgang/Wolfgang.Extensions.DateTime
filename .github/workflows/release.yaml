@@ -577,19 +577,47 @@ jobs:
       - name: Generate versions.json
         run: |
           python3 - <<'EOF'
-          import subprocess, json
+          import subprocess, json, re
 
           result = subprocess.run(['git', 'tag', '-l', 'v*'], capture_output=True, text=True, check=True)
           tags = [t for t in result.stdout.strip().split('\n') if t]
 
-          def semver_key(tag):
-              try:
-                  return tuple(int(p.split('-')[0]) for p in tag.lstrip('v').split('.'))
-              except (ValueError, IndexError):
-                  return (0, 0, 0)
+          # Strict SemVer pattern: vMAJOR.MINOR.PATCH or vMAJOR.MINOR.PATCH-PRERELEASE
+          SEMVER_RE = re.compile(
+              r"^v"
+              r"(?P<major>0|[1-9]\d*)\."
+              r"(?P<minor>0|[1-9]\d*)\."
+              r"(?P<patch>0|[1-9]\d*)"
+              r"(?:-(?P<prerelease>[0-9A-Za-z.-]+))?$"
+          )
 
-          tags.sort(key=semver_key, reverse=True)
-          versions = [{"v": t, "href": t + "/"} for t in tags]
+          def semver_key(tag):
+              m = SEMVER_RE.match(tag)
+              if not m:
+                  return None
+              major = int(m.group("major"))
+              minor = int(m.group("minor"))
+              patch = int(m.group("patch"))
+              prerelease = m.group("prerelease")
+              # Stable releases (no prerelease) sort after pre-releases (higher stability flag)
+              if prerelease is None:
+                  return (major, minor, patch, 1, ())
+              prerelease_key = tuple(
+                  (0, int(p)) if p.isdigit() else (1, p)
+                  for p in prerelease.split(".")
+              )
+              return (major, minor, patch, 0, prerelease_key)
+
+          # Filter out tags that do not conform to SemVer
+          tagged_versions = []
+          for t in tags:
+              key = semver_key(t)
+              if key is not None:
+                  tagged_versions.append((t, key))
+          tagged_versions.sort(key=lambda x: x[1], reverse=True)
+          ordered_tags = [t for (t, _) in tagged_versions]
+
+          versions = [{"v": t, "href": t + "/"} for t in ordered_tags]
           with open('docfx_project/_site/versions.json', 'w') as f:
               json.dump(versions, f, indent=2)
           print(f"Generated versions.json with {len(versions)} version(s): {[v['v'] for v in versions]}")
