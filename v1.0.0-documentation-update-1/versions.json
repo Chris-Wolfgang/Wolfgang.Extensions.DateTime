@@ -1,14 +1,14 @@
 [
   {
     "version": "latest",
-    "url": "/"
+    "url": "/DateTime-Extensions/"
   },
   {
     "version": "v1.0.0",
-    "url": "/v1.0.0/"
+    "url": "/DateTime-Extensions/v1.0.0/"
   },
   {
     "version": "v1.0.0-documentation-update-1",
-    "url": "/v1.0.0-documentation-update-1/"
+    "url": "/DateTime-Extensions/v1.0.0-documentation-update-1/"
   }
 ]
