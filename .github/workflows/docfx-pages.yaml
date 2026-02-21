@@ -1,0 +1,71 @@
+name: Deploy DocFX Pages
+
+# Triggers: manual run or called from another workflow (e.g., release.yaml).
+# No automatic push or tag triggers — every deployment is intentional.
+on:
+  # Allow maintainers to trigger a docs build and deploy manually from the
+  # Actions tab, selecting any branch or tag as the source ref.
+  workflow_dispatch:
+
+  # Allow other workflows (e.g., release.yaml) to invoke this workflow
+  # programmatically after a release is validated and published.
+  workflow_call:
+
+jobs:
+  build-and-deploy:
+    name: Build & Deploy Documentation
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write # Required to push the built site to the gh-pages branch
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Full history is needed for accurate DocFX metadata
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build solution
+        run: dotnet build --configuration Release --no-restore
+
+      - name: Install DocFX
+        run: dotnet tool update docfx --global
+
+      - name: Build DocFX metadata
+        # Generates API reference metadata from the compiled assemblies.
+        run: docfx metadata
+        working-directory: docfx_project
+
+      - name: Build docs
+        # Produces the static site under docfx_project/_site.
+        run: docfx build
+        working-directory: docfx_project
+
+      - name: Compute destination directory
+        # Sanitizes the ref name into a safe single-segment directory name:
+        # forward slashes are replaced with hyphens so the output is never
+        # mistaken for a nested path (e.g. "feature/docs" → "feature-docs").
+        id: dest
+        run: |
+          RAW="${{ github.ref_name }}"
+          echo "dir=${RAW//\//-}" >> "$GITHUB_OUTPUT"
+
+      - name: Deploy to GitHub Pages
+        # Publishes the built site into a subfolder named after the triggering
+        # branch or tag (github.ref_name), e.g. /v1.2.3/ for a v1.2.3 release.
+        # keep_files: true preserves all previously deployed version folders so
+        # that older docs remain accessible and the DocFX version switcher works.
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docfx_project/_site
+          destination_dir: ${{ steps.dest.outputs.dir }}
+          keep_files: true
