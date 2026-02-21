@@ -14,7 +14,7 @@ A collection of extension methods for `DateTime` data type in .Net
 dotnet add package Wolfgang.Extensions.DateTime
 ```
 
-**NuGet Package:** [Available on NuGet.org](https://www.nuget.org/packages/Wolfgang.Extensions.DateTime)
+**NuGet Package:** [Wolfgang.Extensions.DateTime](https://www.nuget.org/packages/Wolfgang.Extensions.DateTime)
 
 ---
 
@@ -41,6 +41,8 @@ This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) f
 
 ## ✨ Features
 
+**Note:** These are the methods present at the time the documentation was last updated. For a complete list of methods, see the [API documentation](https://Chris-Wolfgang.github.io/DateTime-Extensions/api/Wolfgang.Extensions.DateTime.DateTimeExtensions.html).
+
 ## Methods
 | Method | Description |
 |--------|-------------|
@@ -55,7 +57,7 @@ This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) f
 | `EndOfWeek()`| Uses the current culture’s first day, calculates the final tick of the week. |
 | `EndOfWeek(DayOfWeek firstDayOfWeek)`| Uses the specified first day, calculates the final tick of the week. |
 
-**Note** These are the methods present at the time the documentation was last updated. For a complete of methods see the [API Documentation](https://Chris-Wolfgang.github.io/DateTime-Extensions/)
+
 
 **Examples:**
 
