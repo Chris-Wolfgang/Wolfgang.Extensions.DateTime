@@ -539,3 +539,90 @@ jobs:
           Write-Host "✅ All packages published to NuGet.org" -ForegroundColor Green
           Write-Host "==========================================" -ForegroundColor Green
 
+  # Build and deploy versioned documentation with versions.json
+  build-and-deploy-docs:
+    name: Build & Deploy Documentation
+    needs: validate-release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write  # Required to push to gh-pages branch
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Full history needed to enumerate all v* tags
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build solution
+        run: dotnet build --configuration Release --no-restore
+
+      - name: Install DocFX
+        run: dotnet tool update docfx --global
+
+      - name: Build DocFX Metadata
+        run: docfx metadata
+        working-directory: docfx_project
+
+      - name: Build Docs
+        run: docfx build
+        working-directory: docfx_project
+
+      - name: Generate versions.json
+        run: |
+          python3 - <<'EOF'
+          import subprocess, json
+
+          result = subprocess.run(['git', 'tag', '-l', 'v*'], capture_output=True, text=True, check=True)
+          tags = [t for t in result.stdout.strip().split('\n') if t]
+
+          def semver_key(tag):
+              try:
+                  return tuple(int(p.split('-')[0]) for p in tag.lstrip('v').split('.'))
+              except (ValueError, IndexError):
+                  return (0, 0, 0)
+
+          tags.sort(key=semver_key, reverse=True)
+          versions = [{"v": t, "href": "/DateTime-Extensions/" + t + "/"} for t in tags]
+          with open('docfx_project/_site/versions.json', 'w') as f:
+              json.dump(versions, f, indent=2)
+          print(f"Generated versions.json with {len(versions)} version(s): {[v['v'] for v in versions]}")
+          EOF
+
+      - name: Deploy versioned docs to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docfx_project/_site
+          destination_dir: ${{ github.event.release.tag_name }}
+          keep_files: true
+          force_orphan: false
+
+      - name: Deploy latest docs to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docfx_project/_site
+          destination_dir: latest
+          keep_files: true
+          force_orphan: false
+
+      - name: Prepare versions.json for root deployment
+        run: |
+          mkdir -p _site_root
+          cp docfx_project/_site/versions.json _site_root/
+
+      - name: Deploy versions.json to GitHub Pages root
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./_site_root
+          keep_files: true
+          force_orphan: false
+
