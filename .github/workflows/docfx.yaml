@@ -1,21 +1,13 @@
 name: Deploy DocFX Pages
 
 on:
-  # Automatically deploy docs on every push to main and every version tag (e.g. v1.2.3).
-  # Each run publishes into a subfolder named after the branch or tag (github.ref_name),
-  # enabling the DocFX version-switcher dropdown to list all available versions.
-  push:
-    branches:
-      - main
-    tags:
-      - "v*"
   # Called by release.yaml after a GitHub Release is published.
   # The caller passes an explicit 'version' string (e.g. v1.2.3) and optional flags.
   workflow_call:
     inputs:
       version:
-        description: 'Version tag for documentation (e.g., v1.0.0). Falls back to github.ref_name when omitted.'
-        required: false
+        description: 'Version tag for documentation (e.g., v1.0.0)'
+        required: true
         type: string
       deploy_to_pages:
         description: 'Deploy to GitHub Pages'
@@ -89,53 +81,6 @@ jobs:
           ls -la docfx_project/_site
           echo "API documentation:"
           ls -la docfx_project/_site/api
-
-      - name: Create root redirect index.html
-        # Generates a lightweight index.html at the site root that immediately redirects
-        # visitors to the versioned subfolder for the current build (e.g. /main/ or /v1.2.3/).
-        # This is deployed separately to the gh-pages root so that https://<owner>.github.io/<repo>/
-        # always forwards to a named version rather than serving a blank page.
-        # Only runs for direct push triggers; workflow_call and workflow_dispatch callers manage
-        # the root deployment themselves via the "Deploy latest docs to GitHub Pages root" step.
-        if: github.event_name == 'push'
-        run: |
-          # Sanitize ref_name: replace any forward-slashes with hyphens so the value
-          # is always a safe, single-segment directory name (e.g. "feature/x" → "feature-x").
-          # For this workflow's push triggers (main branch + v* tags) slashes never appear,
-          # but this guards against future wildcard additions.
-          RAW_DEST="${{ github.ref_name }}"
-          DEST="${RAW_DEST//\//-}"
-
-          # Build a root-relative URL so the redirect works regardless of browser base-URL context.
-          REPO_NAME="${GITHUB_REPOSITORY#*/}"
-          REDIRECT_URL="/${REPO_NAME}/${DEST}/"
-
-          mkdir -p /tmp/redirect-root
-          cat > /tmp/redirect-root/index.html <<HTML
-          <!DOCTYPE html>
-          <html>
-            <head>
-              <meta charset="utf-8" />
-              <meta http-equiv="refresh" content="0; url=${REDIRECT_URL}" />
-              <title>Redirecting…</title>
-            </head>
-            <body>
-              <p>Redirecting to <a href="${REDIRECT_URL}">${DEST}</a>…</p>
-            </body>
-          </html>
-          HTML
-
-      - name: Deploy root redirect to GitHub Pages
-        # Deploys the redirect index.html to the gh-pages root so the bare site URL
-        # forwards visitors to the most-recently-pushed version.
-        # keep_files: true ensures existing versioned subfolders are not deleted.
-        if: github.event_name == 'push'
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: /tmp/redirect-root
-          keep_files: true
-          force_orphan: false
 
       - name: Generate versions.json
         # Produces versions.json consumed by the DocFX version-switcher dropdown.
@@ -253,21 +198,16 @@ jobs:
           git worktree remove "$WORK_DIR" --force
 
       - name: Compute destination directory
-        # Determines the versioned subfolder name used for the docs deployment.
-        # Priority: explicit 'version' input (workflow_call / workflow_dispatch) → github.ref_name (push).
-        # Forward-slashes are replaced with hyphens to produce a safe, single-segment directory name
-        # (e.g. a hypothetical "feature/x" branch → "feature-x/").  For this workflow's configured
-        # push triggers (main branch and v* tags) slashes never appear, but this guards against
-        # future changes to the branch/tag filter.
+        # Determines the versioned subfolder name for the docs deployment (e.g. /v1.2.3/).
+        # Forward-slashes in the version string are replaced with hyphens to ensure a safe,
+        # single-segment directory name.
         id: dest
         run: |
-          RAW="${{ inputs.version || github.ref_name }}"
+          RAW="${{ inputs.version }}"
           echo "dir=${RAW//\//-}" >> "$GITHUB_OUTPUT"
 
       - name: Deploy versioned docs to GitHub Pages
-        # Publishes this build into its own versioned subfolder on gh-pages, e.g. /v1.2.3/ or /main/.
-        # destination_dir uses the explicit 'version' input when provided (workflow_call / workflow_dispatch),
-        # and falls back to github.ref_name for direct push triggers (branch name or tag).
+        # Publishes this build into its own versioned subfolder on gh-pages, e.g. /v1.2.3/.
         # keep_files: true preserves all other version folders already present in gh-pages.
         if: inputs.deploy_to_pages != false
         uses: peaceiris/actions-gh-pages@v4
