@@ -71,6 +71,13 @@ jobs:
           ls -la docfx_project/_site/api
 
       - name: Generate versions.json
+        # Produces versions.json consumed by the DocFX version-switcher dropdown.
+        # Site layout:
+        #   /               ← latest docs (deployed to root)
+        #   /latest/        ← latest docs (alias for convenience)
+        #   /v1.2.3/        ← versioned docs (sibling to root)
+        # versions.json format expected by the dropdown:
+        #   [{ "version": "latest", "url": "/" }, { "version": "v1.2.3", "url": "/v1.2.3/" }]
         run: |
           python3 - <<'EOF'
           import subprocess, json, re
@@ -113,13 +120,16 @@ jobs:
           tagged_versions.sort(key=lambda x: x[1], reverse=True)
           ordered_tags = [t for (t, _) in tagged_versions]
 
-          versions = [{"v": t, "href": t + "/"} for t in ordered_tags]
+          # "latest" always points to the site root "/"; each version points to its own folder.
+          versions = [{"version": "latest", "url": "/"}] + [{"version": t, "url": "/" + t + "/"} for t in ordered_tags]
           with open('docfx_project/_site/versions.json', 'w') as f:
               json.dump(versions, f, indent=2)
-          print(f"Generated versions.json with {len(versions)} version(s): {[v['v'] for v in versions]}")
+          print(f"Generated versions.json with {len(versions)} version(s): {[v['version'] for v in versions]}")
           EOF
 
       - name: Deploy versioned docs to GitHub Pages
+        # Publishes this build under its own version folder, e.g. /v1.2.3/.
+        # These version folders are siblings to the site root.
         if: inputs.deploy_to_pages != false
         uses: peaceiris/actions-gh-pages@v4
         with:
@@ -129,27 +139,26 @@ jobs:
           keep_files: true
           force_orphan: false
 
-      - name: Deploy latest docs to GitHub Pages
+      - name: Deploy latest docs to GitHub Pages root
+        # Publishes the latest docs to the site root ('/') so that visiting
+        # https://<owner>.github.io/<repo>/ always shows the latest version.
+        # keep_files: true preserves all existing version folders as siblings.
+        if: inputs.deploy_to_pages != false
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docfx_project/_site
+          keep_files: true
+          force_orphan: false
+
+      - name: Deploy latest docs to /latest/ folder
+        # Also publishes to /latest/ as a stable, bookmarkable URL alias for the
+        # latest version.  The versions.json 'latest' entry points to '/' (root).
         if: inputs.deploy_to_pages != false
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./docfx_project/_site
           destination_dir: latest
-          keep_files: true
-          force_orphan: false
-
-      - name: Prepare versions.json for root deployment
-        if: inputs.deploy_to_pages != false
-        run: |
-          mkdir -p _site_root
-          cp docfx_project/_site/versions.json _site_root/
-
-      - name: Deploy versions.json to GitHub Pages root
-        if: inputs.deploy_to_pages != false
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./_site_root
           keep_files: true
           force_orphan: false
