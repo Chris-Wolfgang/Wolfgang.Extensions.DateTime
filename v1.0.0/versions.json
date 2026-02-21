@@ -1,0 +1,14 @@
+[
+  {
+    "version": "latest",
+    "url": "/"
+  },
+  {
+    "version": "v1.0.0",
+    "url": "/v1.0.0/"
+  },
+  {
+    "version": "v1.0.0-documentation-update-1",
+    "url": "/v1.0.0-documentation-update-1/"
+  }
+]
