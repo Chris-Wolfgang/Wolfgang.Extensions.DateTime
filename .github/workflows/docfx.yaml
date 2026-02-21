@@ -2,12 +2,14 @@ name: Deploy DocFX Pages
 
 on:
   # Called by release.yaml after a GitHub Release is published.
-  # The caller passes an explicit 'version' string (e.g. v1.2.3) and optional flags.
+  # Callers may pass an explicit 'version' string (e.g. v1.2.3); when omitted,
+  # the destination directory is derived from github.ref_name automatically.
   workflow_call:
     inputs:
       version:
-        description: 'Version tag for documentation (e.g., v1.0.0)'
-        required: true
+        description: 'Version tag for documentation (e.g., v1.0.0). Defaults to the triggering ref name.'
+        required: false
+        default: ''
         type: string
       deploy_to_pages:
         description: 'Deploy to GitHub Pages'
@@ -20,12 +22,13 @@ on:
         type: boolean
         default: true
   # Manual trigger for ad-hoc builds or dry-runs.
+  # Leave 'version' blank to use the selected branch or tag name as the destination.
   workflow_dispatch:
     inputs:
       version:
-        description: 'Version tag for documentation (e.g., v1.0.0-test)'
-        required: true
-        default: 'v0.0.0-test'
+        description: 'Version tag for documentation (e.g., v1.0.0). Leave blank to use the ref name.'
+        required: false
+        default: ''
       deploy_to_pages:
         description: 'Deploy to GitHub Pages (uncheck for dry-run)'
         type: boolean
@@ -85,14 +88,18 @@ jobs:
       - name: Generate versions.json
         # Produces versions.json consumed by the DocFX version-switcher dropdown.
         # Site layout:
-        #   /               ← latest docs (deployed to root)
-        #   /latest/        ← latest docs (alias for convenience)
-        #   /v1.2.3/        ← versioned docs (sibling to root)
+        #   /<repo>/               ← latest docs (deployed to root)
+        #   /<repo>/latest/        ← latest docs (alias for convenience)
+        #   /<repo>/v1.2.3/        ← versioned docs (sibling to root)
         # versions.json format expected by the dropdown:
-        #   [{ "version": "latest", "url": "/" }, { "version": "v1.2.3", "url": "/v1.2.3/" }]
+        #   [{ "version": "latest", "url": "/<repo>/" }, { "version": "v1.2.3", "url": "/<repo>/v1.2.3/" }]
+        # URLs must include the repo path segment because this is a GitHub Pages project site
+        # (https://<owner>.github.io/<repo>/), not a root user/org site.
+        env:
+          GITHUB_REPOSITORY: ${{ github.repository }}
         run: |
           python3 - <<'EOF'
-          import subprocess, json, re
+          import subprocess, json, re, os
 
           result = subprocess.run(['git', 'tag', '-l', 'v*'], capture_output=True, text=True, check=True)
           tags = [t for t in result.stdout.strip().split('\n') if t]
@@ -132,8 +139,13 @@ jobs:
           tagged_versions.sort(key=lambda x: x[1], reverse=True)
           ordered_tags = [t for (t, _) in tagged_versions]
 
-          # "latest" always points to the site root "/"; each version points to its own folder.
-          versions = [{"version": "latest", "url": "/"}] + [{"version": t, "url": "/" + t + "/"} for t in ordered_tags]
+          # Build the base path for this GitHub Pages project site: /<repo-name>/
+          # GITHUB_REPOSITORY is "owner/repo"; we need just the repo name.
+          repo_name = os.environ.get("GITHUB_REPOSITORY", "").split("/")[-1]
+          base = "/" + repo_name + "/" if repo_name else "/"
+
+          # "latest" always points to the site root; each version points to its own folder.
+          versions = [{"version": "latest", "url": base}] + [{"version": t, "url": base + t + "/"} for t in ordered_tags]
           with open('docfx_project/_site/versions.json', 'w') as f:
               json.dump(versions, f, indent=2)
           print(f"Generated versions.json with {len(versions)} version(s): {[v['version'] for v in versions]}")
@@ -199,12 +211,25 @@ jobs:
 
       - name: Compute destination directory
         # Determines the versioned subfolder name for the docs deployment (e.g. /v1.2.3/).
-        # Forward-slashes in the version string are replaced with hyphens to ensure a safe,
-        # single-segment directory name.
+        # Uses the explicit 'version' input when provided; otherwise falls back to
+        # github.ref_name so the workflow works without callers passing a version.
+        # Sanitization steps (applied in order):
+        #   1. Replace forward slashes with hyphens (prevents nested paths).
+        #   2. Replace any character outside [A-Za-z0-9._-] with a hyphen.
+        #   3. Collapse consecutive hyphens into one.
+        #   4. Strip leading dots and hyphens (avoids hidden/awkward directory names).
+        #   5. Fall back to "latest" if the result is empty, ".", or "..".
         id: dest
         run: |
-          RAW="${{ inputs.version }}"
-          echo "dir=${RAW//\//-}" >> "$GITHUB_OUTPUT"
+          RAW="${{ inputs.version != '' && inputs.version || github.ref_name }}"
+          SANITIZED="${RAW//\//-}"
+          SANITIZED="$(printf '%s' "$SANITIZED" | sed 's/[^A-Za-z0-9._-]/-/g')"
+          SANITIZED="$(printf '%s' "$SANITIZED" | sed 's/-\{2,\}/-/g')"
+          SANITIZED="$(printf '%s' "$SANITIZED" | sed 's/^[.-]\+//')"
+          if [ -z "$SANITIZED" ] || [ "$SANITIZED" = "." ] || [ "$SANITIZED" = ".." ]; then
+            SANITIZED="latest"
+          fi
+          echo "dir=$SANITIZED" >> "$GITHUB_OUTPUT"
 
       - name: Deploy versioned docs to GitHub Pages
         # Publishes this build into its own versioned subfolder on gh-pages, e.g. /v1.2.3/.

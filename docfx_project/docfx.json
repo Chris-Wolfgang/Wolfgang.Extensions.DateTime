@@ -18,14 +18,6 @@
       "disableDefaultFilter": false
     }
   ],
-  "versioning": {
-    "groups": [
-      {
-        "tags": ["v*"],
-        "version": "{tag}"
-      }
-    ]
-  },
   "build": {
     "content": [
       {
@@ -59,8 +51,7 @@
       "_disableTocFilter": false,
       "_enableDarkMode": true,
       "_baseUrl": "https://Chris-Wolfgang.github.io/DateTime-Extensions/",
-      "_enableVersionDropdown": true,
-      "_versionScheme": "docfx",
+      "_versionScheme": "versions.json",
       "pdf": true
     }
   }
