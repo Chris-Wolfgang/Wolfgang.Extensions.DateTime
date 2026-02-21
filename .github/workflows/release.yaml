@@ -539,118 +539,14 @@ jobs:
           Write-Host "✅ All packages published to NuGet.org" -ForegroundColor Green
           Write-Host "==========================================" -ForegroundColor Green
 
-  # Build and deploy versioned documentation with versions.json
-  build-and-deploy-docs:
+  # Build and deploy versioned documentation via the shared docfx workflow
+  # Note: reusable workflow jobs called via `uses:` do not require `runs-on` in the caller
+  trigger-docs:
     name: Build & Deploy Documentation
     needs: validate-release
-    runs-on: ubuntu-latest
     permissions:
-      contents: write  # Required to push to gh-pages branch
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0  # Full history needed to enumerate all v* tags
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '8.0.x'
-
-      - name: Restore dependencies
-        run: dotnet restore
-
-      - name: Build solution
-        run: dotnet build --configuration Release --no-restore
-
-      - name: Install DocFX
-        run: dotnet tool update docfx --global
-
-      - name: Build DocFX Metadata
-        run: docfx metadata
-        working-directory: docfx_project
-
-      - name: Build Docs
-        run: docfx build
-        working-directory: docfx_project
-
-      - name: Generate versions.json
-        run: |
-          python3 - <<'EOF'
-          import subprocess, json, re
-
-          result = subprocess.run(['git', 'tag', '-l', 'v*'], capture_output=True, text=True, check=True)
-          tags = [t for t in result.stdout.strip().split('\n') if t]
-
-          # Strict SemVer pattern: vMAJOR.MINOR.PATCH or vMAJOR.MINOR.PATCH-PRERELEASE
-          SEMVER_RE = re.compile(
-              r"^v"
-              r"(?P<major>0|[1-9]\d*)\."
-              r"(?P<minor>0|[1-9]\d*)\."
-              r"(?P<patch>0|[1-9]\d*)"
-              r"(?:-(?P<prerelease>[0-9A-Za-z.-]+))?$"
-          )
-
-          def semver_key(tag):
-              m = SEMVER_RE.match(tag)
-              if not m:
-                  return None
-              major = int(m.group("major"))
-              minor = int(m.group("minor"))
-              patch = int(m.group("patch"))
-              prerelease = m.group("prerelease")
-              # Stable releases (no prerelease) sort after pre-releases (higher stability flag)
-              if prerelease is None:
-                  return (major, minor, patch, 1, ())
-              prerelease_key = tuple(
-                  (0, int(p)) if p.isdigit() else (1, p)
-                  for p in prerelease.split(".")
-              )
-              return (major, minor, patch, 0, prerelease_key)
-
-          # Filter out tags that do not conform to SemVer
-          tagged_versions = []
-          for t in tags:
-              key = semver_key(t)
-              if key is not None:
-                  tagged_versions.append((t, key))
-          tagged_versions.sort(key=lambda x: x[1], reverse=True)
-          ordered_tags = [t for (t, _) in tagged_versions]
-
-          versions = [{"v": t, "href": t + "/"} for t in ordered_tags]
-          with open('docfx_project/_site/versions.json', 'w') as f:
-              json.dump(versions, f, indent=2)
-          print(f"Generated versions.json with {len(versions)} version(s): {[v['v'] for v in versions]}")
-          EOF
-
-      - name: Deploy versioned docs to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docfx_project/_site
-          destination_dir: ${{ github.event.release.tag_name }}
-          keep_files: true
-          force_orphan: false
-
-      - name: Deploy latest docs to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docfx_project/_site
-          destination_dir: latest
-          keep_files: true
-          force_orphan: false
-
-      - name: Prepare versions.json for root deployment
-        run: |
-          mkdir -p _site_root
-          cp docfx_project/_site/versions.json _site_root/
-
-      - name: Deploy versions.json to GitHub Pages root
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./_site_root
-          keep_files: true
-          force_orphan: false
+      contents: write  # Required by docfx.yaml to push to gh-pages branch
+    uses: ./.github/workflows/docfx.yaml
+    with:
+      version: ${{ github.event.release.tag_name }}
 
