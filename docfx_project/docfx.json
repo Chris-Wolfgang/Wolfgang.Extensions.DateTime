@@ -18,6 +18,14 @@
       "disableDefaultFilter": false
     }
   ],
+  "versioning": {
+    "groups": [
+      {
+        "tags": ["v*"],
+        "version": "{tag}"
+      }
+    ]
+  },
   "build": {
     "content": [
       {
