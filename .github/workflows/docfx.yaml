@@ -12,6 +12,11 @@ on:
         required: false
         type: boolean
         default: true
+      deploy_as_latest:
+        description: 'Also deploy to the site root (/) and /latest/ as the current latest version'
+        required: false
+        type: boolean
+        default: true
   workflow_dispatch:
     inputs:
       version:
@@ -20,6 +25,10 @@ on:
         default: 'v0.0.0-test'
       deploy_to_pages:
         description: 'Deploy to GitHub Pages (uncheck for dry-run)'
+        type: boolean
+        default: true
+      deploy_as_latest:
+        description: 'Also deploy to the site root (/) and /latest/ (uncheck when rebuilding older versions)'
         type: boolean
         default: true
 
@@ -143,7 +152,8 @@ jobs:
         # Publishes the latest docs to the site root ('/') so that visiting
         # https://<owner>.github.io/<repo>/ always shows the latest version.
         # keep_files: true preserves all existing version folders as siblings.
-        if: inputs.deploy_to_pages != false
+        # Skipped when deploy_as_latest is false (e.g. when rebuilding an older version).
+        if: inputs.deploy_to_pages != false && inputs.deploy_as_latest != false
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -154,7 +164,8 @@ jobs:
       - name: Deploy latest docs to /latest/ folder
         # Also publishes to /latest/ as a stable, bookmarkable URL alias for the
         # latest version.  The versions.json 'latest' entry points to '/' (root).
-        if: inputs.deploy_to_pages != false
+        # Skipped when deploy_as_latest is false (e.g. when rebuilding an older version).
+        if: inputs.deploy_to_pages != false && inputs.deploy_as_latest != false
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
