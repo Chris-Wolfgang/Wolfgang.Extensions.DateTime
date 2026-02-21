@@ -1,4 +1,4 @@
-name: Deploy DocFX Pages
+name: Deploy DocFX Pages (Versioned)
 
 # Triggers: manual run or called from another workflow (e.g., release.yaml).
 # No automatic push or tag triggers — every deployment is intentional.
