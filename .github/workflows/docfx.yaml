@@ -1,6 +1,8 @@
 name: Deploy DocFX Pages
 
 on:
+  # Called by release.yaml after a GitHub Release is published.
+  # The caller passes an explicit 'version' string (e.g. v1.2.3) and optional flags.
   workflow_call:
     inputs:
       version:
@@ -17,6 +19,7 @@ on:
         required: false
         type: boolean
         default: true
+  # Manual trigger for ad-hoc builds or dry-runs.
   workflow_dispatch:
     inputs:
       version:
@@ -194,15 +197,24 @@ jobs:
 
           git worktree remove "$WORK_DIR" --force
 
+      - name: Compute destination directory
+        # Determines the versioned subfolder name for the docs deployment (e.g. /v1.2.3/).
+        # Forward-slashes in the version string are replaced with hyphens to ensure a safe,
+        # single-segment directory name.
+        id: dest
+        run: |
+          RAW="${{ inputs.version }}"
+          echo "dir=${RAW//\//-}" >> "$GITHUB_OUTPUT"
+
       - name: Deploy versioned docs to GitHub Pages
-        # Publishes this build under its own version folder, e.g. /v1.2.3/.
-        # These version folders are siblings to the site root.
+        # Publishes this build into its own versioned subfolder on gh-pages, e.g. /v1.2.3/.
+        # keep_files: true preserves all other version folders already present in gh-pages.
         if: inputs.deploy_to_pages != false
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./docfx_project/_site
-          destination_dir: ${{ inputs.version }}
+          destination_dir: ${{ steps.dest.outputs.dir }}
           keep_files: true
           force_orphan: false
 
