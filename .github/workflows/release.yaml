@@ -589,7 +589,7 @@ jobs:
                   return (0, 0, 0)
 
           tags.sort(key=semver_key, reverse=True)
-          versions = [{"v": t, "href": "/DateTime-Extensions/" + t + "/"} for t in tags]
+          versions = [{"v": t, "href": t + "/"} for t in tags]
           with open('docfx_project/_site/versions.json', 'w') as f:
               json.dump(versions, f, indent=2)
           print(f"Generated versions.json with {len(versions)} version(s): {[v['v'] for v in versions]}")
