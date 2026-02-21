@@ -1,8 +1,6 @@
 name: Deploy DocFX Pages
 
 on:
-  release:
-    types: [published]
   workflow_dispatch:
     inputs:
       version:
@@ -59,21 +57,11 @@ jobs:
           ls -la docfx_project/_site/api
 
       - name: Deploy to GitHub Pages (versioned)
-        if: inputs.deploy_to_pages == true || github.event_name == 'release'
+        if: inputs.deploy_to_pages == true
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./docfx_project/_site
-          destination_dir: ${{ github.event_name == 'workflow_dispatch' && inputs.version || github.event.release.tag_name }}
-          keep_files: true
-          force_orphan: false
-
-      - name: Deploy to GitHub Pages (latest)
-        if: github.event_name == 'release'
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docfx_project/_site
-          destination_dir: latest
+          destination_dir: ${{ inputs.version }}
           keep_files: true
           force_orphan: false
