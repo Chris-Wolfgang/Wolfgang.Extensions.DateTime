@@ -321,7 +321,7 @@ jobs:
           if (Test-Path $templatePath) {
             $template = Get-Content $templatePath -Raw
           } else {
-            Write-Host "Template file '$templatePath' not found. Using built-in fallback template."
+            Write-Error "Template file '$templatePath' not found."
             exit 1
           }
           $html = $template -replace '\{\{TITLE\}\}', $title `
