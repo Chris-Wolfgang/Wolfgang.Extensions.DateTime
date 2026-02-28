@@ -9,7 +9,7 @@ Welcome to the Wolfgang.Extensions.DateTime documentation. This site contains co
 ## Quick Links
 
 - [Getting Started](docs/getting-started.md) - Learn the basics
-- [API Reference](api/Wolfgang.Extensions.DateTime.md) - Complete API documentation
+- [API Reference](xref:Wolfgang.Extensions.DateTime) - Complete API documentation
 - [GitHub Repository](https://github.com/Chris-Wolfgang/DateTime-Extensions) - View source code
 
 ## About Wolfgang.Extensions.DateTime
@@ -27,7 +27,7 @@ dotnet add package Wolfgang.Extensions.DateTime
 ### 📖 [Documentation](docs/getting-started.md)
 Step-by-step guides and tutorials to help you use Wolfgang.Extensions.DateTime effectively.
 
-### 📚 [API Reference](api/Wolfgang.Extensions.DateTime.md)
+### 📚 [API Reference](xref:Wolfgang.Extensions.DateTime)
 Complete API documentation automatically generated from source code XML comments.
 
 ## Additional Resources
