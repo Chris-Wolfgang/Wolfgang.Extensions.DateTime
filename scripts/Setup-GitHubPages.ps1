@@ -112,9 +112,9 @@ function Read-Input {
     
     do {
         Write-Host $displayPrompt -NoNewline -ForegroundColor Yellow
-        $input = Read-Host
+        $userInput = Read-Host
         
-        if ([string]::IsNullOrWhiteSpace($input)) {
+        if ([string]::IsNullOrWhiteSpace($userInput)) {
             if ($Default) {
                 return $Default
             }
@@ -125,7 +125,7 @@ function Read-Input {
             return ''
         }
         
-        return $input.Trim()
+        return $userInput.Trim()
     } while ($true)
 }
 
