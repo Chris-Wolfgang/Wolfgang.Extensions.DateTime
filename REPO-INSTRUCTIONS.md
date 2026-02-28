@@ -199,7 +199,7 @@ After creating your repository from the template, update the following files wit
 
 ### Setup GitHub Pages for Documentation (Optional)
 
-If you want to publish your DocFX documentation to GitHub Pages automatically when you create version tags:
+If you want to publish your DocFX documentation to GitHub Pages automatically when you publish a GitHub Release:
 
 1. Run the GitHub Pages setup script:
    ```powershell
@@ -213,15 +213,11 @@ If you want to publish your DocFX documentation to GitHub Pages automatically wh
    - **Replace placeholders** in DocFX files (Wolfgang.D20-Dice, https://Chris-Wolfgang.github.io/D20-Dice/, etc.)
    - Create a `gh-pages` branch if it doesn't exist
    - Configure GitHub Pages to serve from the `gh-pages` branch
-   - Verify that the DocFX workflow is configured to trigger on version tags
+   - Verify that the DocFX workflow is reachable via workflow_call from release.yaml
 
    **Note:** If you've already run `scripts/setup.ps1`, the DocFX placeholders are already configured, and this script will skip the configuration step.
 
-2. After setup, documentation will be automatically published when you push a version tag:
-   ```bash
-   git tag v1.0.0
-   git push origin v1.0.0
-   ```
+2. After setup, documentation will be automatically published when you create a GitHub Release. You can also trigger it manually from the Actions tab using the `workflow_dispatch` trigger.
 
 3. The documentation will be available at: `https://[username].github.io/[repo-name]/`
 
