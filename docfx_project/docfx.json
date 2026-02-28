@@ -32,10 +32,12 @@
     "resource": [
       {
         "files": [
+          "logo.svg",
           "images/**"
         ]
       }
     ],
+    // Note: "../docs" is used as the DocFX output directory for GitHub Actions deployment and is git-ignored for local builds.
     "output": "_site",
     "template": [
       "default",
@@ -45,13 +47,14 @@
     "globalMetadata": {
       "_appName": "Wolfgang.Extensions.DateTime",
       "_appTitle": "Wolfgang.Extensions.DateTime Documentation",
+      "_appLogoPath": "logo.svg",
       "_enableSearch": true,
       "_appFooter": "Made with DocFX",
       "_disableSidebar": false,
       "_disableTocFilter": false,
       "_enableDarkMode": true,
+      "colorMode": "dark",
       "_baseUrl": "https://Chris-Wolfgang.github.io/DateTime-Extensions/",
-      "_versionScheme": "versions.json",
       "pdf": true
     }
   }

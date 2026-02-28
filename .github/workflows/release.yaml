@@ -7,6 +7,9 @@ on:
 permissions:
   contents: read  # Required for checking out repository contents during validation
 
+env:
+  CODECOV_MINIMUM: 90
+
 jobs:
   # Streamlined validation: All frameworks, Windows only
   validate-release:
@@ -226,15 +229,15 @@ jobs:
           Get-Content CoverageReport/Summary.txt
           Write-Host ""
           
-          # Parse coverage and enforce 90% threshold per module (matching pr.yaml)
+          # Parse coverage and enforce threshold per module (matching pr.yaml)
           $summaryContent = Get-Content CoverageReport/Summary.txt
-          $threshold = 90
+          $threshold = if ($env:CODECOV_MINIMUM) { [int]$env:CODECOV_MINIMUM } else { 90 }
           $failedModules = @()
           $coverageFound = $false
           
           foreach ($line in $summaryContent) {
             # Match lines with module names and percentages (skip Summary line)
-            if ($line -match '^([^ ]+)\s+.*\s+(\d+\.?\d*)%$' -and $line -notmatch '^Summary') {
+            if ($line -match '^([^ ]+)\s+.*\s+(\d+(?:\.\d+)?)%$' -and $line -notmatch '^Summary') {
               $coverageFound = $true
               $module = $matches[1]
               $coverage = [decimal]$matches[2]
@@ -549,4 +552,36 @@ jobs:
     uses: ./.github/workflows/docfx.yaml
     with:
       version: ${{ github.event.release.tag_name }}
+
+  # Attach NuGet packages and coverage report to the GitHub Release page
+  update-release-artifacts:
+    name: Attach Artifacts to Release
+    needs: [validate-release, pack-and-validate, publish-nuget]
+    if: needs.pack-and-validate.outputs.has-packages == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write  # Required to upload assets to the GitHub Release
+    steps:
+      - name: Download NuGet packages artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: nuget-packages
+          path: ./nuget-packages
+
+      - name: Download coverage report artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: release-coverage
+          path: ./release-coverage
+
+      - name: Zip coverage report
+        run: zip -r release-coverage.zip ./release-coverage
+
+      - name: Attach artifacts to release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.event.release.tag_name }}
+          files: |
+            ./nuget-packages/*.nupkg
+            release-coverage.zip
 
