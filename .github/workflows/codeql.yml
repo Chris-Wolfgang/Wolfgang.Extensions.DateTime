@@ -120,7 +120,7 @@ jobs:
       if: steps.check-csharp.outputs.has-csharp == 'true'
       uses: github/codeql-action/analyze@v3
       with:
-        category: "/language:${{matrix.language}}"
+        category: "/language:csharp"
 
     - name: Complete Security Scan
       if: always()
