@@ -71,7 +71,8 @@ jobs:
       uses: github/codeql-action/init@v3
       with:
         languages: ${{ matrix.language }}
-
+        build-mode: none   
+        
     - name: Setup .NET
       if: steps.check-csharp.outputs.has-csharp == 'true'
       uses: actions/setup-dotnet@v4
