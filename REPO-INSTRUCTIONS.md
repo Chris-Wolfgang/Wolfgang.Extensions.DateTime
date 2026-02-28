@@ -226,8 +226,8 @@ If you want to publish your DocFX documentation to GitHub Pages automatically wh
 3. The documentation will be available at: `https://[username].github.io/[repo-name]/`
 
 **Note:** The DocFX workflow (`.github/workflows/docfx.yaml`) is configured to trigger on:
-- Push to the `main` branch (for testing/preview)
-- Version tags in the format `v*.*.*` (e.g., v1.0.0, v2.1.3)
+- `workflow_call` – called automatically by `release.yaml` after a GitHub Release is published
+- `workflow_dispatch` – manually triggered from the Actions tab for ad-hoc builds or dry-runs
 
 **Alternative Approach:** If you prefer to configure DocFX placeholders separately from GitHub Pages setup, you can run `scripts/setup.ps1` first (which handles all template placeholders including DocFX), then run `scripts/Setup-GitHubPages.ps1` just to set up the gh-pages branch and GitHub Pages settings.
 ### Update Documentation (Optional)
