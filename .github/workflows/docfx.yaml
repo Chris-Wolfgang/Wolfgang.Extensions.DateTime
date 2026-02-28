@@ -100,8 +100,8 @@ jobs:
       - name: Generate versions.json
         # Produces versions.json consumed by the DocFX version-switcher dropdown.
         # Site layout:
-        #   /<repo>/               ← latest docs (deployed to root)
-        #   /<repo>/versions/latest/  ← latest docs (alias under versions/)
+        #   /<repo>/               ← version-picker page (lists all available versions)
+        #   /<repo>/versions/latest/  ← latest docs (stable alias under versions/)
         #   /<repo>/versions/v1.2.3/  ← versioned docs (under versions/)
         # versions.json format expected by the dropdown:
         #   [{ "version": "latest", "url": "/<repo>/versions/latest/" }, { "version": "v1.2.3", "url": "/<repo>/versions/v1.2.3/" }]
@@ -152,7 +152,7 @@ jobs:
           Write-Host "Generated versions.json with $($versions.Count) version(s): $($versions | ForEach-Object { $_.version })"
 
       - name: Clean up stale root files from gh-pages
-        # Before deploying the latest docs to the site root, remove any pre-existing
+        # Before deploying the version-picker page to the site root, remove any pre-existing
         # root-level files and folders from the gh-pages branch (except the versions/
         # directory, CNAME, and .nojekyll) so that stale DocFX assets from a previous
         # build do not linger on the live site.
