@@ -13,6 +13,7 @@ pwsh ./scripts/setup.ps1
 **Note:** There are multiple scripts in this template:
 - `scripts/setup.ps1` - Main repository setup (replaces placeholders, configures license)
 - `scripts/Setup-BranchRuleset.ps1` - Branch protection configuration (run after setup)
+- `scripts/Setup-GitHubPages.ps1` - GitHub Pages and DocFX documentation setup (optional)
 
 The main setup script will:
 1. ✅ Prompt for all required information (with examples and defaults)
@@ -97,19 +98,20 @@ These settings require that all checks in the pr.yaml file succeed before you ca
 
 ## Add Custom Labels
 
-1. Go to your repository
-2. Click on the `Actions` tab
-3. Select `Create Dependabot Security and Dependencies Labels` from the workflow list
-4. Click `Run workflow` button
-5. Select the branch `main` and click `Run workflow`
-6. This will create all four labels:
+Run the label setup script once after creating your repository:
 
-If that doesn't work try the following
+```powershell
+pwsh -File ./scripts/Setup-Labels.ps1
+```
 
-Go to `Issues` tab at the top of your repo and the select `Labels` and click `New label`
+This creates the following labels used by Dependabot and workflows:
 
-1. dependabot-dependencies
-2. dependabot-security
+1. `dependabot - security`
+2. `dependabot-dependencies`
+3. `dependencies`
+4. `dotnet`
+
+Requires the [GitHub CLI](https://cli.github.com/) to be installed and authenticated (`gh auth login`).
 
 
 ## Creating the project
@@ -205,9 +207,15 @@ If you want to publish your DocFX documentation to GitHub Pages automatically wh
    ```
 
    The script will:
+   - **Prompt if you want to set up GitHub Pages** for documentation
+   - **Auto-detect repository information** (name, description, URLs)
+   - **Prompt for project details** needed for DocFX configuration
+   - **Replace placeholders** in DocFX files (Wolfgang.D20-Dice, https://Chris-Wolfgang.github.io/D20-Dice/, etc.)
    - Create a `gh-pages` branch if it doesn't exist
    - Configure GitHub Pages to serve from the `gh-pages` branch
    - Verify that the DocFX workflow is configured to trigger on version tags
+
+   **Note:** If you've already run `scripts/setup.ps1`, the DocFX placeholders are already configured, and this script will skip the configuration step.
 
 2. After setup, documentation will be automatically published when you push a version tag:
    ```bash
@@ -221,9 +229,38 @@ If you want to publish your DocFX documentation to GitHub Pages automatically wh
 - Push to the `main` branch (for testing/preview)
 - Version tags in the format `v*.*.*` (e.g., v1.0.0, v2.1.3)
 
+**Alternative Approach:** If you prefer to configure DocFX placeholders separately from GitHub Pages setup, you can run `scripts/setup.ps1` first (which handles all template placeholders including DocFX), then run `scripts/Setup-GitHubPages.ps1` just to set up the gh-pages branch and GitHub Pages settings.
 ### Update Documentation (Optional)
 
 If you're using DocFX for documentation:
 1. Review and customize the generated table of contents in `docfx_project/docs/toc.yml` as needed (the setup scripts already point this to your repository)
 2. Customize the rest of the documentation content in `docfx_project/`
 
+### Multi-Version DocFX Documentation
+
+This repository is configured for versioned documentation using DocFX. The setup consists of:
+
+#### Key Files
+| File | Purpose |
+|------|---------|
+| `docfx.json` | Optional root-level DocFX configuration for local/single-version documentation builds or previews. **Not used by CI workflows** for version discovery or multi-version wiring (handled via git tags). |
+| `docfx_project/docfx.json` | Per-build DocFX configuration used by CI workflows to build docs. Uses `default` + `modern` templates with dark mode enabled (`colorMode: dark`). |
+| `logo.svg` | Repository logo at the root; also present in `docfx_project/`. |
+
+#### How Versioning Works
+- CI workflows discover documentation versions **dynamically at runtime** by querying git tags that match the SemVer pattern `v*.*.*` (e.g. `v1.0.0`, `v0.3.0`). No manual version list is maintained in any config file.
+- The `.github/workflows/build-all-versions.yaml` workflow enumerates all matching tags and builds documentation for each — no file updates are required when a new release is published.
+- Each release triggers `.github/workflows/release.yaml` (on a published GitHub Release), which calls `.github/workflows/docfx.yaml` via `workflow_call` to build docs and deploy them to the `gh-pages` branch under `versions/<tag>/`. You can also run `docfx.yaml` directly via `workflow_dispatch` from the Actions tab for ad-hoc builds.
+- After every versioned deploy, a `versions.json` is generated and written to `gh-pages`, powering the version-switcher dropdown.
+- `versions/latest/` always mirrors the most recent stable release; the site root (`/`) also serves the latest docs.
+
+#### Adding a New Version
+When you publish a new release (e.g. `v1.0.0`):
+1. Create and push a version tag (e.g. `v1.0.0`) to the repository.
+2. Publish a GitHub Release for that tag — this triggers `release.yaml`, which calls `docfx.yaml` via `workflow_call` to automatically build and publish the docs. You can also run `docfx.yaml` directly via `workflow_dispatch` for ad-hoc or dry-run builds.
+3. To backfill all historical versions at once, run the **Build All Versioned Docs** workflow manually from the Actions tab.
+
+#### Dark Theme
+The DocFX modern template is configured to default to dark mode. This is controlled by:
+- `"colorMode": "dark"` in `docfx_project/docfx.json` → `build.globalMetadata`
+- `"_enableDarkMode": true` enables the light/dark toggle so visitors can switch themes
