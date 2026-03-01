@@ -165,7 +165,7 @@ If you want to publish your DocFX documentation to GitHub Pages automatically wh
    3. Choose or create a version tag (e.g., `v1.0.0`)
    4. Click **"Publish release"**
 
-5. The documentation will be available at: `https://[username].github.io/[repo-name]/`
+3. The documentation will be available at: `https://[username].github.io/[repo-name]/`
 
 **Note:** The DocFX workflow (`.github/workflows/docfx.yaml`) is configured to trigger via:
 - **`workflow_call`**: Called automatically by `release.yaml` after a GitHub Release is published (passes the release tag as the version)
