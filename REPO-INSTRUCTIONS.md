@@ -1,38 +1,6 @@
 # Setting Up Your Repository
 
-## Automated Setup (Recommended)
-
-**NEW:** This template now includes automated setup scripts that handle configuration for you!
-
-### Quick Setup
-
-```powershell
-pwsh ./scripts/setup.ps1
-```
-
-**Note:** There are multiple scripts in this template:
-- `scripts/setup.ps1` - Main repository setup (replaces placeholders, configures license)
-- `scripts/Setup-BranchRuleset.ps1` - Branch protection configuration (run after setup)
-- `scripts/Setup-GitHubPages.ps1` - GitHub Pages and DocFX documentation setup (optional)
-
-The main setup script will:
-1. ✅ Prompt for all required information (with examples and defaults)
-2. ✅ Auto-detect git repository information where possible
-3. ✅ Replace placeholders in core template files (see TEMPLATE-PLACEHOLDERS.md for details and any manual steps, including DocFX docs)
-4. ✅ Delete the template README.md
-5. ✅ Rename README-TEMPLATE.md to README.md
-6. ✅ Set up your chosen LICENSE (MIT, Apache 2.0, or MPL 2.0)
-7. ✅ Remove unused license templates
-8. ✅ **Optionally create a default .slnx solution file** with proper folder structure (requires Visual Studio 2022 17.10+)
-9. ✅ Validate all replacements
-10. ✅ Optionally clean up template-specific files
-
-**For detailed placeholder documentation, see [TEMPLATE-PLACEHOLDERS.md](TEMPLATE-PLACEHOLDERS.md)**  
-**For license selection guidance, see [LICENSE-SELECTION.md](LICENSE-SELECTION.md)**
-
----
-
-## Manual Setup Instructions
+## Setup Instructions
 
 After you create your repo from the template you will still need to configure some settings. 
 Below is a list of what needs to be done. Once you have completed the checklist below you can delete this file
@@ -50,13 +18,7 @@ Below is a list of what needs to be done. Once you have completed the checklist 
 
 ## Add Branch Protection Rules
 
-> **Note:** Branch protection is now configured using a local PowerShell script. After setting up your repository, run the script to configure branch protection:
-> ```powershell
-> pwsh ./scripts/Setup-BranchRuleset.ps1
-> ```
-> The script includes interactive prompts that allow you to choose between **single developer** or **multi-developer** repository settings during execution. Simply run the script and select option [1] for single-developer mode (no approvals required) or option [2] for multi-developer mode (requires 1+ approval and code owner review).
-
-If you need to manually configure branch protection instead:
+Configure branch protection rules manually in your repository settings:
 
 1. Go to your repository’s Settings → Branches.
 2. Under “Branch protection rules,” click `Add branch ruleset`
@@ -72,10 +34,8 @@ If you need to manually configure branch protection instead:
 Prevent Merging When Checks Fail
 These settings require that all checks in the pr.yaml file succeed before you can merge a branch into main
 
-> **Note for Single-Developer Repositories:** This template is configured for single-developer use. The branch protection script (`scripts/Setup-BranchRuleset.ps1`) includes interactive prompts that allow you to choose between single-developer or multi-developer settings during execution. Simply run the script and select option [1] for single-developer mode (no PR approvals required) or option [2] for multi-developer mode (requires 1+ approval and code owner review).
+> **Note for Single-Developer Repositories:** This template is configured for single-developer use. You can choose between single-developer settings (no PR approvals required) or multi-developer settings (requires 1+ approval and code owner review) when configuring branch protection rules below.
 **Note:** The pr.yaml workflow uses `pull_request_target` to always run from the trusted main branch, even for PRs from feature branches. This prevents malicious workflow modifications in untrusted PR branches while still testing the PR's code.
-
-> **Branch protection is now configured via local script!** Run `pwsh ./scripts/Setup-BranchRuleset.ps1` to automatically configure all required settings. Manual configuration below is only needed if you prefer not to use the automated script.
 
 1. Go to your repository’s Settings → Branches.
 2. Under “Branch protection rules,” edit the rule for main.
@@ -116,17 +76,21 @@ Requires the [GitHub CLI](https://cli.github.com/) to be installed and authentic
 
 ## Creating the project
 
-### Automated Solution Creation (Recommended)
+### Automated Solution Creation
 
-If you used the automated setup script (`pwsh ./scripts/setup.ps1`), you had the option to create a default solution file automatically. The script creates a `.slnx` format solution (requires Visual Studio 2022 version 17.10+) with the following structure:
+You can create a `.slnx` format solution (requires Visual Studio 2022 version 17.10+) using the .NET CLI:
+
+```bash
+dotnet new sln -n YourSolutionName --format slnx
+```
+
+This creates a solution with the following recommended structure:
 - Empty solution folders for `/benchmarks/`, `/examples/`, `/src/`, and `/tests/`
 - A `/.root/` folder containing all repository configuration files (preserves directory structure)
 
-If you chose to create a solution during setup, skip to step 2 below.
+### Manual Solution Creation (Traditional .sln format)
 
-### Manual Solution Creation
-
-If you didn't create a solution during setup or prefer the traditional `.sln` format:
+If you prefer the traditional `.sln` format:
 
 1. Create a blank solution and save it in the root folder
    ```bash
@@ -186,7 +150,7 @@ After creating your repository from the template, update the following files wit
 ### Update CONTRIBUTING.md
 
 1. Open `CONTRIBUTING.md`
-2. Ensure any project name placeholders (for example, `Wolfgang.Extensions.DateTime`) have been replaced with your actual project name (the automated setup scripts should normally do this for you)
+2. Ensure any project name placeholders (for example, `Wolfgang.Extensions.DateTime`) have been replaced with your actual project name
 3. Review and adjust contribution guidelines as needed for your project
 
 ### Update CODEOWNERS
@@ -201,39 +165,40 @@ After creating your repository from the template, update the following files wit
 
 If you want to publish your DocFX documentation to GitHub Pages automatically when you publish a GitHub Release:
 
-1. Run the GitHub Pages setup script:
-   ```powershell
-   pwsh ./scripts/Setup-GitHubPages.ps1
+1. **Update DocFX placeholders** in `docfx_project/docfx.json`:
+   - Replace `Wolfgang.Extensions.DateTime` with your project name in `_appName` and `_appTitle`
+   - Replace `https://Chris-Wolfgang.github.io/DateTime-Extensions/` with your GitHub Pages URL (e.g., `https://[username].github.io/[repo-name]/`) in `_baseUrl`
+
+2. **Create a `gh-pages` branch** in your repository:
+   ```bash
+   git checkout --orphan gh-pages
+   git reset --hard
+   git commit --allow-empty -m "Initialize gh-pages branch"
+   git push origin gh-pages
+   git checkout main
    ```
 
-   The script will:
-   - **Prompt if you want to set up GitHub Pages** for documentation
-   - **Auto-detect repository information** (name, description, URLs)
-   - **Prompt for project details** needed for DocFX configuration
-   - **Replace placeholders** in DocFX files (Wolfgang.D20-Dice, https://Chris-Wolfgang.github.io/D20-Dice/, etc.)
-   - Create a `gh-pages` branch if it doesn't exist
-   - Configure GitHub Pages to serve from the `gh-pages` branch
-   - Verify that the DocFX workflow is reachable via `workflow_call` from `release.yaml`
+3. **Configure GitHub Pages** in your repository settings:
+   1. Go to your repository's **Settings** → **Pages**
+   2. Under **Build and deployment**, set Source to **Deploy from a branch**
+   3. Select the **`gh-pages`** branch and **`/ (root)`** folder
+   4. Click **Save**
 
-   **Note:** If you've already run `scripts/setup.ps1`, the DocFX placeholders are already configured, and this script will skip the configuration step.
-
-2. After setup, documentation will be automatically published when you publish a GitHub Release:
+4. After setup, documentation will be automatically published when you publish a GitHub Release:
    1. Go to your repository's **Releases** page
    2. Click **"Draft a new release"**
    3. Choose or create a version tag (e.g., `v1.0.0`)
    4. Click **"Publish release"**
 
-3. The documentation will be available at: `https://[username].github.io/[repo-name]/`
+5. The documentation will be available at: `https://[username].github.io/[repo-name]/`
 
 **Note:** The DocFX workflow (`.github/workflows/docfx.yaml`) is configured to trigger via:
 - **`workflow_call`**: Called automatically by `release.yaml` after a GitHub Release is published (passes the release tag as the version)
 - **`workflow_dispatch`**: Manual trigger for ad-hoc builds or dry-runs (available from the Actions tab)
-
-**Alternative Approach:** If you prefer to configure DocFX placeholders separately from GitHub Pages setup, you can run `scripts/setup.ps1` first (which handles all template placeholders including DocFX), then run `scripts/Setup-GitHubPages.ps1` just to set up the gh-pages branch and GitHub Pages settings.
 ### Update Documentation (Optional)
 
 If you're using DocFX for documentation:
-1. Review and customize the generated table of contents in `docfx_project/docs/toc.yml` as needed (the setup scripts already point this to your repository)
+1. Review and customize the generated table of contents in `docfx_project/docs/toc.yml` as needed
 2. Customize the rest of the documentation content in `docfx_project/`
 
 ### Multi-Version DocFX Documentation
