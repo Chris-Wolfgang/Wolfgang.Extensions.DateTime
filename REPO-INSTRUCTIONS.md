@@ -18,7 +18,7 @@ Below is a list of what needs to be done. Once you have completed the checklist 
 
 ## Add Branch Protection Rules
 
-Configure branch protection rules manually in your repository settings:
+Configure branch protection rules for the `main` branch:
 
 1. Go to your repository’s Settings → Branches.
 2. Under “Branch protection rules,” click `Add branch ruleset`
@@ -34,7 +34,6 @@ Configure branch protection rules manually in your repository settings:
 Prevent Merging When Checks Fail
 These settings require that all checks in the pr.yaml file succeed before you can merge a branch into main
 
-> **Note for Single-Developer Repositories:** This template is configured for single-developer use. You can choose between single-developer settings (no PR approvals required) or multi-developer settings (requires 1+ approval and code owner review) when configuring branch protection rules below.
 **Note:** The pr.yaml workflow uses `pull_request_target` to always run from the trusted main branch, even for PRs from feature branches. This prevents malicious workflow modifications in untrusted PR branches while still testing the PR's code.
 
 1. Go to your repository’s Settings → Branches.
@@ -76,21 +75,9 @@ Requires the [GitHub CLI](https://cli.github.com/) to be installed and authentic
 
 ## Creating the project
 
-### Automated Solution Creation
+### Creating a Solution
 
-You can create a `.slnx` format solution (requires Visual Studio 2022 version 17.10+) using the .NET CLI:
-
-```bash
-dotnet new sln -n YourSolutionName --format slnx
-```
-
-This creates a solution with the following recommended structure:
-- Empty solution folders for `/benchmarks/`, `/examples/`, `/src/`, and `/tests/`
-- A `/.root/` folder containing all repository configuration files (preserves directory structure)
-
-### Manual Solution Creation (Traditional .sln format)
-
-If you prefer the traditional `.sln` format:
+To create a solution:
 
 1. Create a blank solution and save it in the root folder
    ```bash
@@ -134,7 +121,7 @@ If you plan to publish NuGet packages using the automated release workflow, you 
    - Set expiration date (recommended: 1 year)
 5. Click **"Add secret"**
 
-**Note:** The release workflow automatically publishes packages to NuGet.org when you push a version tag (e.g., `v1.0.0`). See [RELEASE-WORKFLOW-SETUP.md](RELEASE-WORKFLOW-SETUP.md) for detailed information about the release workflow, testing, and troubleshooting.
+**Note:** The release workflow automatically publishes packages to NuGet.org when you push a version tag (e.g., `v1.0.0`).
 
 
 ## Update Template Files
@@ -165,26 +152,14 @@ After creating your repository from the template, update the following files wit
 
 If you want to publish your DocFX documentation to GitHub Pages automatically when you publish a GitHub Release:
 
-1. **Update DocFX placeholders** in `docfx_project/docfx.json`:
-   - Replace `Wolfgang.Extensions.DateTime` with your project name in `_appName` and `_appTitle`
-   - Replace `https://Chris-Wolfgang.github.io/DateTime-Extensions/` with your GitHub Pages URL (e.g., `https://[username].github.io/[repo-name]/`) in `_baseUrl`
+1. Set up GitHub Pages manually:
+   - Go to your repository's **Settings → Pages**
+   - Under "Build and deployment," select **Deploy from a branch**
+   - Select the `gh-pages` branch (create it if it doesn't exist: `git checkout --orphan gh-pages && git push origin gh-pages`)
+   - Save the settings
+   - Update the DocFX configuration files in `docfx_project/` to replace placeholders (e.g., `Wolfgang.D20-Dice`, `https://Chris-Wolfgang.github.io/D20-Dice/`) with your project's values
 
-2. **Create a `gh-pages` branch** in your repository:
-   ```bash
-   git checkout --orphan gh-pages
-   git reset --hard
-   git commit --allow-empty -m "Initialize gh-pages branch"
-   git push origin gh-pages
-   git checkout main
-   ```
-
-3. **Configure GitHub Pages** in your repository settings:
-   1. Go to your repository's **Settings** → **Pages**
-   2. Under **Build and deployment**, set Source to **Deploy from a branch**
-   3. Select the **`gh-pages`** branch and **`/ (root)`** folder
-   4. Click **Save**
-
-4. After setup, documentation will be automatically published when you publish a GitHub Release:
+2. Documentation will be automatically published when you publish a GitHub Release:
    1. Go to your repository's **Releases** page
    2. Click **"Draft a new release"**
    3. Choose or create a version tag (e.g., `v1.0.0`)
@@ -195,10 +170,12 @@ If you want to publish your DocFX documentation to GitHub Pages automatically wh
 **Note:** The DocFX workflow (`.github/workflows/docfx.yaml`) is configured to trigger via:
 - **`workflow_call`**: Called automatically by `release.yaml` after a GitHub Release is published (passes the release tag as the version)
 - **`workflow_dispatch`**: Manual trigger for ad-hoc builds or dry-runs (available from the Actions tab)
+
+
 ### Update Documentation (Optional)
 
 If you're using DocFX for documentation:
-1. Review and customize the generated table of contents in `docfx_project/docs/toc.yml` as needed
+1. Review and customize the table of contents in `docfx_project/docs/toc.yml` and update repository-specific values (e.g., links and project names)
 2. Customize the rest of the documentation content in `docfx_project/`
 
 ### Multi-Version DocFX Documentation
