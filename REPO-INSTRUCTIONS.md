@@ -18,7 +18,7 @@ Below is a list of what needs to be done. Once you have completed the checklist 
 
 ## Add Branch Protection Rules
 
-Configure branch protection manually:
+Configure branch protection rules for the `main` branch:
 
 1. Go to your repository’s Settings → Branches.
 2. Under “Branch protection rules,” click `Add branch ruleset`
@@ -34,7 +34,6 @@ Configure branch protection manually:
 Prevent Merging When Checks Fail
 These settings require that all checks in the pr.yaml file succeed before you can merge a branch into main
 
-> **Note for Single-Developer Repositories:** This template is configured for single-developer use. When configuring branch protection, you can choose between single-developer mode (no PR approvals required) or multi-developer mode (requires 1+ approval and code owner review).
 **Note:** The pr.yaml workflow uses `pull_request_target` to always run from the trusted main branch, even for PRs from feature branches. This prevents malicious workflow modifications in untrusted PR branches while still testing the PR's code.
 
 1. Go to your repository’s Settings → Branches.
@@ -76,15 +75,9 @@ Requires the [GitHub CLI](https://cli.github.com/) to be installed and authentic
 
 ## Creating the project
 
-### Solution Creation
+### Creating a Solution
 
-A `.slnx` format solution file is included in this repository (requires Visual Studio 2022 version 17.10+) with the following structure:
-- Empty solution folders for `/benchmarks/`, `/examples/`, `/src/`, and `/tests/`
-- A `/.root/` folder containing all repository configuration files (preserves directory structure)
-
-### Traditional .sln Format
-
-If you prefer the traditional `.sln` format:
+To create a solution:
 
 1. Create a blank solution and save it in the root folder
    ```bash
@@ -128,7 +121,7 @@ If you plan to publish NuGet packages using the automated release workflow, you 
    - Set expiration date (recommended: 1 year)
 5. Click **"Add secret"**
 
-**Note:** The release workflow automatically publishes packages to NuGet.org when you push a version tag (e.g., `v1.0.0`). See [RELEASE-WORKFLOW-SETUP.md](RELEASE-WORKFLOW-SETUP.md) for detailed information about the release workflow, testing, and troubleshooting.
+**Note:** The release workflow automatically publishes packages to NuGet.org when you push a version tag (e.g., `v1.0.0`).
 
 
 ## Update Template Files
@@ -159,12 +152,14 @@ After creating your repository from the template, update the following files wit
 
 If you want to publish your DocFX documentation to GitHub Pages automatically when you publish a GitHub Release:
 
-1. Create a `gh-pages` branch and configure GitHub Pages to serve from it:
-   1. Go to your repository's **Settings → Pages**
-   2. Under **Source**, select the `gh-pages` branch
-   3. Replace any DocFX placeholders in `docfx_project/` files with your project-specific values (repository name, description, URLs, etc.)
+1. Set up GitHub Pages manually:
+   - Go to your repository's **Settings → Pages**
+   - Under "Build and deployment," select **Deploy from a branch**
+   - Select the `gh-pages` branch (create it if it doesn't exist: `git checkout --orphan gh-pages && git push origin gh-pages`)
+   - Save the settings
+   - Update the DocFX configuration files in `docfx_project/` to replace placeholders (e.g., `Wolfgang.D20-Dice`, `https://Chris-Wolfgang.github.io/D20-Dice/`) with your project's values
 
-2. After setup, documentation will be automatically published when you publish a GitHub Release:
+2. Documentation will be automatically published when you publish a GitHub Release:
    1. Go to your repository's **Releases** page
    2. Click **"Draft a new release"**
    3. Choose or create a version tag (e.g., `v1.0.0`)
@@ -176,10 +171,11 @@ If you want to publish your DocFX documentation to GitHub Pages automatically wh
 - **`workflow_call`**: Called automatically by `release.yaml` after a GitHub Release is published (passes the release tag as the version)
 - **`workflow_dispatch`**: Manual trigger for ad-hoc builds or dry-runs (available from the Actions tab)
 
+
 ### Update Documentation (Optional)
 
 If you're using DocFX for documentation:
-1. Review and customize the generated table of contents in `docfx_project/docs/toc.yml` as needed
+1. Review and customize the table of contents in `docfx_project/docs/toc.yml` and update repository-specific values (e.g., links and project names)
 2. Customize the rest of the documentation content in `docfx_project/`
 
 ### Multi-Version DocFX Documentation
