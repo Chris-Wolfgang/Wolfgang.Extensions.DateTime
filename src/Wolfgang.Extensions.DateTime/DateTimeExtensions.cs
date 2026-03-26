@@ -177,4 +177,3 @@ public static class DateTimeExtensions
     public static System.DateTime EndOfWeek(this System.DateTime dateTime, DayOfWeek firstDayOfWeek)
         => dateTime.FirstOfWeek(firstDayOfWeek).AddDays(7).AddTicks(-1);
 } 
-
