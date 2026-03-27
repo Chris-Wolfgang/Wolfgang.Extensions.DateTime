@@ -5,7 +5,7 @@ on:
     types: [published]
 
 permissions:
-  contents: read  # Required for checking out repository contents during validation
+  contents: read  # Default to read-only; individual jobs declare write where required
 
 env:
   CODECOV_MINIMUM: 90
