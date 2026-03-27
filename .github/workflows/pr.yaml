@@ -17,7 +17,10 @@ name: PR Checks v3 (Gated)
 
 permissions:
   contents: read
-  
+
+env:
+  CODECOV_MINIMUM: 90
+
 on:
   pull_request_target:  # Runs from the main branch, not from PR branch
     branches:
@@ -180,11 +183,14 @@ jobs:
           echo ""
           echo "✅ Configuration files secured - using versions from main branch"
 
-      # Fix for .NET 5.0 on Ubuntu 22.04+ - install libssl1.1
+      # Fix for .NET 5.0 on Ubuntu 22.04+ - install libssl1.1 from the focal-security
+      # repository so APT verifies the package via GPG instead of a plain wget download.
       - name: Install OpenSSL 1.1 for .NET 5.0
         run: |
-          wget https://archive.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.1f-1ubuntu2_amd64.deb
-          sudo dpkg -i libssl1.1_1.1.1f-1ubuntu2_amd64.deb
+          echo "deb https://security.ubuntu.com/ubuntu focal-security main" | sudo tee /etc/apt/sources.list.d/focal-security.list
+          sudo apt-get update -q
+          sudo apt-get install --yes libssl1.1
+          sudo rm /etc/apt/sources.list.d/focal-security.list
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
@@ -209,9 +215,9 @@ jobs:
           while IFS= read -r -d '' proj; do
             project_found=true
             # Check if project has any .NET 5+ target framework
-            # Look for: net5.0, net6.0, net7.0, net8.0, net9.0, net10.0, or netcoreapp, netstandard
-            # Use tr to collapse multi-line TargetFrameworks into a single line before grepping
-            if tr -d '\n\r' < "$proj" | grep -qE '<TargetFramework[s]?>.*(net(5\.0|6\.0|7\.0|8\.0|9\.0|10\.0)|netcoreapp|netstandard)'; then
+            # Look for: net5.0, net6.0, net7.0, net8.0, net9.0, net10.0
+            # Normalize line endings to handle multi-line <TargetFramework> / <TargetFrameworks> elements
+            if tr -d '\n\r' < "$proj" | grep -qE '<TargetFramework[s]?>.*(net(5\.0|6\.0|7\.0|8\.0|9\.0|10\.0))'; then
               projects+=("$proj")
               echo "✓ Including: $proj (has .NET 5+ or .NET Core target)"
             else
@@ -254,8 +260,8 @@ jobs:
             
             # Extract target frameworks from the project file
             # Support both <TargetFramework> (single) and <TargetFrameworks> (multiple)
-            # Use tr to collapse multi-line TargetFrameworks into a single line before grepping
-            frameworks=$(tr -d '\n\r' < "$proj" | grep -oP '<TargetFramework[s]?>\K[^<]+' | tr ';' '\n' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//' | grep -E '^(net(5\.0|6\.0|7\.0|8\.0|9\.0|10\.0)|netcoreapp[0-9.]+|netstandard[0-9.]+)$' || true)
+            # Collapse newlines so multi-line <TargetFrameworks> values are handled correctly
+            frameworks=$(tr '\n' ' ' < "$proj" | grep -oP '<TargetFramework[s]?>\s*\K[^<]+' | tr ';' '\n' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//' | grep -E '^(net(5\.0|6\.0|7\.0|8\.0|9\.0|10\.0)|netcoreapp[0-9.]+|netstandard[0-9.]+)$' || true)
             
             if [ -z "$frameworks" ]; then
               echo "⚠️  No Linux-compatible frameworks found in $proj"
@@ -286,10 +292,7 @@ jobs:
       - name: Run tests with coverage (.NET Core 5.0 - 10.0)
         run: |
           # Find all test projects (C#, VB.NET, F#)
-          test_projects=()
-          while IFS= read -r -d '' proj; do
-            test_projects+=("$proj")
-          done < <(find ./tests -type f \( -name "*.csproj" -o -name "*.vbproj" -o -name "*.fsproj" \) -print0)
+          mapfile -d '' -t test_projects < <(find ./tests -type f \( -name "*.csproj" -o -name "*.vbproj" -o -name "*.fsproj" \) -print0)
           
           if [ ${#test_projects[@]} -eq 0 ]; then
             echo "❌ No test projects found in ./tests directory!"
@@ -309,8 +312,7 @@ jobs:
             
             # Extract target frameworks from the project file
             # Support both <TargetFramework> (single) and <TargetFrameworks> (multiple)
-            # Use tr to collapse multi-line TargetFrameworks into a single line before grepping
-            frameworks=$(tr -d '\n\r' < "$test_proj" | grep -oP '<TargetFramework[s]?>\K[^<]+' | tr ';' '\n' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//' | grep -E '^net(5\.0|6\.0|7\.0|8\.0|9\.0|10\.0)$' || true)
+            frameworks=$(grep -oP '<TargetFramework[s]?>\K[^<]+' "$test_proj" | tr ';' '\n' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//' | grep -E '^net(5\.0|6\.0|7\.0|8\.0|9\.0|10\.0)$' || true)
             
             if [ -z "$frameworks" ]; then
               echo "⊘ Skipping: No compatible .NET 5.0-10.0 target frameworks found"
@@ -372,7 +374,7 @@ jobs:
           echo ""
           
           failed_projects=""
-          threshold=90
+          threshold=${CODECOV_MINIMUM:-90}
           
           while read -r line; do
             # Match lines with module names and percentages
@@ -649,8 +651,8 @@ jobs:
             project_found=true
             # Check if project has any .NET 6+ target framework (macOS ARM64 compatible)
             # Look for: net6.0, net7.0, net8.0, net9.0, net10.0
-            # Use tr to collapse multi-line TargetFrameworks into a single line before grepping
-            if tr -d '\n\r' < "$proj" | grep -qE '<TargetFramework[s]?>.*net(6\.0|7\.0|8\.0|9\.0|10\.0)'; then
+            # Normalize newlines to spaces so multi-line <TargetFrameworks> elements are matched correctly
+            if tr $'\n' ' ' < "$proj" | grep -qE '<TargetFramework[s]?>[^<]*net(6\.0|7\.0|8\.0|9\.0|10\.0)'; then
               projects+=("$proj")
               echo "✓ Including: $proj (has .NET 6+ target)"
             else
@@ -693,8 +695,8 @@ jobs:
             
             # Extract target frameworks from the project file
             # Support both <TargetFramework> (single) and <TargetFrameworks> (multiple)
-            # Use tr to collapse multi-line TargetFrameworks into a single line before grepping
-            frameworks=$(tr -d '\n\r' < "$proj" | grep -Eo '<TargetFrameworks?>[^<]+' | sed -E 's/<TargetFrameworks?>//' | tr ';' '\n' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//' | grep -E '^net(6\.0|7\.0|8\.0|9\.0|10\.0)$' || true)
+            # Trim whitespace from each framework before filtering
+            frameworks=$(tr -d '\n\r' < "$proj" | sed -n -E 's/.*<TargetFrameworks?>[[:space:]]*>([^<]+)<\/TargetFrameworks?>.*/\1/p' | tr ';' '\n' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//' | grep -E '^net(6\.0|7\.0|8\.0|9\.0|10\.0)$' || true)
             
             if [ -z "$frameworks" ]; then
               echo "⚠️  No macOS ARM64-compatible frameworks found in $proj"
@@ -725,10 +727,7 @@ jobs:
       - name:  Run tests (.NET 6.0 - 10.0 only - ARM64 compatible)
         run: |
           # Find all test projects (C#, VB.NET, F#)
-          test_projects=()
-          while IFS= read -r -d '' proj; do
-            test_projects+=("$proj")
-          done < <(find ./tests -type f \( -name "*.csproj" -o -name "*.vbproj" -o -name "*.fsproj" \) -print0)
+          mapfile -d '' -t test_projects < <(find ./tests -type f \( -name "*.csproj" -o -name "*.vbproj" -o -name "*.fsproj" \) -print0)
           
           if [ ${#test_projects[@]} -eq 0 ]; then
             echo "❌ No test projects found in ./tests directory!"
@@ -749,7 +748,7 @@ jobs:
             # Extract target frameworks from the project file
             # Support both <TargetFramework> (single) and <TargetFrameworks> (multiple)
             # Only include .NET 6.0+ (ARM64 compatible on macOS)
-            # Use tr to collapse multi-line TargetFrameworks into a single line before grepping
+            # Normalize line endings to handle multi-line <TargetFramework> / <TargetFrameworks> elements
             frameworks=$(tr -d '\n\r' < "$test_proj" | grep -Eo '<TargetFrameworks?>[^<]+' | sed -E 's/<TargetFrameworks?>//' | tr ';' '\n' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//' | grep -E '^net(6\.0|7\.0|8\.0|9\.0|10\.0)$' || true)
             
             if [ -z "$frameworks" ]; then
@@ -869,13 +868,11 @@ jobs:
         run: dotnet tool install --global Microsoft.CST.DevSkim.CLI
 
       - name: Run DevSkim security scan
-        continue-on-error: true
         run: |
           devskim analyze \
             --source-code . \
             --file-format text \
             --output-file devskim-results.txt \
-            -E \
             --ignore-rule-ids DS176209 \
             --ignore-globs "**/api/**,**/CoverageReport/**,**/TestResults/**"
 
@@ -890,7 +887,8 @@ jobs:
             echo ""
             
             if grep -qi "error\|critical\|high" devskim-results.txt; then
-              echo "⚠️ Security issues detected - review required"
+              echo "❌ Security issues detected - review required"
+              exit 1
             else
               echo "✅ No critical security issues found"
             fi
