@@ -616,5 +616,6 @@ jobs:
           tag_name: ${{ github.event.release.tag_name }}
           files: |
             ./nuget-packages/*.nupkg
+            ./nuget-packages/*.bom.json
             release-coverage.zip
 
