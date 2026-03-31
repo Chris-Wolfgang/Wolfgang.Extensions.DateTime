@@ -67,9 +67,9 @@ This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) f
 
 | Framework | Versions |
 |-----------|----------|
-| .Net Framework | .net 4.6.2, .net 4.7.0, .net 4.7.1, .net 4.7.2, .net 4.8, .net 4.8.1 | 
-| .Net Core | |
-| .Net | .Net 5.0, .Net 6.0, .Net 7.0, .Net 8.0, .Net 9.0, .Net 10.0
+| .NET Framework | .NET 4.6.2 |
+| .NET Standard | .NET Standard 2.0 |
+| .NET | .NET 8.0, .NET 10.0 |
 
 ---
 
