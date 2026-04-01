@@ -4,7 +4,7 @@ This repository uses `dotnet format` to enforce consistent C# code style.
 
 ## Prerequisites
 
-The `dotnet format` command is **built into the .NET SDK** starting with .NET 6 and later. Since this project requires .NET 8.0 SDK or later, you already have `dotnet format` available — no separate tool installation is needed.
+The `dotnet format` command is **built into the .NET SDK** starting with .NET 6 and later. For full multi-target formatting (including the `net10.0` target), install the .NET 10.0 SDK or later so all target frameworks can be evaluated. If you only have the .NET 8.0 SDK installed, you can still run formatting by restricting to the `net8.0` target, for example: `dotnet format --framework net8.0`.
 
 > **Note:** The standalone `dotnet-format` global tool was deprecated when `dotnet format` was integrated into the .NET 6 SDK in August 2021.
 
@@ -15,13 +15,13 @@ The `dotnet format` command is **built into the .NET SDK** starting with .NET 6 
 Run the formatting script with PowerShell Core (`pwsh`) on any supported platform:
 
 ```powershell
-.\scripts\format.ps1
+pwsh ./format.ps1
 ```
 
 Or check without making changes:
 
 ```powershell
-.\scripts\format.ps1 -Check
+pwsh ./format.ps1 -Check
 ```
 
 ### Manual Formatting
@@ -46,7 +46,7 @@ All pull requests are automatically checked for proper formatting. PRs with form
 
 ### If CI Fails
 
-1. Run `.\scripts\format.ps1` locally
+1. Run `pwsh ./format.ps1` locally
 2. Review the changes
 3. Commit and push the formatted code
 
