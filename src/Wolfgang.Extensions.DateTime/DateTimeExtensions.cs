@@ -82,7 +82,7 @@ public static class DateTimeExtensions
         var firstOfMonth = dateTime.FirstOfMonth();
 
         return firstOfMonth.Month == 12 && firstOfMonth.Year == 9999
-            ? new System.DateTime(9999, 12, 31, 23, 59, 59, 999, dateTime.Kind).AddTicks(9999)
+            ? new System.DateTime(System.DateTime.MaxValue.Ticks, dateTime.Kind)
             : firstOfMonth.AddMonths(1).AddTicks(-1);
     }
 
@@ -121,7 +121,7 @@ public static class DateTimeExtensions
         var firstOfYear = dateTime.FirstOfYear();
 
         return firstOfYear.Year == 9999
-            ? new System.DateTime(9999, 12, 31, 23, 59, 59, 999, dateTime.Kind).AddTicks(9999)
+            ? new System.DateTime(System.DateTime.MaxValue.Ticks, dateTime.Kind)
             : firstOfYear.AddYears(1).AddTicks(-1);
     }
 
@@ -152,6 +152,11 @@ public static class DateTimeExtensions
         var firstOfWeek = dateTime.Date;
         while (firstOfWeek.DayOfWeek != firstDayOfWeek)
         {
+            if (firstOfWeek == System.DateTime.MinValue.Date)
+            {
+                return new System.DateTime(System.DateTime.MinValue.Ticks, dateTime.Kind);
+            }
+
             firstOfWeek = firstOfWeek.AddDays(-1);
         }
 
@@ -191,5 +196,13 @@ public static class DateTimeExtensions
     /// <param name="firstDayOfWeek">Specifies the first day of the week. Default is Sunday.</param>
     /// <returns>A new DateTime representing the end of the week.</returns>
     public static System.DateTime EndOfWeek(this System.DateTime dateTime, DayOfWeek firstDayOfWeek)
-        => dateTime.FirstOfWeek(firstDayOfWeek).AddDays(7).AddTicks(-1);
+    {
+        var firstOfWeek = dateTime.FirstOfWeek(firstDayOfWeek);
+        var maxTicks = System.DateTime.MaxValue.Ticks;
+        var sevenDaysTicks = TimeSpan.FromDays(7).Ticks;
+
+        return maxTicks - firstOfWeek.Ticks < sevenDaysTicks
+            ? new System.DateTime(maxTicks, dateTime.Kind)
+            : firstOfWeek.AddDays(7).AddTicks(-1);
+    }
 } 
