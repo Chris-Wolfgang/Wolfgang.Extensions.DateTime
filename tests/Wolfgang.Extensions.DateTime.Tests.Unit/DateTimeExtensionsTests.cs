@@ -331,4 +331,71 @@ public class DateTimeExtensionsTests
 
         Assert.Equal(expectedResult, actualResult);
     }
+
+
+
+    [Fact]
+    public void EndOfMonth_when_DateTime_MaxValue_returns_max_ticks()
+    {
+        var result = System.DateTime.MaxValue.EndOfMonth();
+
+        Assert.Equal(System.DateTime.MaxValue.Ticks, result.Ticks);
+    }
+
+
+
+    [Fact]
+    public void EndOfYear_when_DateTime_MaxValue_returns_max_ticks()
+    {
+        var result = System.DateTime.MaxValue.EndOfYear();
+
+        Assert.Equal(System.DateTime.MaxValue.Ticks, result.Ticks);
+    }
+
+
+
+    [Fact]
+    public void FirstOfWeek_when_DateTime_MinValue_does_not_throw()
+    {
+        var result = System.DateTime.MinValue.FirstOfWeek(System.DayOfWeek.Sunday);
+
+        Assert.Equal(System.DateTime.MinValue.Ticks, result.Ticks);
+    }
+
+
+
+    [Fact]
+    public void EndOfWeek_when_DateTime_MaxValue_returns_max_ticks()
+    {
+        var result = System.DateTime.MaxValue.EndOfWeek(System.DayOfWeek.Monday);
+
+        Assert.Equal(System.DateTime.MaxValue.Ticks, result.Ticks);
+    }
+
+
+
+    [Fact]
+    public void FirstOfWeek_when_time_is_nonzero_returns_midnight()
+    {
+        var input = new System.DateTime(2024, 6, 12, 15, 30, 45, System.DateTimeKind.Utc);
+
+        var result = input.FirstOfWeek(System.DayOfWeek.Monday);
+
+        Assert.Equal(0, result.Hour);
+        Assert.Equal(0, result.Minute);
+        Assert.Equal(0, result.Second);
+        Assert.Equal(0, result.Millisecond);
+    }
+
+
+
+    [Fact]
+    public void EndOfMonth_when_DateTime_MaxValue_preserves_Kind()
+    {
+        var input = new System.DateTime(9999, 12, 15, 10, 0, 0, System.DateTimeKind.Local);
+
+        var result = input.EndOfMonth();
+
+        Assert.Equal(System.DateTimeKind.Local, result.Kind);
+    }
 }
