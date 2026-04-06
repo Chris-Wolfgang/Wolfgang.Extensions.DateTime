@@ -13,7 +13,7 @@ The release workflow triggers when you **publish a GitHub Release** and implemen
 
 ## Required Post-Merge Configuration
 
-After merging this PR, complete the following setup step:
+After merging the updated release workflow, complete the following setup steps:
 
 ### Add NuGet API Key Secret
 
@@ -29,11 +29,11 @@ After merging this PR, complete the following setup step:
 
 **What this does:** Allows the workflow to authenticate with NuGet.org and publish packages. The workflow validates this secret exists before attempting to publish.
 
-### Verify Branch Protection Rules
+### Verify Branch Ruleset
 
-**Location:** Settings → Branches → main
+**Location:** Settings → Rules → Rulesets → `main` branch ruleset
 
-> **Note:** By default, the template is configured for single developer repositories. The branch protection setup script (`scripts/Setup-BranchRuleset.ps1`) includes interactive prompts that allow you to choose between single-developer or multi-developer settings during execution. Simply run the script and select option [1] for single-developer mode (0 approvals) or option [2] for multi-developer mode (1+ approvals and code owner review required).
+> **Note:** By default, the template is configured for single developer repositories. The branch ruleset setup script (`scripts/Setup-BranchRuleset.ps1`) includes interactive prompts that allow you to choose between single-developer or multi-developer settings during execution. Simply run the script and select option [1] for single-developer mode (0 approvals) or option [2] for multi-developer mode (1+ approvals and code owner review required).
 
 Ensure the following settings are enabled:
 
