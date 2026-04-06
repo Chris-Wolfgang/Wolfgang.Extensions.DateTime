@@ -78,10 +78,13 @@ public static class DateTimeExtensions
     /// <param name="dateTime">The value to process.</param>
     /// <returns>A new DateTime representing the end of the month.</returns>
     public static System.DateTime EndOfMonth(this System.DateTime dateTime)
-        => dateTime
-            .FirstOfMonth()
-            .AddMonths(1)
-            .AddTicks(-1);
+    {
+        var firstOfMonth = dateTime.FirstOfMonth();
+
+        return firstOfMonth.Month == 12 && firstOfMonth.Year == 9999
+            ? new System.DateTime(9999, 12, 31, 23, 59, 59, 999, dateTime.Kind).AddTicks(9999)
+            : firstOfMonth.AddMonths(1).AddTicks(-1);
+    }
 
 
 
@@ -114,10 +117,13 @@ public static class DateTimeExtensions
     /// <param name="dateTime">The value to process.</param>
     /// <returns>A new DateTime representing the end of the year.</returns>
     public static System.DateTime EndOfYear(this System.DateTime dateTime)
-        => dateTime
-            .FirstOfYear()
-            .AddYears(1)
-            .AddTicks(-1);
+    {
+        var firstOfYear = dateTime.FirstOfYear();
+
+        return firstOfYear.Year == 9999
+            ? new System.DateTime(9999, 12, 31, 23, 59, 59, 999, dateTime.Kind).AddTicks(9999)
+            : firstOfYear.AddYears(1).AddTicks(-1);
+    }
 
 
 
@@ -143,13 +149,23 @@ public static class DateTimeExtensions
     /// <returns>A new DateTime representing the first of the week.</returns>
     public static System.DateTime FirstOfWeek(this System.DateTime dateTime, DayOfWeek firstDayOfWeek)
     {
-        var firstOfWeek = dateTime;
+        var firstOfWeek = dateTime.Date;
         while (firstOfWeek.DayOfWeek != firstDayOfWeek)
         {
             firstOfWeek = firstOfWeek.AddDays(-1);
         }
 
-        return firstOfWeek;
+        return new System.DateTime
+        (
+            firstOfWeek.Year,
+            firstOfWeek.Month,
+            firstOfWeek.Day,
+            0,
+            0,
+            0,
+            0,
+            dateTime.Kind
+        );
     }
 
 
