@@ -434,3 +434,6 @@ docfx_project/obj/
 # Generated documentation (built by CI/CD)
 docs/*
 !docs/.gitkeep
+
+# Claude Code local settings
+.claude/
