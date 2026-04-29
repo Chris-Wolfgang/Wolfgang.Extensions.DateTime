@@ -8,6 +8,13 @@ on:
   schedule:
     - cron: '0 0 * * 0'  # Weekly on Sunday at midnight UTC
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read  # Default to read-only; the analyze job overrides where required
+
 jobs:
   analyze:
     name: "Security Scan (CodeQL)"
@@ -17,9 +24,16 @@ jobs:
       contents: read
       security-events: write
 
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ 'csharp' ]
+
     steps:
     - name: Checkout repository
       uses: actions/checkout@v6
+      with:
+        persist-credentials: false
 
     - name: Check for C# source code
       id: check-csharp
@@ -65,7 +79,7 @@ jobs:
       if: steps.check-csharp.outputs.has-csharp == 'true'
       uses: github/codeql-action/init@v3
       with:
-        languages: csharp
+        languages: ${{ matrix.language }}
 
     - name: Setup .NET
       if: steps.check-csharp.outputs.has-csharp == 'true'
@@ -116,7 +130,7 @@ jobs:
       if: steps.check-csharp.outputs.has-csharp == 'true'
       uses: github/codeql-action/analyze@v3
       with:
-        category: "/language:csharp"
+        category: "/language:${{matrix.language}}"
 
     - name: Complete Security Scan
       if: always()
