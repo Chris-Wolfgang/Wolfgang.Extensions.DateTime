@@ -1,0 +1,12 @@
+#nullable enable
+Wolfgang.Extensions.DateTime.DateTimeExtensions
+static Wolfgang.Extensions.DateTime.DateTimeExtensions.EndOfMonth(this System.DateTime dateTime) -> System.DateTime
+static Wolfgang.Extensions.DateTime.DateTimeExtensions.EndOfWeek(this System.DateTime dateTime) -> System.DateTime
+static Wolfgang.Extensions.DateTime.DateTimeExtensions.EndOfWeek(this System.DateTime dateTime, System.DayOfWeek firstDayOfWeek) -> System.DateTime
+static Wolfgang.Extensions.DateTime.DateTimeExtensions.EndOfYear(this System.DateTime dateTime) -> System.DateTime
+static Wolfgang.Extensions.DateTime.DateTimeExtensions.FirstOfMonth(this System.DateTime dateTime) -> System.DateTime
+static Wolfgang.Extensions.DateTime.DateTimeExtensions.FirstOfWeek(this System.DateTime dateTime) -> System.DateTime
+static Wolfgang.Extensions.DateTime.DateTimeExtensions.FirstOfWeek(this System.DateTime dateTime, System.DayOfWeek firstDayOfWeek) -> System.DateTime
+static Wolfgang.Extensions.DateTime.DateTimeExtensions.FirstOfYear(this System.DateTime dateTime) -> System.DateTime
+static Wolfgang.Extensions.DateTime.DateTimeExtensions.TruncateMilliseconds(this System.DateTime dateTime) -> System.DateTime
+static Wolfgang.Extensions.DateTime.DateTimeExtensions.TruncateSeconds(this System.DateTime dateTime) -> System.DateTime
