@@ -63,12 +63,19 @@ Run the label setup script once after creating your repository:
 pwsh -File ./scripts/Setup-Labels.ps1
 ```
 
-This creates the following labels used by Dependabot and workflows:
+This creates the labels used by Dependabot and the Maintenance framework.
+The canonical list lives in `scripts/Setup-Labels.ps1`; today it is:
 
-1. `dependabot - security`
-2. `dependabot-dependencies`
-3. `dependencies`
-4. `dotnet`
+- `dependencies` — applied automatically by Dependabot to every update PR.
+- `maintenance` — kind label for the per-repo parent Maintenance issue.
+- `maintenance-task` — kind label for every Maintenance sub-issue.
+- `maintenance - security` — scans, finding fixes, dependency vulnerability audit.
+- `maintenance - performance` — profile, benchmark, optimize, validate.
+- `maintenance - testing` — coverage, integration / smoke / mutation tests.
+- `maintenance - cleanup` — refactor for reuse / quality / efficiency.
+- `maintenance - docs` — XML doc coverage, README, CHANGELOG, samples.
+- `maintenance - API` — public/internal surface audit, breaking-change vigilance.
+- `maintenance - CI/CD` — Docker, CI workflow, build / publish pipeline.
 
 Requires the [GitHub CLI](https://cli.github.com/) to be installed and authenticated (`gh auth login`).
 

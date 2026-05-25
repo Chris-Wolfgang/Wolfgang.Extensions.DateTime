@@ -28,7 +28,7 @@ This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) f
 
 - **GitHub Repository:** [https://github.com/Chris-Wolfgang/DateTime-Extensions](https://github.com/Chris-Wolfgang/DateTime-Extensions)
 - **API Documentation:** https://Chris-Wolfgang.github.io/DateTime-Extensions/
-- **Formatting Guide:** [README-FORMATTING.md](README-FORMATTING.md)
+- **Formatting Guide:** [docs/README-FORMATTING.md](docs/README-FORMATTING.md)
 - **Contributing Guide:** [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ---
@@ -128,7 +128,7 @@ dotnet format
 dotnet format --verify-no-changes
 ```
 
-See [README-FORMATTING.md](README-FORMATTING.md) for detailed formatting guidelines.
+See [docs/README-FORMATTING.md](docs/README-FORMATTING.md) for detailed formatting guidelines.
 
 ### Building Documentation
 
