@@ -9,6 +9,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- `FirstOfQuarter()` / `EndOfQuarter()` extension methods returning the
+  first day (at 00:00) and last tick of the calendar quarter containing
+  the input. Quarters: Q1 Jan-Mar, Q2 Apr-Jun, Q3 Jul-Sep, Q4 Oct-Dec.
+  `EndOfQuarter()` clamps at `DateTime.MaxValue` for Q4 of year 9999.
+- `FirstOfHalf()` / `EndOfHalf()` extension methods returning the
+  first day (at 00:00) and last tick of the calendar half-year
+  containing the input. Halves: H1 Jan-Jun, H2 Jul-Dec. `EndOfHalf()`
+  clamps at `DateTime.MaxValue` for H2 of year 9999.
+- All four new methods preserve the input's `DateTimeKind` and are
+  covered by unit tests across every TFM (Theory cases for all 12
+  input months on Quarter, all 12 on Half, plus boundary + Kind tests)
+  and by gh-pages benchmark chart series.
+
 ### Changed
 
 - Analyzer `PackageReference`s consolidated back into `Directory.Build.props`

@@ -205,4 +205,92 @@ public static class DateTimeExtensions
             ? new System.DateTime(maxTicks, dateTime.Kind)
             : firstOfWeek.AddDays(7).AddTicks(-1);
     }
+
+
+
+    /// <summary>
+    /// Returns a new DateTime that represents the first day of the
+    /// calendar quarter containing the specified DateTime. Quarters are:
+    /// Q1 Jan-Mar, Q2 Apr-Jun, Q3 Jul-Sep, Q4 Oct-Dec.
+    /// </summary>
+    /// <param name="dateTime">The value to process.</param>
+    /// <returns>A new DateTime representing the first of the quarter at 00:00:00.</returns>
+    public static System.DateTime FirstOfQuarter(this System.DateTime dateTime)
+    {
+        var quarterStartMonth = (((dateTime.Month - 1) / 3) * 3) + 1;
+        return new System.DateTime
+        (
+            dateTime.Year,
+            quarterStartMonth,
+            1,
+            0,
+            0,
+            0,
+            0,
+            dateTime.Kind
+        );
+    }
+
+
+
+    /// <summary>
+    /// Returns a new DateTime that represents the last tick of the
+    /// calendar quarter containing the specified DateTime. Clamps at
+    /// <see cref="System.DateTime.MaxValue"/> when the quarter is Q4 of
+    /// year 9999.
+    /// </summary>
+    /// <param name="dateTime">The value to process.</param>
+    /// <returns>A new DateTime representing the end of the quarter.</returns>
+    public static System.DateTime EndOfQuarter(this System.DateTime dateTime)
+    {
+        var firstOfQuarter = dateTime.FirstOfQuarter();
+
+        return firstOfQuarter.Month == 10 && firstOfQuarter.Year == 9999
+            ? new System.DateTime(System.DateTime.MaxValue.Ticks, dateTime.Kind)
+            : firstOfQuarter.AddMonths(3).AddTicks(-1);
+    }
+
+
+
+    /// <summary>
+    /// Returns a new DateTime that represents the first day of the
+    /// calendar half-year containing the specified DateTime. Halves are:
+    /// H1 Jan-Jun, H2 Jul-Dec.
+    /// </summary>
+    /// <param name="dateTime">The value to process.</param>
+    /// <returns>A new DateTime representing the first of the half-year at 00:00:00.</returns>
+    public static System.DateTime FirstOfHalf(this System.DateTime dateTime)
+    {
+        var halfStartMonth = dateTime.Month <= 6 ? 1 : 7;
+        return new System.DateTime
+        (
+            dateTime.Year,
+            halfStartMonth,
+            1,
+            0,
+            0,
+            0,
+            0,
+            dateTime.Kind
+        );
+    }
+
+
+
+    /// <summary>
+    /// Returns a new DateTime that represents the last tick of the
+    /// calendar half-year containing the specified DateTime. Clamps at
+    /// <see cref="System.DateTime.MaxValue"/> when the half is H2 of
+    /// year 9999.
+    /// </summary>
+    /// <param name="dateTime">The value to process.</param>
+    /// <returns>A new DateTime representing the end of the half-year.</returns>
+    public static System.DateTime EndOfHalf(this System.DateTime dateTime)
+    {
+        var firstOfHalf = dateTime.FirstOfHalf();
+
+        return firstOfHalf.Month == 7 && firstOfHalf.Year == 9999
+            ? new System.DateTime(System.DateTime.MaxValue.Ticks, dateTime.Kind)
+            : firstOfHalf.AddMonths(6).AddTicks(-1);
+    }
 }
