@@ -19,11 +19,19 @@ on:
 permissions:
   contents: read
 
-# Serialize benchmark publishes so two pushes to main close together can't race
-# on the gh-pages branch. cancel-in-progress: false — every merge represents a
-# meaningful data point, so we queue rather than discard.
+# Serialize all writes to the gh-pages branch — both within this workflow
+# (two main pushes close together) and across workflows that also publish
+# to gh-pages (docfx.yaml, release.yaml). The shared `gh-pages` group name
+# means GitHub Actions queues any of those jobs behind the others when
+# they overlap, preventing non-fast-forward push failures and lost
+# updates. cancel-in-progress: false — every merge represents a meaningful
+# data point, so we queue rather than discard.
+#
+# NOTE: docfx.yaml and release.yaml currently have no `concurrency:` block,
+# so cross-workflow serialization is only partial today. Adding the same
+# `gh-pages` group to those workflows is tracked as a fleet-wide follow-up.
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: gh-pages
   cancel-in-progress: false
 
 jobs:
