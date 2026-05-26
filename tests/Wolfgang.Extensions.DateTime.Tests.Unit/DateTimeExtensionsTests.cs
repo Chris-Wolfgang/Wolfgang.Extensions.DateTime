@@ -451,7 +451,7 @@ public class DateTimeExtensionsTests
         Assert.Equal(23, result.Hour);
         Assert.Equal(59, result.Minute);
         Assert.Equal(59, result.Second);
-        Assert.Equal(9999999L, result.Ticks % TimeSpan.TicksPerSecond);
+        Assert.Equal(TimeSpan.TicksPerSecond - 1, result.Ticks % TimeSpan.TicksPerSecond);
         Assert.Equal(DateTimeKind.Utc, result.Kind);
     }
 
@@ -530,7 +530,7 @@ public class DateTimeExtensionsTests
         Assert.Equal(23, result.Hour);
         Assert.Equal(59, result.Minute);
         Assert.Equal(59, result.Second);
-        Assert.Equal(9999999L, result.Ticks % TimeSpan.TicksPerSecond);
+        Assert.Equal(TimeSpan.TicksPerSecond - 1, result.Ticks % TimeSpan.TicksPerSecond);
         Assert.Equal(DateTimeKind.Utc, result.Kind);
     }
 
