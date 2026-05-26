@@ -42,7 +42,9 @@
     <File Path="scripts/Setup-GitHubPages.ps1" />
     <File Path="scripts/setup.ps1" />
   </Folder>
-  <Folder Name="/benchmark/" />
+  <Folder Name="/benchmarks/">
+    <Project Path="benchmarks/Wolfgang.Extensions.DateTime.Benchmarks/Wolfgang.Extensions.DateTime.Benchmarks.csproj" />
+  </Folder>
   <Folder Name="/examples/">
     <Project Path="examples/Wolfgang.Extensions.DateTime.DotNet462.Example1/Wolfgang.Extensions.DateTime.DotNet462.Example1.csproj" />
     <Project Path="examples/Wolfgang.Extensions.DateTime.DotNet80.Example1/Wolfgang.Extensions.DateTime.DotNet8.Example1.csproj" />
