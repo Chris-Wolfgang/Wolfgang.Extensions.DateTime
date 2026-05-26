@@ -60,4 +60,18 @@ public class DateTimeExtensionsBenchmarks
 
     [Benchmark]
     public System.DateTime EndOfWeek_Sunday() => Sample.EndOfWeek(DayOfWeek.Sunday);
+
+
+
+    // The parameterless overloads add a `CultureInfo.CurrentCulture
+    // .DateTimeFormat.FirstDayOfWeek` lookup that the explicit-DayOfWeek
+    // overloads above don't exercise. Benchmark separately so a regression
+    // in the culture-lookup path is visible in its own chart series.
+    [Benchmark]
+    public System.DateTime FirstOfWeek_CurrentCulture() => Sample.FirstOfWeek();
+
+
+
+    [Benchmark]
+    public System.DateTime EndOfWeek_CurrentCulture() => Sample.EndOfWeek();
 }
