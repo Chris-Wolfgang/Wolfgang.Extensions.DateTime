@@ -40,6 +40,7 @@ This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) f
 ## 🚀 Quick Start
 
 ```csharp
+using System;                          // DateTime, DayOfWeek
 using Wolfgang.Extensions.DateTime;
 
 var now = DateTime.UtcNow;
@@ -87,6 +88,9 @@ authoritative list (kept in sync with source on every release), see the
 ### Examples
 
 ```csharp
+using System;                          // DateTime, DateTimeKind, DayOfWeek
+using Wolfgang.Extensions.DateTime;
+
 var ts = new DateTime(2026, 5, 26, 13, 45, 30, 123, DateTimeKind.Utc);
 
 ts.TruncateMilliseconds();    // 2026-05-26 13:45:30.000 Utc
