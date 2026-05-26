@@ -86,6 +86,10 @@ authoritative list (kept in sync with source on every release), see the
 | `FirstOfWeek(DayOfWeek firstDayOfWeek)`| Uses the specified first day of the week to locate the week’s starting `DateTime`. |
 | `EndOfWeek()`| Uses the current culture’s first day, calculates the final tick of the week. |
 | `EndOfWeek(DayOfWeek firstDayOfWeek)`| Uses the specified first day, calculates the final tick of the week. |
+| `FirstOfQuarter`| Returns the first day of the calendar quarter (Q1 Jan-Mar, Q2 Apr-Jun, Q3 Jul-Sep, Q4 Oct-Dec) at 00:00. |
+| `EndOfQuarter`| Returns the final tick of the calendar quarter. Clamps at `DateTime.MaxValue` for Q4 of year 9999. |
+| `FirstOfHalf`| Returns the first day of the calendar half-year (H1 Jan-Jun, H2 Jul-Dec) at 00:00. |
+| `EndOfHalf`| Returns the final tick of the calendar half-year. Clamps at `DateTime.MaxValue` for H2 of year 9999. |
 
 
 

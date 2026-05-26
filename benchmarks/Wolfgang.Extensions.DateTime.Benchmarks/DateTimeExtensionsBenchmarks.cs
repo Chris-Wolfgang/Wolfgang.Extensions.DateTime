@@ -74,4 +74,24 @@ public class DateTimeExtensionsBenchmarks
 
     [Benchmark]
     public System.DateTime EndOfWeek_CurrentCulture() => Sample.EndOfWeek();
+
+
+
+    [Benchmark]
+    public System.DateTime FirstOfQuarter() => Sample.FirstOfQuarter();
+
+
+
+    [Benchmark]
+    public System.DateTime EndOfQuarter() => Sample.EndOfQuarter();
+
+
+
+    [Benchmark]
+    public System.DateTime FirstOfHalf() => Sample.FirstOfHalf();
+
+
+
+    [Benchmark]
+    public System.DateTime EndOfHalf() => Sample.EndOfHalf();
 }
