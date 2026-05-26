@@ -880,11 +880,21 @@ jobs:
           $matchedCount   = 0
 
           foreach ($line in (Get-Content "CoverageReport/Summary.txt")) {
-            # Accept extra columns between the module name and the final
-            # percent (ReportGenerator Summary.txt commonly has line +
-            # branch + method coverage on the same row). Take the LAST
-            # percent on the line — that's the overall figure.
-            if ($line -match '^\s*(\S+)\s+.*(\d+(?:\.\d+)?)%\s*$' -and $line -notmatch '^\s*Summary') {
+            # Only consider top-level assembly rows: non-space first char,
+            # whitespace, then the coverage percent at end-of-line.
+            # Matches Stage 1's `^[^ ].*[0-9]+(\.[0-9]+)?%$` filter (which
+            # uses awk $NF for the percent — robust to extra columns).
+            #
+            # Bug previously here: a `.*` between the module name and the
+            # trailing `(\d+)%` was greedy and could eat all but the last
+            # digit of the percent — turning "100" into "0" and failing
+            # the gate on actually-100%-covered modules. Two changes:
+            #  - Anchor on `^(\S+)` so indented sub-class rows are skipped
+            #    (their parent assembly row carries the same number, so
+            #    nothing is lost — and Stage 1 ignores them too).
+            #  - Drop the `.*` and let `\s+` separate the module from the
+            #    final `\d+%` directly.
+            if ($line -match '^(\S+)\s+(\d+(?:\.\d+)?)%\s*$' -and $line -notmatch '^Summary') {
               $module  = $Matches[1]
               $percent = [int][math]::Floor([double]$Matches[2])
               $matchedCount++
