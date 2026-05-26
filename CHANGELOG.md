@@ -11,6 +11,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Analyzer `PackageReference`s consolidated back into `Directory.Build.props`
+  (reverses the v1.2.0 per-project split — see the v1.2.0 entry below). The
+  consolidated location is the single source of truth for the canonical
+  template-sync flow; per-project opt-out is still available via overrides
+  in a project's own csproj.
+
 ### Deprecated
 
 ### Removed
@@ -33,7 +39,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Analyzer `PackageReference`s moved from `Directory.Build.props` into
-  individual csproj files, allowing per-project opt-out where required.
+  individual csproj files for this release (later reverted in
+  `[Unreleased]` — see above — when the canonical template-sync settled
+  on `Directory.Build.props` as the fleet-wide source of truth).
 
 ## [1.1.0] - 2026-03-31
 
