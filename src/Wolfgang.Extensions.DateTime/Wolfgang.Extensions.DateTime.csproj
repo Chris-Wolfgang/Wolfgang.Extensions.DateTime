@@ -8,7 +8,9 @@
 		<Description>A collection of extension methods for DateTime</Description>
 		<PackageProjectUrl>https://github.com/Chris-Wolfgang/DateTime-Extensions</PackageProjectUrl>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<AssemblyVersion>1.0.0</AssemblyVersion>
+		<!-- AssemblyVersion / FileVersion / InformationalVersion derive from
+		     <Version> automatically when not specified, so they stay in lock-step
+		     with the package version instead of going stale. -->
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
