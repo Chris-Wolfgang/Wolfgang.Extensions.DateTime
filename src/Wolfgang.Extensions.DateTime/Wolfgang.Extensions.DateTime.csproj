@@ -10,9 +10,14 @@
 		<RepositoryUrl>https://github.com/Chris-Wolfgang/DateTime-Extensions.git</RepositoryUrl>
 		<PackageTags>dotnet;extensions;datetime;date;time;truncate;firstofmonth;endofmonth;firstofweek;endofweek;firstofyear;endofyear</PackageTags>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<!-- AssemblyVersion / FileVersion / InformationalVersion derive from
-		     <Version> automatically when not specified, so they stay in lock-step
-		     with the package version instead of going stale. -->
+		<!-- AssemblyVersion / FileVersion / InformationalVersion default
+		     from <Version> when not explicitly set, so they track every
+		     <Version> bump automatically instead of going stale. They are
+		     not byte-identical: AssemblyVersion is normalized to a 4-part
+		     System.Version (1.2.0 → 1.2.0.0), and InformationalVersion
+		     can pick up a +<git-sha> suffix under SourceLink. The goal is
+		     "they all reflect the current Version", not "they all match
+		     character-for-character". -->
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
