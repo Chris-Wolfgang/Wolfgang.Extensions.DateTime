@@ -10,8 +10,6 @@
     <File Path="LICENSE" />
     <File Path="LICENSE-SELECTION.md" />
     <File Path="README.md" />
-    <File Path="TEMPLATE-PLACEHOLDERS.md" />
-    <File Path="TEMPLATE-REPO-PLACEHOLDERS-EXPLANATION.md" />
   </Folder>
   <Folder Name="/.root/docs/">
     <File Path="docs/DOCFX-VERSION-PICKER.md" />
