@@ -130,7 +130,7 @@ public static class DateTimeExtensions
     /// <summary>
     /// Returns a new DateTime that represents the first day of the
     /// week specified by the DateTime passed in using the thread's
-    /// CurrentCulture FirstDayOfWeek 
+    /// CurrentCulture FirstDayOfWeek.
     /// </summary>
     /// <param name="dateTime">The value to process.</param>
     /// <returns>A new DateTime representing the first of the week.</returns>
@@ -178,7 +178,7 @@ public static class DateTimeExtensions
     /// <summary>
     /// Returns a new DateTime that represents the last day of the
     /// week specified by the DateTime passed in using the thread's
-    /// CurrentCulture FirstDayOfWeek 
+    /// CurrentCulture FirstDayOfWeek.
     /// </summary>
     /// <param name="dateTime">The value to process.</param>
     /// <returns>A new DateTime representing the end of the week.</returns>
@@ -190,10 +190,10 @@ public static class DateTimeExtensions
     /// <summary>
     /// Returns a new DateTime that represents the last day of the
     /// week specified by the DateTime passed in using the specified
-    /// firstDayOfWeek
+    /// firstDayOfWeek.
     /// </summary>
     /// <param name="dateTime">The value to process.</param>
-    /// <param name="firstDayOfWeek">Specifies the first day of the week. Default is Sunday.</param>
+    /// <param name="firstDayOfWeek">Specifies the first day of the week. Use the parameterless overload to pick up <see cref="CultureInfo.CurrentCulture"/>'s value automatically.</param>
     /// <returns>A new DateTime representing the end of the week.</returns>
     public static System.DateTime EndOfWeek(this System.DateTime dateTime, DayOfWeek firstDayOfWeek)
     {
@@ -205,4 +205,4 @@ public static class DateTimeExtensions
             ? new System.DateTime(maxTicks, dateTime.Kind)
             : firstOfWeek.AddDays(7).AddTicks(-1);
     }
-} 
+}
