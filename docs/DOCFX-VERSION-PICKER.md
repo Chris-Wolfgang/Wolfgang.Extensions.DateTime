@@ -1,129 +1,108 @@
-## 🔧 Troubleshooting: DocFX Version Picker
+# DocFX Version Picker
 
-The DocFX version-switcher dropdown (top-right corner of the docs site) lets readers jump between published versions. If the dropdown is missing, empty, or shows stale entries, work through the checklist below.
-
-### Root Cause Summary
-
-After a repo scan:
-- ✅ **Templates & partials** – no custom `templates/` or `_overwrite/` folder; the project uses DocFX's built-in `default` and `modern` templates unmodified.
-- ✅ **`docfx.json` config** – `_enableVersionDropdown: true`, `_versionScheme: "docfx"`, and a `versioning.groups` block that matches `v*` tags are all present and correct.
-- ⚠️ **Asset cleanup** – the **critical** issue is that `keep_files: true` on every `peaceiris/actions-gh-pages` deploy step means old DocFX static files from a previous build accumulate at the gh-pages root and can conflict with a newer build's file paths, causing the version picker JavaScript to silently fail.
-
-The workflow now includes an explicit **cleanup step** that removes all stale root-level files from `gh-pages` (except version folders such as `v1.0.0/`, the `latest/` alias, `CNAME`, and `.nojekyll`) before the latest docs are deployed.
+The DocFX version-switcher dropdown (top-right of the docs site) lets
+readers jump between published versions. This doc describes how it is
+generated and where to look when it misbehaves.
 
 ---
 
-### `docfx.json` Requirements
+## How it's generated
 
-The following `globalMetadata` keys must be set for the version picker to appear:
+`.github/workflows/docfx.yaml` builds + deploys the docs on every push
+to `main` and on release-tag pushes. The workflow:
 
-```json
-"globalMetadata": {
-  "_enableVersionDropdown": true,
-  "_versionScheme": "docfx"
-}
-```
+1. Builds DocFX into `docfx_project/_site/`.
+2. Generates a fresh `versions.json` from the set of `v*` git tags that
+   actually have versioned docs deployed (D6 derivation; not from a
+   committed file, so it can't go stale).
+3. Pushes the result into the `gh-pages` branch under a git-worktree
+   checkout, replacing the contents of `versions/<tag>/` and
+   `versions/latest/` for the version being deployed while preserving
+   the other version subtrees.
+4. Runs `scripts/Validate-DocsDeploy.sh` to assert the deployed
+   structure before completing.
 
-The `versioning` block that generates per-tag builds must also be present:
-
-```json
-"versioning": {
-  "groups": [
-    { "tags": ["v*"], "version": "{tag}" }
-  ]
-}
-```
+There is no manual cleanup step required — the worktree-based replace
+is deterministic and the validation script catches drift.
 
 ---
 
-### `versions.json` Format
+## Live gh-pages layout
 
-The version picker reads a `versions.json` file from the **site root** (`/versions.json`). This file is generated automatically by the workflow. Its expected format is:
+The current root of the `gh-pages` branch:
+
+```
+gh-pages/
+├── .nojekyll              # disables Jekyll on GitHub Pages
+├── index.html             # version-picker landing page (auto-redirects to latest)
+├── versions.json          # consumed by the picker — list of available versions
+├── api/                   # latest API reference (DocFX-generated)
+├── docs/                  # latest articles (DocFX-generated)
+├── public/                # latest static assets
+├── versions/              # versioned docs tree
+│   ├── latest/            # alias for the most recent release
+│   ├── v1.0.0/
+│   ├── v1.1.0/
+│   └── v1.2.0/
+└── (manifest.json, toc.html, toc.json, xrefmap.yml — DocFX outputs)
+```
+
+Note the `versions/` subdir: every released version lives at
+`/DateTime-Extensions/versions/<tag>/`, NOT at the repo root. This
+matches the URLs in `versions.json`:
 
 ```json
 [
-  { "version": "latest", "url": "/" },
-  { "version": "v1.2.3", "url": "/v1.2.3/" },
-  { "version": "v1.0.0", "url": "/v1.0.0/" }
+  { "version": "latest",  "url": "/DateTime-Extensions/versions/latest/" },
+  { "version": "v1.2.0", "url": "/DateTime-Extensions/versions/v1.2.0/" },
+  { "version": "v1.1.0", "url": "/DateTime-Extensions/versions/v1.1.0/" },
+  { "version": "v1.0.0", "url": "/DateTime-Extensions/versions/v1.0.0/" }
 ]
 ```
 
-If this file is missing or malformed, the dropdown will appear empty or not render at all.
-
 ---
 
-### Expected gh-pages Folder Structure
+## `docfx.json` requirements
 
-```
-gh-pages root/
-├── index.html          ← latest docs landing page
-├── versions.json       ← consumed by the version picker dropdown
-├── .nojekyll           ← disables Jekyll processing on GitHub Pages
-├── CNAME               ← custom domain (if configured)
-├── v1.2.3/             ← versioned docs (keep_files preserves these)
-│   └── index.html
-├── v1.0.0/
-│   └── index.html
-└── latest/             ← stable alias pointing to the latest version
-    └── index.html
+For the picker to render at all, `docfx_project/docfx.json` must include
+in `globalMetadata`:
+
+```json
+"_enableVersionDropdown": true,
+"_versionScheme": "docfx"
 ```
 
----
-
-### Cleaning Up Old Files Manually
-
-If stale files are already present on `gh-pages` and the automated cleanup step has not yet run, you can clean the branch locally:
-
-```bash
-# 1. Check out the gh-pages branch
-git fetch origin gh-pages
-git checkout gh-pages
-
-# 2. Remove all root-level items except versioned folders, CNAME, and .nojekyll
-find . -mindepth 1 -maxdepth 1 \
-  ! -name '.git' \
-  ! -name 'CNAME' \
-  ! -name '.nojekyll' \
-  ! -regex '.*/v[0-9].*' \
-  ! -name 'latest' \
-  -exec rm -rf {} +
-
-# 3. Commit and push
-git add -A
-git commit -m "chore: manual cleanup of stale root DocFX assets"
-git push origin gh-pages
-
-# 4. Return to your working branch
-git checkout main
-```
+These are currently set in the repo's docfx.json and verified by the
+workflow.
 
 ---
 
-### Post-Deploy Validation
+## Troubleshooting
 
-Use the included validation script to verify the gh-pages branch after deployment:
+| Symptom | Likely cause | Where to look |
+|---|---|---|
+| Dropdown missing entirely | `_enableVersionDropdown` not set or DocFX template changed | `docfx_project/docfx.json` |
+| Dropdown empty | `versions.json` missing from gh-pages root or invalid JSON | Last `docfx.yaml` run's "Generate versions.json" step |
+| Dropdown shows the wrong versions | `versions.json` doesn't reflect the actual `versions/` subtree | The D6 preservation guard would normally fail-fast on this; check the workflow run logs |
+| Version link 404s | `versions/<tag>/` not deployed for that tag | Re-run docfx.yaml with `workflow_dispatch` and the tag as input |
 
-```bash
-bash scripts/Validate-DocsDeploy.sh
-```
-
-The script checks that:
-- `index.html` exists at root
-- `versions.json` exists at root and has the correct structure
-- `.nojekyll` is present
-- Every version referenced in `versions.json` has a corresponding folder with an `index.html`
-- No known stale DocFX artifacts remain at root
-
----
-
-### Common Issues
-
-| Symptom | Likely Cause | Fix |
-|---------|-------------|-----|
-| Dropdown not visible at all | `_enableVersionDropdown` not set to `true` | Add `"_enableVersionDropdown": true` to `docfx.json` `globalMetadata` |
-| Dropdown visible but empty | `versions.json` missing from site root | Re-run the workflow; verify the "Generate versions.json" step succeeded |
-| Dropdown shows wrong versions | `versions.json` is stale | Trigger a new deployment to regenerate `versions.json` from current git tags |
-| Version link returns 404 | Version folder missing from gh-pages | Redeploy that version tag via `workflow_dispatch` with `deploy_as_latest: false` |
-| Picker JS fails silently | Old JS/CSS files from a previous build conflict with new build | Run the cleanup step or the manual cleanup commands above |
+For any of these, the first stop is the **most recent `docfx.yaml` workflow
+run** — every step writes diagnostic output and the workflow fails fast
+on drift. The Validate-DocsDeploy.sh script run at the end of every
+deploy catches structural issues before they become visible to readers.
 
 ---
+
+## Manual recovery (last resort)
+
+If gh-pages somehow ends up in an inconsistent state that the workflow
+can't recover from, **do not run a manual cleanup against the gh-pages
+root** — every versioned subtree under `versions/` is unrecoverable
+once deleted (the source git tag still exists, but the rendered HTML
+would have to be regenerated by running docfx.yaml once per tag via
+`workflow_dispatch`).
+
+The safest recovery path is to re-run `docfx.yaml` with
+`workflow_dispatch` for each affected version tag in turn (oldest
+first). The workflow's worktree-based replace will rebuild
+`versions/<tag>/` cleanly without affecting the others.
