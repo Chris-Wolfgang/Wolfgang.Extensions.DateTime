@@ -2,6 +2,10 @@
 
 A collection of extension methods for `DateTime` data type in .Net
 
+[![NuGet](https://img.shields.io/nuget/v/Wolfgang.Extensions.DateTime.svg?logo=nuget&label=NuGet)](https://www.nuget.org/packages/Wolfgang.Extensions.DateTime)
+[![NuGet downloads](https://img.shields.io/nuget/dt/Wolfgang.Extensions.DateTime.svg?logo=nuget&label=downloads)](https://www.nuget.org/packages/Wolfgang.Extensions.DateTime)
+[![PR build](https://img.shields.io/github/actions/workflow/status/Chris-Wolfgang/DateTime-Extensions/pr.yaml?branch=main&label=PR%20build&logo=github)](https://github.com/Chris-Wolfgang/DateTime-Extensions/actions/workflows/pr.yaml)
+[![Release](https://img.shields.io/github/actions/workflow/status/Chris-Wolfgang/DateTime-Extensions/release.yaml?label=release&logo=github)](https://github.com/Chris-Wolfgang/DateTime-Extensions/actions/workflows/release.yaml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![.NET](https://img.shields.io/badge/.NET-Multi--Targeted-purple.svg)](https://dotnet.microsoft.com/)
 [![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?logo=github)](https://github.com/Chris-Wolfgang/DateTime-Extensions)
@@ -123,17 +127,18 @@ boundary fixes.
 
 ## 🔍 Code Quality & Static Analysis
 
-This project enforces **strict code quality standards** through **7 specialized analyzers** and custom async-first rules:
+This project enforces **strict code quality standards** through **8 specialized analyzers**, an `<TreatWarningsAsErrors>true</TreatWarningsAsErrors>` Release gate, and custom async-first rules:
 
 ### Analyzers in Use
 
-1. **Microsoft.CodeAnalysis.NetAnalyzers** - Built-in .NET analyzers for correctness and performance
-2. **Roslynator.Analyzers** - Advanced refactoring and code quality rules
-3. **AsyncFixer** - Async/await best practices and anti-pattern detection
-4. **Microsoft.VisualStudio.Threading.Analyzers** - Thread safety and async patterns
-5. **Microsoft.CodeAnalysis.BannedApiAnalyzers** - Prevents usage of banned synchronous APIs
-6. **Meziantou.Analyzer** - Comprehensive code quality rules
-7. **SonarAnalyzer.CSharp** - Industry-standard code analysis
+1. **Microsoft.CodeAnalysis.NetAnalyzers** — Built-in .NET analyzers for correctness and performance
+2. **Roslynator.Analyzers** — Advanced refactoring and code quality rules
+3. **AsyncFixer** — Async/await best practices and anti-pattern detection
+4. **Microsoft.VisualStudio.Threading.Analyzers** — Thread safety and async patterns
+5. **Microsoft.CodeAnalysis.BannedApiAnalyzers** — Prevents usage of banned synchronous APIs (see `BannedSymbols.txt`)
+6. **Meziantou.Analyzer** — Comprehensive code quality rules
+7. **SonarAnalyzer.CSharp** — Industry-standard code analysis
+8. **Microsoft.CodeAnalysis.PublicApiAnalyzers** — Tracks the public API surface via `PublicAPI.Shipped.txt` / `PublicAPI.Unshipped.txt`; surfaces additions/removals at compile time as a breaking-change review gate
 
 
 ---
