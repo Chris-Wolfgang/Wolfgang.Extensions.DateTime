@@ -398,4 +398,164 @@ public class DateTimeExtensionsTests
 
         Assert.Equal(System.DateTimeKind.Local, result.Kind);
     }
+
+
+
+    // ----- FirstOfQuarter / EndOfQuarter -----
+
+    [Theory]
+    [InlineData(1,  1)]   // Jan → Q1 starts Jan 1
+    [InlineData(2,  1)]   // Feb → Q1
+    [InlineData(3,  1)]   // Mar → Q1
+    [InlineData(4,  4)]   // Apr → Q2 starts Apr 1
+    [InlineData(5,  4)]
+    [InlineData(6,  4)]
+    [InlineData(7,  7)]   // Jul → Q3
+    [InlineData(8,  7)]
+    [InlineData(9,  7)]
+    [InlineData(10, 10)]  // Oct → Q4
+    [InlineData(11, 10)]
+    [InlineData(12, 10)]
+    public void FirstOfQuarter_returns_the_first_day_of_the_quarter(int inputMonth, int expectedQuarterStartMonth)
+    {
+        var input = new DateTime(2026, inputMonth, 15, 14, 30, 45, 123, DateTimeKind.Utc);
+
+        var result = input.FirstOfQuarter();
+
+        Assert.Equal(2026, result.Year);
+        Assert.Equal(expectedQuarterStartMonth, result.Month);
+        Assert.Equal(1, result.Day);
+        Assert.Equal(0, result.Hour);
+        Assert.Equal(0, result.Minute);
+        Assert.Equal(0, result.Second);
+        Assert.Equal(0, result.Millisecond);
+        Assert.Equal(DateTimeKind.Utc, result.Kind);
+    }
+
+
+
+    [Theory]
+    [InlineData(1,  3,  31)]   // Q1 ends Mar 31
+    [InlineData(4,  6,  30)]   // Q2 ends Jun 30
+    [InlineData(7,  9,  30)]   // Q3 ends Sep 30
+    [InlineData(10, 12, 31)]   // Q4 ends Dec 31
+    public void EndOfQuarter_returns_the_last_tick_of_the_quarter(int inputMonth, int expectedEndMonth, int expectedEndDay)
+    {
+        var input = new DateTime(2026, inputMonth, 1, 0, 0, 0, DateTimeKind.Utc);
+
+        var result = input.EndOfQuarter();
+
+        Assert.Equal(2026, result.Year);
+        Assert.Equal(expectedEndMonth, result.Month);
+        Assert.Equal(expectedEndDay, result.Day);
+        Assert.Equal(23, result.Hour);
+        Assert.Equal(59, result.Minute);
+        Assert.Equal(59, result.Second);
+        Assert.Equal(TimeSpan.TicksPerSecond - 1, result.Ticks % TimeSpan.TicksPerSecond);
+        Assert.Equal(DateTimeKind.Utc, result.Kind);
+    }
+
+
+
+    [Fact]
+    public void EndOfQuarter_when_DateTime_MaxValue_clamps_to_MaxValue()
+    {
+        var input = new DateTime(9999, 11, 15, 10, 0, 0, DateTimeKind.Utc);
+
+        var result = input.EndOfQuarter();
+
+        Assert.Equal(DateTime.MaxValue.Ticks, result.Ticks);
+        Assert.Equal(DateTimeKind.Utc, result.Kind);
+    }
+
+
+
+    [Fact]
+    public void FirstOfQuarter_preserves_Kind()
+    {
+        var input = new DateTime(2026, 5, 15, 0, 0, 0, DateTimeKind.Local);
+
+        var result = input.FirstOfQuarter();
+
+        Assert.Equal(DateTimeKind.Local, result.Kind);
+    }
+
+
+
+    // ----- FirstOfHalf / EndOfHalf -----
+
+    [Theory]
+    [InlineData(1,  1)]   // Jan → H1
+    [InlineData(2,  1)]
+    [InlineData(3,  1)]
+    [InlineData(4,  1)]
+    [InlineData(5,  1)]
+    [InlineData(6,  1)]
+    [InlineData(7,  7)]   // Jul → H2
+    [InlineData(8,  7)]
+    [InlineData(9,  7)]
+    [InlineData(10, 7)]
+    [InlineData(11, 7)]
+    [InlineData(12, 7)]
+    public void FirstOfHalf_returns_the_first_day_of_the_half_year(int inputMonth, int expectedHalfStartMonth)
+    {
+        var input = new DateTime(2026, inputMonth, 15, 14, 30, 45, 123, DateTimeKind.Utc);
+
+        var result = input.FirstOfHalf();
+
+        Assert.Equal(2026, result.Year);
+        Assert.Equal(expectedHalfStartMonth, result.Month);
+        Assert.Equal(1, result.Day);
+        Assert.Equal(0, result.Hour);
+        Assert.Equal(0, result.Minute);
+        Assert.Equal(0, result.Second);
+        Assert.Equal(0, result.Millisecond);
+        Assert.Equal(DateTimeKind.Utc, result.Kind);
+    }
+
+
+
+    [Theory]
+    [InlineData(1, 6,  30)]   // H1 ends Jun 30
+    [InlineData(7, 12, 31)]   // H2 ends Dec 31
+    public void EndOfHalf_returns_the_last_tick_of_the_half_year(int inputMonth, int expectedEndMonth, int expectedEndDay)
+    {
+        var input = new DateTime(2026, inputMonth, 1, 0, 0, 0, DateTimeKind.Utc);
+
+        var result = input.EndOfHalf();
+
+        Assert.Equal(2026, result.Year);
+        Assert.Equal(expectedEndMonth, result.Month);
+        Assert.Equal(expectedEndDay, result.Day);
+        Assert.Equal(23, result.Hour);
+        Assert.Equal(59, result.Minute);
+        Assert.Equal(59, result.Second);
+        Assert.Equal(TimeSpan.TicksPerSecond - 1, result.Ticks % TimeSpan.TicksPerSecond);
+        Assert.Equal(DateTimeKind.Utc, result.Kind);
+    }
+
+
+
+    [Fact]
+    public void EndOfHalf_when_DateTime_MaxValue_clamps_to_MaxValue()
+    {
+        var input = new DateTime(9999, 9, 15, 10, 0, 0, DateTimeKind.Utc);
+
+        var result = input.EndOfHalf();
+
+        Assert.Equal(DateTime.MaxValue.Ticks, result.Ticks);
+        Assert.Equal(DateTimeKind.Utc, result.Kind);
+    }
+
+
+
+    [Fact]
+    public void FirstOfHalf_preserves_Kind()
+    {
+        var input = new DateTime(2026, 8, 15, 0, 0, 0, DateTimeKind.Local);
+
+        var result = input.FirstOfHalf();
+
+        Assert.Equal(DateTimeKind.Local, result.Kind);
+    }
 }

@@ -3,12 +3,21 @@
 	<PropertyGroup>
 		<TargetFrameworks>net462;netstandard2.0;net8.0;net10.0</TargetFrameworks>
 		<LangVersion>14</LangVersion>
-		<Version>1.2.0</Version>
+		<Version>1.3.0</Version>
 		<Title>$(AssemblyName)</Title>
 		<Description>A collection of extension methods for DateTime</Description>
 		<PackageProjectUrl>https://github.com/Chris-Wolfgang/DateTime-Extensions</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/Chris-Wolfgang/DateTime-Extensions.git</RepositoryUrl>
+		<PackageTags>dotnet;extensions;datetime;date;time;truncate;firstofmonth;endofmonth;firstofweek;endofweek;firstofyear;endofyear</PackageTags>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<AssemblyVersion>1.0.0</AssemblyVersion>
+		<!-- AssemblyVersion / FileVersion / InformationalVersion default
+		     from <Version> when not explicitly set, so they track every
+		     <Version> bump automatically instead of going stale. They are
+		     not byte-identical: AssemblyVersion is normalized to a 4-part
+		     System.Version (1.2.0 → 1.2.0.0), and InformationalVersion
+		     can pick up a +<git-sha> suffix under SourceLink. The goal is
+		     "they all reflect the current Version", not "they all match
+		     character-for-character". -->
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>

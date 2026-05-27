@@ -2,6 +2,10 @@
 
 A collection of extension methods for `DateTime` data type in .Net
 
+[![NuGet](https://img.shields.io/nuget/v/Wolfgang.Extensions.DateTime.svg?logo=nuget&label=NuGet)](https://www.nuget.org/packages/Wolfgang.Extensions.DateTime)
+[![NuGet downloads](https://img.shields.io/nuget/dt/Wolfgang.Extensions.DateTime.svg?logo=nuget&label=downloads)](https://www.nuget.org/packages/Wolfgang.Extensions.DateTime)
+[![PR build](https://img.shields.io/github/actions/workflow/status/Chris-Wolfgang/DateTime-Extensions/pr.yaml?branch=main&label=PR%20build&logo=github)](https://github.com/Chris-Wolfgang/DateTime-Extensions/actions/workflows/pr.yaml)
+[![Release](https://img.shields.io/github/actions/workflow/status/Chris-Wolfgang/DateTime-Extensions/release.yaml?label=release&logo=github)](https://github.com/Chris-Wolfgang/DateTime-Extensions/actions/workflows/release.yaml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![.NET](https://img.shields.io/badge/.NET-Multi--Targeted-purple.svg)](https://dotnet.microsoft.com/)
 [![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?logo=github)](https://github.com/Chris-Wolfgang/DateTime-Extensions)
@@ -28,22 +32,48 @@ This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) f
 
 - **GitHub Repository:** [https://github.com/Chris-Wolfgang/DateTime-Extensions](https://github.com/Chris-Wolfgang/DateTime-Extensions)
 - **API Documentation:** https://Chris-Wolfgang.github.io/DateTime-Extensions/
-- **Formatting Guide:** [README-FORMATTING.md](README-FORMATTING.md)
+- **CHANGELOG:** [CHANGELOG.md](CHANGELOG.md)
 - **Contributing Guide:** [CONTRIBUTING.md](CONTRIBUTING.md)
+- **Formatting Guide:** [docs/README-FORMATTING.md](docs/README-FORMATTING.md)
+- **DocFX Version Picker Troubleshooting:** [docs/DOCFX-VERSION-PICKER.md](docs/DOCFX-VERSION-PICKER.md)
+- **Release Workflow Setup:** [docs/RELEASE-WORKFLOW-SETUP.md](docs/RELEASE-WORKFLOW-SETUP.md)
+- **Workflow Security:** [docs/WORKFLOW_SECURITY.md](docs/WORKFLOW_SECURITY.md)
 
 ---
 
 ## 🚀 Quick Start
 
+```csharp
+using System;                          // DateTime, DayOfWeek
+using Wolfgang.Extensions.DateTime;
 
+var now = DateTime.UtcNow;
+
+now.TruncateMilliseconds();          // strips fractional seconds
+now.TruncateSeconds();               // rounds down to the minute
+now.FirstOfMonth();                  // → first day of this month, 00:00:00
+now.EndOfMonth();                    // → last tick of this month
+now.FirstOfYear();                   // → January 1 of this year, 00:00:00
+now.EndOfYear();                     // → last tick of this year
+now.FirstOfWeek();                   // → first day of the week (current culture)
+now.FirstOfWeek(DayOfWeek.Monday);   // → first day of the week (explicit)
+now.EndOfWeek();                     // → last tick of the week (current culture)
+now.EndOfWeek(DayOfWeek.Monday);     // → last tick of the week (explicit)
+```
+
+All methods are pure: they return a new `DateTime` and never mutate the input. The
+returned value preserves the original's `DateTimeKind` (Utc / Local / Unspecified)
+unless explicitly noted.
 
 ---
 
 ## ✨ Features
 
-**Note:** These are the methods present at the time the documentation was last updated. For a complete list of methods, see the [API documentation](https://Chris-Wolfgang.github.io/DateTime-Extensions/api/Wolfgang.Extensions.DateTime.DateTimeExtensions.html).
+The table below is a snapshot of the public API at the time of writing. For the
+authoritative list (kept in sync with source on every release), see the
+[API documentation](https://Chris-Wolfgang.github.io/DateTime-Extensions/api/Wolfgang.Extensions.DateTime.DateTimeExtensions.html).
 
-## Methods
+### Methods
 | Method | Description |
 |--------|-------------|
 | `TruncateMilliseconds` | Removes fractional seconds, returning a DateTime accurate to the whole second. |
@@ -56,10 +86,36 @@ This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) f
 | `FirstOfWeek(DayOfWeek firstDayOfWeek)`| Uses the specified first day of the week to locate the week’s starting `DateTime`. |
 | `EndOfWeek()`| Uses the current culture’s first day, calculates the final tick of the week. |
 | `EndOfWeek(DayOfWeek firstDayOfWeek)`| Uses the specified first day, calculates the final tick of the week. |
+| `FirstOfQuarter`| Returns the first day of the calendar quarter (Q1 Jan-Mar, Q2 Apr-Jun, Q3 Jul-Sep, Q4 Oct-Dec) at 00:00. |
+| `EndOfQuarter`| Returns the final tick of the calendar quarter. Clamps at `DateTime.MaxValue` for Q4 of year 9999. |
+| `FirstOfHalf`| Returns the first day of the calendar half-year (H1 Jan-Jun, H2 Jul-Dec) at 00:00. |
+| `EndOfHalf`| Returns the final tick of the calendar half-year. Clamps at `DateTime.MaxValue` for H2 of year 9999. |
 
 
 
-**Examples:**
+### Examples
+
+```csharp
+using System;                          // DateTime, DateTimeKind, DayOfWeek
+using Wolfgang.Extensions.DateTime;
+
+var ts = new DateTime(2026, 5, 26, 13, 45, 30, 123, DateTimeKind.Utc);
+
+ts.TruncateMilliseconds();    // 2026-05-26 13:45:30.000 Utc
+ts.TruncateSeconds();         // 2026-05-26 13:45:00.000 Utc
+ts.FirstOfMonth();            // 2026-05-01 00:00:00.000 Utc
+ts.EndOfMonth();              // 2026-05-31 23:59:59.9999999 Utc
+ts.FirstOfYear();             // 2026-01-01 00:00:00.000 Utc
+ts.EndOfYear();               // 2026-12-31 23:59:59.9999999 Utc
+
+ts.FirstOfWeek(DayOfWeek.Sunday); // 2026-05-24 00:00:00.000 Utc
+ts.EndOfWeek(DayOfWeek.Sunday);   // 2026-05-30 23:59:59.9999999 Utc
+```
+
+Boundary safety: `EndOfMonth`/`EndOfYear`/`EndOfWeek` clamp at
+`DateTime.MaxValue` instead of throwing; `FirstOfWeek` clamps at
+`DateTime.MinValue`. See [CHANGELOG.md](CHANGELOG.md) v1.2.0 for the
+boundary fixes.
 
 ---
 
@@ -75,17 +131,18 @@ This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) f
 
 ## 🔍 Code Quality & Static Analysis
 
-This project enforces **strict code quality standards** through **7 specialized analyzers** and custom async-first rules:
+This project enforces **strict code quality standards** through **8 specialized analyzers**, an `<TreatWarningsAsErrors>true</TreatWarningsAsErrors>` Release gate, and custom async-first rules:
 
 ### Analyzers in Use
 
-1. **Microsoft.CodeAnalysis.NetAnalyzers** - Built-in .NET analyzers for correctness and performance
-2. **Roslynator.Analyzers** - Advanced refactoring and code quality rules
-3. **AsyncFixer** - Async/await best practices and anti-pattern detection
-4. **Microsoft.VisualStudio.Threading.Analyzers** - Thread safety and async patterns
-5. **Microsoft.CodeAnalysis.BannedApiAnalyzers** - Prevents usage of banned synchronous APIs
-6. **Meziantou.Analyzer** - Comprehensive code quality rules
-7. **SonarAnalyzer.CSharp** - Industry-standard code analysis
+1. **Microsoft.CodeAnalysis.NetAnalyzers** — Built-in .NET analyzers for correctness and performance
+2. **Roslynator.Analyzers** — Advanced refactoring and code quality rules
+3. **AsyncFixer** — Async/await best practices and anti-pattern detection
+4. **Microsoft.VisualStudio.Threading.Analyzers** — Thread safety and async patterns
+5. **Microsoft.CodeAnalysis.BannedApiAnalyzers** — Prevents usage of banned synchronous APIs (see `BannedSymbols.txt`)
+6. **Meziantou.Analyzer** — Comprehensive code quality rules
+7. **SonarAnalyzer.CSharp** — Industry-standard code analysis
+8. **Microsoft.CodeAnalysis.PublicApiAnalyzers** — Tracks the public API surface via `PublicAPI.Shipped.txt` / `PublicAPI.Unshipped.txt`; surfaces additions/removals at compile time as a breaking-change review gate
 
 
 ---
@@ -93,7 +150,7 @@ This project enforces **strict code quality standards** through **7 specialized 
 ## 🛠️ Building from Source
 
 ### Prerequisites
-- [.NET 8.0 SDK](https://dotnet.microsoft.com/download) or later
+- [.NET 10.0 SDK](https://dotnet.microsoft.com/download) — required for the modern build / test / pack flow used by CI
 - Optional: [PowerShell Core](https://github.com/PowerShell/PowerShell) for formatting scripts
 
 ### Build Steps
@@ -128,7 +185,7 @@ dotnet format
 dotnet format --verify-no-changes
 ```
 
-See [README-FORMATTING.md](README-FORMATTING.md) for detailed formatting guidelines.
+See [docs/README-FORMATTING.md](docs/README-FORMATTING.md) for detailed formatting guidelines.
 
 ### Building Documentation
 
@@ -166,135 +223,6 @@ docfx build --serve
 
 ---
 
-## 🔧 Troubleshooting: DocFX Version Picker
-
-The DocFX version-switcher dropdown (top-right corner of the docs site) lets readers jump between published versions. If the dropdown is missing, empty, or shows stale entries, work through the checklist below.
-
-### Root Cause Summary
-
-After a repo scan:
-- ✅ **Templates & partials** – no custom `templates/` or `_overwrite/` folder; the project uses DocFX's built-in `default` and `modern` templates unmodified.
-- ✅ **`docfx.json` config** – `_enableVersionDropdown: true`, `_versionScheme: "docfx"`, and a `versioning.groups` block that matches `v*` tags are all present and correct.
-- ⚠️ **Asset cleanup** – the **critical** issue is that `keep_files: true` on every `peaceiris/actions-gh-pages` deploy step means old DocFX static files from a previous build accumulate at the gh-pages root and can conflict with a newer build's file paths, causing the version picker JavaScript to silently fail.
-
-The workflow now includes an explicit **cleanup step** that removes all stale root-level files from `gh-pages` (except version folders such as `v1.0.0/`, the `latest/` alias, `CNAME`, and `.nojekyll`) before the latest docs are deployed.
-
----
-
-### `docfx.json` Requirements
-
-The following `globalMetadata` keys must be set for the version picker to appear:
-
-```json
-"globalMetadata": {
-  "_enableVersionDropdown": true,
-  "_versionScheme": "docfx"
-}
-```
-
-The `versioning` block that generates per-tag builds must also be present:
-
-```json
-"versioning": {
-  "groups": [
-    { "tags": ["v*"], "version": "{tag}" }
-  ]
-}
-```
-
----
-
-### `versions.json` Format
-
-The version picker reads a `versions.json` file from the **site root** (`/versions.json`). This file is generated automatically by the workflow. Its expected format is:
-
-```json
-[
-  { "version": "latest", "url": "/" },
-  { "version": "v1.2.3", "url": "/v1.2.3/" },
-  { "version": "v1.0.0", "url": "/v1.0.0/" }
-]
-```
-
-If this file is missing or malformed, the dropdown will appear empty or not render at all.
-
----
-
-### Expected gh-pages Folder Structure
-
-```
-gh-pages root/
-├── index.html          ← latest docs landing page
-├── versions.json       ← consumed by the version picker dropdown
-├── .nojekyll           ← disables Jekyll processing on GitHub Pages
-├── CNAME               ← custom domain (if configured)
-├── v1.2.3/             ← versioned docs (keep_files preserves these)
-│   └── index.html
-├── v1.0.0/
-│   └── index.html
-└── latest/             ← stable alias pointing to the latest version
-    └── index.html
-```
-
----
-
-### Cleaning Up Old Files Manually
-
-If stale files are already present on `gh-pages` and the automated cleanup step has not yet run, you can clean the branch locally:
-
-```bash
-# 1. Check out the gh-pages branch
-git fetch origin gh-pages
-git checkout gh-pages
-
-# 2. Remove all root-level items except versioned folders, CNAME, and .nojekyll
-find . -mindepth 1 -maxdepth 1 \
-  ! -name '.git' \
-  ! -name 'CNAME' \
-  ! -name '.nojekyll' \
-  ! -regex '.*/v[0-9].*' \
-  ! -name 'latest' \
-  -exec rm -rf {} +
-
-# 3. Commit and push
-git add -A
-git commit -m "chore: manual cleanup of stale root DocFX assets"
-git push origin gh-pages
-
-# 4. Return to your working branch
-git checkout main
-```
-
----
-
-### Post-Deploy Validation
-
-Use the included validation script to verify the gh-pages branch after deployment:
-
-```bash
-bash scripts/Validate-DocsDeploy.sh
-```
-
-The script checks that:
-- `index.html` exists at root
-- `versions.json` exists at root and has the correct structure
-- `.nojekyll` is present
-- Every version referenced in `versions.json` has a corresponding folder with an `index.html`
-- No known stale DocFX artifacts remain at root
-
----
-
-### Common Issues
-
-| Symptom | Likely Cause | Fix |
-|---------|-------------|-----|
-| Dropdown not visible at all | `_enableVersionDropdown` not set to `true` | Add `"_enableVersionDropdown": true` to `docfx.json` `globalMetadata` |
-| Dropdown visible but empty | `versions.json` missing from site root | Re-run the workflow; verify the "Generate versions.json" step succeeded |
-| Dropdown shows wrong versions | `versions.json` is stale | Trigger a new deployment to regenerate `versions.json` from current git tags |
-| Version link returns 404 | Version folder missing from gh-pages | Redeploy that version tag via `workflow_dispatch` with `deploy_as_latest: false` |
-| Picker JS fails silently | Old JS/CSS files from a previous build conflict with new build | Run the cleanup step or the manual cleanup commands above |
-
----
 
 ## 🤝 Contributing
 
@@ -303,11 +231,3 @@ Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for:
 - Build and test instructions
 - Pull request guidelines
 - Analyzer configuration details
-
----
-
-
-## 🙏 Acknowledgments
-
-
-
