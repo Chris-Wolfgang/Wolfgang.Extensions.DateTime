@@ -437,3 +437,6 @@ docs/*
 
 # Claude Code local settings
 .claude/
+
+# DocFX-generated API YAML files (docfx metadata writes them; not tracked)
+docfx_project/api/*.yml
