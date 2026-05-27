@@ -29,7 +29,12 @@
             versionsUrl = '/versions.json';
         }
 
-        fetch(versionsUrl, { cache: 'no-store' })
+        // Use the browser's default caching policy: versions.json changes
+        // infrequently (only on a new release deploy) so forcing a network
+        // request on every page view is wasteful. The workflow emits the
+        // file with normal HTTP cache headers; the browser handles
+        // conditional revalidation correctly.
+        fetch(versionsUrl)
             .then(function (r) { return r.ok ? r.json() : null; })
             .then(function (data) {
                 if (!data || !Array.isArray(data) || data.length === 0) {
@@ -77,6 +82,7 @@
             'opacity: 0.85'
         ].join('; ');
 
+        var optionCount = 0;
         versions.forEach(function (v) {
             if (!v || !v.version || !v.url) return;
             // Skip the "latest" alias — the highest-numbered v* entry
@@ -99,7 +105,13 @@
             opt.style.backgroundColor = 'var(--bs-body-bg, Canvas)';
             opt.style.color = 'var(--bs-body-color, CanvasText)';
             select.appendChild(opt);
+            optionCount++;
         });
+
+        // No selectable versions (e.g. versions.json contained only the
+        // "latest" alias, or all entries were malformed) — don't insert
+        // an empty dropdown.
+        if (optionCount === 0) return;
 
         select.addEventListener('change', function (e) {
             var target = e.target.value;
@@ -118,28 +130,34 @@
         });
 
         // Insert into the DocFX modern-template navbar.
-        // Anchor preferences (in order): the theme toggle (#mode), then the
-        // navbar `.navbar-nav` group, then the search box, then any nav-
-        // related element under <header>. The first match wins.
+        // Anchors are pairs of [selector, mode]:
+        //   - "before" inserts the picker as a sibling immediately before
+        //     the matched element (preferred for the theme toggle / nav
+        //     groups / search box — keeps the picker inline with them).
+        //   - "append" inserts the picker as the LAST child of the matched
+        //     element (used for the <header> fallback so the picker lands
+        //     INSIDE the header, not as a sibling under <html>).
+        // First match wins.
         var anchors = [
-            'header #mode',
-            'header .navbar-nav',
-            'header form[role="search"]',
-            'header nav',
-            'header'
+            ['header #mode', 'before'],
+            ['header .navbar-nav', 'before'],
+            ['header form[role="search"]', 'before'],
+            ['header nav', 'append'],
+            ['header', 'append']
         ];
         var inserted = false;
         for (var i = 0; i < anchors.length; i++) {
-            var anchor = document.querySelector(anchors[i]);
-            if (anchor) {
-                if (anchor.parentNode) {
-                    anchor.parentNode.insertBefore(select, anchor);
-                } else {
-                    anchor.appendChild(select);
-                }
-                inserted = true;
-                break;
+            var sel = anchors[i][0];
+            var mode = anchors[i][1];
+            var anchor = document.querySelector(sel);
+            if (!anchor) continue;
+            if (mode === 'before' && anchor.parentNode) {
+                anchor.parentNode.insertBefore(select, anchor);
+            } else {
+                anchor.appendChild(select);
             }
+            inserted = true;
+            break;
         }
         if (!inserted) {
             // Last-resort fallback — pin to top-right.
