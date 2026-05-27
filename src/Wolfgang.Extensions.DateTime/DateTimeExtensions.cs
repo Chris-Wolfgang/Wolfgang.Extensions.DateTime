@@ -13,10 +13,12 @@ public static class DateTimeExtensions
     /// <summary>
     /// Returns the midnight DateTime for a specific year/month/day with the
     /// given Kind. Centralises the 8-parameter <see cref="System.DateTime"/>
-    /// constructor pattern used by the four <c>FirstOf*</c> boundary methods
-    /// that return a midnight value (<see cref="FirstOfMonth"/>,
+    /// constructor pattern used by every <c>FirstOf*</c> boundary method
+    /// that returns a midnight value: <see cref="FirstOfMonth"/>,
     /// <see cref="FirstOfYear"/>, <see cref="FirstOfQuarter"/>,
-    /// <see cref="FirstOfHalf"/>).
+    /// <see cref="FirstOfHalf"/>, and the explicit-DayOfWeek overload of
+    /// <c>FirstOfWeek</c> (the parameterless overload just delegates to
+    /// that one via the current culture's <c>FirstDayOfWeek</c>).
     /// </summary>
     private static System.DateTime MidnightOf(int year, int month, int day, DateTimeKind kind)
         => new(year, month, day, 0, 0, 0, 0, kind);
