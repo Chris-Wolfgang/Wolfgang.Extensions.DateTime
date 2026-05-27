@@ -1,43 +1,68 @@
-# DocFX Version Picker
+# DocFX Version Selector — Current State
 
-The DocFX version-switcher dropdown (top-right of the docs site) lets
-readers jump between published versions. This doc describes how it is
-generated and where to look when it misbehaves.
-
----
-
-## How it's generated
-
-`.github/workflows/docfx.yaml` builds + deploys the docs on every push
-to `main` and on release-tag pushes. The workflow:
-
-1. Builds DocFX into `docfx_project/_site/`.
-2. Generates a fresh `versions.json` from the set of `v*` git tags that
-   actually have versioned docs deployed (D6 derivation; not from a
-   committed file, so it can't go stale).
-3. Pushes the result into the `gh-pages` branch under a git-worktree
-   checkout, replacing the contents of `versions/<tag>/` and
-   `versions/latest/` for the version being deployed while preserving
-   the other version subtrees.
-4. Runs `scripts/Validate-DocsDeploy.sh` to assert the deployed
-   structure before completing.
-
-There is no manual cleanup step required — the worktree-based replace
-is deterministic and the validation script catches drift.
+> ⚠️ **Status**: There is no version-selector UI on the deployed docs site
+> today. The version *data* is generated correctly; the *picker* is not
+> wired up. Tracked in issue [#170](https://github.com/Chris-Wolfgang/DateTime-Extensions/issues/170).
 
 ---
 
-## Live gh-pages layout
+## What works today
 
-The current root of the `gh-pages` branch:
+`.github/workflows/docfx.yaml` generates and deploys everything needed
+*to drive* a version picker — there's just no template-rendered UI
+consuming it yet.
+
+- **`versions.json`** at the gh-pages site root, auto-generated from the
+  set of `v*` git tags that have versioned docs deployed (D6 derivation;
+  not committed to a branch, so it can't go stale). Live example:
+  <https://chris-wolfgang.github.io/DateTime-Extensions/versions.json>
+- **Per-version subtree** at `/<repo>/versions/<tag>/` for every
+  released tag, plus `/versions/latest/` as the alias for the most
+  recent release.
+- **`scripts/Validate-DocsDeploy.sh`** asserts the structure of
+  `gh-pages` after every deploy.
+
+So any UI we wire up later has its data ready.
+
+## What doesn't work today
+
+The DocFX templates this repo uses (`default` + `modern` + `modern-dark`)
+**do not provide a version-picker UI out of the box.** A reader visiting
+the docs site sees no dropdown at the top, no menu of available versions,
+and no obvious way to switch — they can navigate to
+`/versions/<tag>/` manually if they know the URL shape, but that's not
+discoverable from the page itself.
+
+The `docfx.json` `globalMetadata` does **not** contain any version-picker
+keys, because there are no DocFX-built-in keys for the default/modern
+templates that would render one. (Earlier versions of this document
+incorrectly listed `_enableVersionDropdown` and `_versionScheme` as
+required keys — those are not real DocFX globalMetadata fields. The doc
+has been corrected.)
+
+## What it would take to fix
+
+Picking from these four approaches is the open question on issue #170:
+
+| Approach | Effort | Maintenance |
+|---|---|---|
+| **Custom DocFX template** that overrides the header partial to read `versions.json` and render a dropdown | High — fork the modern template, maintain across DocFX upgrades | Per-repo or shared via repo-template |
+| **JavaScript snippet** injected via a custom resource or `_appFooter` — fetches `/<repo>/versions.json` and inserts a dropdown into the DOM after page load | Medium — one JS file checked into the canonical docfx_project | Same JS works for every repo; minor styling per theme |
+| **"Other versions" link** in the README / landing page pointing at `/versions/` | Low | Worse UX than a dropdown, but no template work |
+| **Adopt a third-party DocFX template that ships a version picker** | Medium — adopt + theme | Track the third-party template |
+
+This is a fleet-wide design decision, not a per-repo fix — whichever
+approach lands should live in `repo-template` and fan out.
+
+## Live gh-pages layout (for reference)
 
 ```
 gh-pages/
 ├── .nojekyll              # disables Jekyll on GitHub Pages
-├── index.html             # version-picker landing page (auto-redirects to latest)
-├── versions.json          # consumed by the picker — list of available versions
-├── api/                   # latest API reference (DocFX-generated)
-├── docs/                  # latest articles (DocFX-generated)
+├── index.html             # landing page (latest version)
+├── versions.json          # available-versions list — ready to drive a future picker
+├── api/                   # latest API reference
+├── docs/                  # latest articles
 ├── public/                # latest static assets
 ├── versions/              # versioned docs tree
 │   ├── latest/            # alias for the most recent release
@@ -47,9 +72,7 @@ gh-pages/
 └── (manifest.json, toc.html, toc.json, xrefmap.yml — DocFX outputs)
 ```
 
-Note the `versions/` subdir: every released version lives at
-`/DateTime-Extensions/versions/<tag>/`, NOT at the repo root. This
-matches the URLs in `versions.json`:
+`versions.json` shape (verified live):
 
 ```json
 [
@@ -60,49 +83,16 @@ matches the URLs in `versions.json`:
 ]
 ```
 
----
+## Manual recovery for stale `gh-pages`
 
-## `docfx.json` requirements
+If `gh-pages` somehow ends up in an inconsistent state that the
+workflow can't recover from, **do not run a manual cleanup against the
+gh-pages root** — every versioned subtree under `versions/` is
+unrecoverable once deleted (the source git tag still exists, but the
+rendered HTML would have to be regenerated by running `docfx.yaml` once
+per tag via `workflow_dispatch`).
 
-For the picker to render at all, `docfx_project/docfx.json` must include
-in `globalMetadata`:
-
-```json
-"_enableVersionDropdown": true,
-"_versionScheme": "docfx"
-```
-
-These are currently set in the repo's docfx.json and verified by the
-workflow.
-
----
-
-## Troubleshooting
-
-| Symptom | Likely cause | Where to look |
-|---|---|---|
-| Dropdown missing entirely | `_enableVersionDropdown` not set or DocFX template changed | `docfx_project/docfx.json` |
-| Dropdown empty | `versions.json` missing from gh-pages root or invalid JSON | Last `docfx.yaml` run's "Generate versions.json" step |
-| Dropdown shows the wrong versions | `versions.json` doesn't reflect the actual `versions/` subtree | The D6 preservation guard would normally fail-fast on this; check the workflow run logs |
-| Version link 404s | `versions/<tag>/` not deployed for that tag | Re-run docfx.yaml with `workflow_dispatch` and the tag as input |
-
-For any of these, the first stop is the **most recent `docfx.yaml` workflow
-run** — every step writes diagnostic output and the workflow fails fast
-on drift. The Validate-DocsDeploy.sh script run at the end of every
-deploy catches structural issues before they become visible to readers.
-
----
-
-## Manual recovery (last resort)
-
-If gh-pages somehow ends up in an inconsistent state that the workflow
-can't recover from, **do not run a manual cleanup against the gh-pages
-root** — every versioned subtree under `versions/` is unrecoverable
-once deleted (the source git tag still exists, but the rendered HTML
-would have to be regenerated by running docfx.yaml once per tag via
-`workflow_dispatch`).
-
-The safest recovery path is to re-run `docfx.yaml` with
+The safe recovery path is to re-run `docfx.yaml` with
 `workflow_dispatch` for each affected version tag in turn (oldest
-first). The workflow's worktree-based replace will rebuild
+first). The workflow's worktree-based replace rebuilds
 `versions/<tag>/` cleanly without affecting the others.
