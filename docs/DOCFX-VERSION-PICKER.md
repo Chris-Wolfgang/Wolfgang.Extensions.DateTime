@@ -104,8 +104,11 @@ Renders an auto-redirect page at the gh-pages root:
 - `<noscript>` link covers the everything-else case
 
 `{{TITLE}}` is substituted with the repo name at deploy time;
-`{{VERSION_LIST}}` is preserved as an HTML comment for backward
-compatibility with the workflow's regex replace (no-op match).
+`{{VERSION_LIST}}` is intentionally omitted from the template. A missing
+pattern is a true no-op for PowerShell's `-replace` (returns the original
+string unchanged), so the workflow runs unchanged; nothing gets injected
+into the root redirect page because the in-page dropdown is now the
+canonical version-selector UI.
 
 ---
 
