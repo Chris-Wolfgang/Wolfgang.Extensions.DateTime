@@ -121,10 +121,12 @@ ts.FirstOfHalf();                 // 2026-01-01 00:00:00.000 Utc  (H1: Jan-Jun)
 ts.EndOfHalf();                   // 2026-06-30 23:59:59.9999999 Utc
 ```
 
-Boundary safety: `EndOfMonth`/`EndOfYear`/`EndOfWeek` clamp at
-`DateTime.MaxValue` instead of throwing; `FirstOfWeek` clamps at
-`DateTime.MinValue`. See [CHANGELOG.md](CHANGELOG.md) v1.2.0 for the
-boundary fixes.
+Boundary safety: `EndOfMonth` / `EndOfYear` / `EndOfWeek` /
+`EndOfQuarter` / `EndOfHalf` all clamp at `DateTime.MaxValue` instead
+of throwing; `FirstOfWeek` clamps at `DateTime.MinValue`. See
+[CHANGELOG.md](CHANGELOG.md) v1.2.0 for the month / year / week
+boundary fixes and v1.3.0 for the quarter / half clamping added
+with the new methods.
 
 ---
 
