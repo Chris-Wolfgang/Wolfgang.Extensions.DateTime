@@ -1,0 +1,23 @@
+Summary
+  Generated on: 5/27/2026 - 12:25:32 AM
+  Coverage date: 5/27/2026 - 12:25:29 AM
+  Parser: Cobertura
+  Assemblies: 1
+  Classes: 1
+  Files: 1
+  Line coverage: 100%
+  Covered lines: 108
+  Uncovered lines: 0
+  Coverable lines: 108
+  Total lines: 296
+  Branch coverage: 100% (22 of 22)
+  Covered branches: 22
+  Total branches: 22
+  Method coverage: 100% (14 of 14)
+  Full method coverage: 100% (14 of 14)
+  Covered methods: 14
+  Fully covered methods: 14
+  Total methods: 14
+
+Wolfgang.Extensions.DateTime                         100%
+  Wolfgang.Extensions.DateTime.DateTimeExtensions    100%

@@ -13,6 +13,22 @@ references:
   commentId: T:Wolfgang.Extensions.DateTime.DateTimeExtensions
   fullName: Wolfgang.Extensions.DateTime.DateTimeExtensions
   nameWithType: DateTimeExtensions
+- uid: Wolfgang.Extensions.DateTime.DateTimeExtensions.EndOfHalf(System.DateTime)
+  name: EndOfHalf(DateTime)
+  href: api/Wolfgang.Extensions.DateTime.DateTimeExtensions.html#Wolfgang_Extensions_DateTime_DateTimeExtensions_EndOfHalf_System_DateTime_
+  commentId: M:Wolfgang.Extensions.DateTime.DateTimeExtensions.EndOfHalf(System.DateTime)
+  name.vb: EndOfHalf(Date)
+  fullName: Wolfgang.Extensions.DateTime.DateTimeExtensions.EndOfHalf(System.DateTime)
+  fullName.vb: Wolfgang.Extensions.DateTime.DateTimeExtensions.EndOfHalf(Date)
+  nameWithType: DateTimeExtensions.EndOfHalf(DateTime)
+  nameWithType.vb: DateTimeExtensions.EndOfHalf(Date)
+- uid: Wolfgang.Extensions.DateTime.DateTimeExtensions.EndOfHalf*
+  name: EndOfHalf
+  href: api/Wolfgang.Extensions.DateTime.DateTimeExtensions.html#Wolfgang_Extensions_DateTime_DateTimeExtensions_EndOfHalf_
+  commentId: Overload:Wolfgang.Extensions.DateTime.DateTimeExtensions.EndOfHalf
+  isSpec: "True"
+  fullName: Wolfgang.Extensions.DateTime.DateTimeExtensions.EndOfHalf
+  nameWithType: DateTimeExtensions.EndOfHalf
 - uid: Wolfgang.Extensions.DateTime.DateTimeExtensions.EndOfMonth(System.DateTime)
   name: EndOfMonth(DateTime)
   href: api/Wolfgang.Extensions.DateTime.DateTimeExtensions.html#Wolfgang_Extensions_DateTime_DateTimeExtensions_EndOfMonth_System_DateTime_
@@ -29,6 +45,22 @@ references:
   isSpec: "True"
   fullName: Wolfgang.Extensions.DateTime.DateTimeExtensions.EndOfMonth
   nameWithType: DateTimeExtensions.EndOfMonth
+- uid: Wolfgang.Extensions.DateTime.DateTimeExtensions.EndOfQuarter(System.DateTime)
+  name: EndOfQuarter(DateTime)
+  href: api/Wolfgang.Extensions.DateTime.DateTimeExtensions.html#Wolfgang_Extensions_DateTime_DateTimeExtensions_EndOfQuarter_System_DateTime_
+  commentId: M:Wolfgang.Extensions.DateTime.DateTimeExtensions.EndOfQuarter(System.DateTime)
+  name.vb: EndOfQuarter(Date)
+  fullName: Wolfgang.Extensions.DateTime.DateTimeExtensions.EndOfQuarter(System.DateTime)
+  fullName.vb: Wolfgang.Extensions.DateTime.DateTimeExtensions.EndOfQuarter(Date)
+  nameWithType: DateTimeExtensions.EndOfQuarter(DateTime)
+  nameWithType.vb: DateTimeExtensions.EndOfQuarter(Date)
+- uid: Wolfgang.Extensions.DateTime.DateTimeExtensions.EndOfQuarter*
+  name: EndOfQuarter
+  href: api/Wolfgang.Extensions.DateTime.DateTimeExtensions.html#Wolfgang_Extensions_DateTime_DateTimeExtensions_EndOfQuarter_
+  commentId: Overload:Wolfgang.Extensions.DateTime.DateTimeExtensions.EndOfQuarter
+  isSpec: "True"
+  fullName: Wolfgang.Extensions.DateTime.DateTimeExtensions.EndOfQuarter
+  nameWithType: DateTimeExtensions.EndOfQuarter
 - uid: Wolfgang.Extensions.DateTime.DateTimeExtensions.EndOfWeek(System.DateTime)
   name: EndOfWeek(DateTime)
   href: api/Wolfgang.Extensions.DateTime.DateTimeExtensions.html#Wolfgang_Extensions_DateTime_DateTimeExtensions_EndOfWeek_System_DateTime_
@@ -70,6 +102,22 @@ references:
   isSpec: "True"
   fullName: Wolfgang.Extensions.DateTime.DateTimeExtensions.EndOfYear
   nameWithType: DateTimeExtensions.EndOfYear
+- uid: Wolfgang.Extensions.DateTime.DateTimeExtensions.FirstOfHalf(System.DateTime)
+  name: FirstOfHalf(DateTime)
+  href: api/Wolfgang.Extensions.DateTime.DateTimeExtensions.html#Wolfgang_Extensions_DateTime_DateTimeExtensions_FirstOfHalf_System_DateTime_
+  commentId: M:Wolfgang.Extensions.DateTime.DateTimeExtensions.FirstOfHalf(System.DateTime)
+  name.vb: FirstOfHalf(Date)
+  fullName: Wolfgang.Extensions.DateTime.DateTimeExtensions.FirstOfHalf(System.DateTime)
+  fullName.vb: Wolfgang.Extensions.DateTime.DateTimeExtensions.FirstOfHalf(Date)
+  nameWithType: DateTimeExtensions.FirstOfHalf(DateTime)
+  nameWithType.vb: DateTimeExtensions.FirstOfHalf(Date)
+- uid: Wolfgang.Extensions.DateTime.DateTimeExtensions.FirstOfHalf*
+  name: FirstOfHalf
+  href: api/Wolfgang.Extensions.DateTime.DateTimeExtensions.html#Wolfgang_Extensions_DateTime_DateTimeExtensions_FirstOfHalf_
+  commentId: Overload:Wolfgang.Extensions.DateTime.DateTimeExtensions.FirstOfHalf
+  isSpec: "True"
+  fullName: Wolfgang.Extensions.DateTime.DateTimeExtensions.FirstOfHalf
+  nameWithType: DateTimeExtensions.FirstOfHalf
 - uid: Wolfgang.Extensions.DateTime.DateTimeExtensions.FirstOfMonth(System.DateTime)
   name: FirstOfMonth(DateTime)
   href: api/Wolfgang.Extensions.DateTime.DateTimeExtensions.html#Wolfgang_Extensions_DateTime_DateTimeExtensions_FirstOfMonth_System_DateTime_
@@ -86,6 +134,22 @@ references:
   isSpec: "True"
   fullName: Wolfgang.Extensions.DateTime.DateTimeExtensions.FirstOfMonth
   nameWithType: DateTimeExtensions.FirstOfMonth
+- uid: Wolfgang.Extensions.DateTime.DateTimeExtensions.FirstOfQuarter(System.DateTime)
+  name: FirstOfQuarter(DateTime)
+  href: api/Wolfgang.Extensions.DateTime.DateTimeExtensions.html#Wolfgang_Extensions_DateTime_DateTimeExtensions_FirstOfQuarter_System_DateTime_
+  commentId: M:Wolfgang.Extensions.DateTime.DateTimeExtensions.FirstOfQuarter(System.DateTime)
+  name.vb: FirstOfQuarter(Date)
+  fullName: Wolfgang.Extensions.DateTime.DateTimeExtensions.FirstOfQuarter(System.DateTime)
+  fullName.vb: Wolfgang.Extensions.DateTime.DateTimeExtensions.FirstOfQuarter(Date)
+  nameWithType: DateTimeExtensions.FirstOfQuarter(DateTime)
+  nameWithType.vb: DateTimeExtensions.FirstOfQuarter(Date)
+- uid: Wolfgang.Extensions.DateTime.DateTimeExtensions.FirstOfQuarter*
+  name: FirstOfQuarter
+  href: api/Wolfgang.Extensions.DateTime.DateTimeExtensions.html#Wolfgang_Extensions_DateTime_DateTimeExtensions_FirstOfQuarter_
+  commentId: Overload:Wolfgang.Extensions.DateTime.DateTimeExtensions.FirstOfQuarter
+  isSpec: "True"
+  fullName: Wolfgang.Extensions.DateTime.DateTimeExtensions.FirstOfQuarter
+  nameWithType: DateTimeExtensions.FirstOfQuarter
 - uid: Wolfgang.Extensions.DateTime.DateTimeExtensions.FirstOfWeek(System.DateTime)
   name: FirstOfWeek(DateTime)
   href: api/Wolfgang.Extensions.DateTime.DateTimeExtensions.html#Wolfgang_Extensions_DateTime_DateTimeExtensions_FirstOfWeek_System_DateTime_
