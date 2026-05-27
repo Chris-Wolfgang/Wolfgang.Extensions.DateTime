@@ -59,6 +59,10 @@ now.FirstOfWeek();                   // → first day of the week (current cultu
 now.FirstOfWeek(DayOfWeek.Monday);   // → first day of the week (explicit)
 now.EndOfWeek();                     // → last tick of the week (current culture)
 now.EndOfWeek(DayOfWeek.Monday);     // → last tick of the week (explicit)
+now.FirstOfQuarter();                // → first day of this calendar quarter
+now.EndOfQuarter();                  // → last tick of this calendar quarter
+now.FirstOfHalf();                   // → first day of this calendar half-year
+now.EndOfHalf();                     // → last tick of this calendar half-year
 ```
 
 All methods are pure: they return a new `DateTime` and never mutate the input. The
@@ -110,6 +114,11 @@ ts.EndOfYear();               // 2026-12-31 23:59:59.9999999 Utc
 
 ts.FirstOfWeek(DayOfWeek.Sunday); // 2026-05-24 00:00:00.000 Utc
 ts.EndOfWeek(DayOfWeek.Sunday);   // 2026-05-30 23:59:59.9999999 Utc
+
+ts.FirstOfQuarter();              // 2026-04-01 00:00:00.000 Utc  (Q2: Apr-Jun)
+ts.EndOfQuarter();                // 2026-06-30 23:59:59.9999999 Utc
+ts.FirstOfHalf();                 // 2026-01-01 00:00:00.000 Utc  (H1: Jan-Jun)
+ts.EndOfHalf();                   // 2026-06-30 23:59:59.9999999 Utc
 ```
 
 Boundary safety: `EndOfMonth`/`EndOfYear`/`EndOfWeek` clamp at
