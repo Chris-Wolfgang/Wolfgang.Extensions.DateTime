@@ -75,10 +75,9 @@
 
 <p>This guide will help you quickly get up and running with Wolfgang.Extensions.DateTime.</p>
 <h2 id="prerequisites">Prerequisites</h2>
-<!-- List any prerequisites needed. For example:
-- .NET 8.0 or later
-- Visual Studio 2022 or Visual Studio Code
--->
+<ul>
+<li>.NET 8.0 SDK or later (for development; the library targets .NET Framework 4.6.2+, .NET Standard 2.0, and .NET 8.0+)</li>
+</ul>
 <h2 id="installation">Installation</h2>
 <h3 id="via-nuget-package-manager">Via NuGet Package Manager</h3>
 <pre><code class="lang-bash">dotnet add package Wolfgang.Extensions.DateTime
@@ -87,22 +86,38 @@
 <pre><code class="lang-powershell">Install-Package Wolfgang.Extensions.DateTime
 </code></pre>
 <h2 id="quick-start">Quick Start</h2>
-<!-- Add a quick start example. For example: -->
-<pre><code class="lang-csharp">// Add your quick start code example here
-// This should show the simplest way to use your library
+<pre><code class="lang-csharp">using Wolfgang.Extensions.DateTime;
 
-using Wolfgang.Extensions.DateTime;
+var now = System.DateTime.Now;
 
-// Example usage
+// Truncate to remove sub-second or sub-minute precision
+var noMilliseconds = now.TruncateMilliseconds();  // Zeroes out milliseconds
+var noSeconds = now.TruncateSeconds();              // Zeroes out seconds and milliseconds
+
+// Navigate to month boundaries
+var firstOfMonth = now.FirstOfMonth();  // e.g. 2026-03-01 00:00:00.000
+var endOfMonth = now.EndOfMonth();      // e.g. 2026-03-31 23:59:59.9999999
+
+// Navigate to year boundaries
+var firstOfYear = now.FirstOfYear();    // e.g. 2026-01-01 00:00:00.000
+var endOfYear = now.EndOfYear();        // e.g. 2026-12-31 23:59:59.9999999
+
+// Navigate to week boundaries (culture-aware)
+var firstOfWeek = now.FirstOfWeek();                        // Uses CurrentCulture
+var firstOfWeekMon = now.FirstOfWeek(DayOfWeek.Monday);     // Explicit start day
+var endOfWeek = now.EndOfWeek();
 </code></pre>
 <h2 id="next-steps">Next Steps</h2>
 <ul>
-<li>Explore the <a href="../api/index.html">API Reference</a> for detailed documentation</li>
+<li>Explore the <a href="https://chris-wolfgang.github.io/DateTime-Extensions/versions/latest/api/Wolfgang.Extensions.DateTime.html">API Reference</a> for detailed documentation</li>
 <li>Read the <a href="introduction.html">Introduction</a> to learn more about Wolfgang.Extensions.DateTime</li>
 <li>Check out example projects in the <a href="https://github.com/Chris-Wolfgang/DateTime-Extensions">GitHub repository</a></li>
 </ul>
 <h2 id="common-issues">Common Issues</h2>
-<!-- Add common issues and their solutions here -->
+<h3 id="namespace-conflicts-with-systemdatetime">Namespace conflicts with <code>System.DateTime</code></h3>
+<p>The library namespace is <code>Wolfgang.Extensions.DateTime</code>, which can conflict with <code>System.DateTime</code>. In the source code, the type is referenced as <code>System.DateTime</code> to avoid ambiguity. If you encounter conflicts, use a fully qualified name or a <code>using</code> alias.</p>
+<h3 id="datetimekind-is-preserved">DateTimeKind is preserved</h3>
+<p>All extension methods preserve the <code>DateTimeKind</code> of the input. If you pass a UTC DateTime, you get a UTC DateTime back.</p>
 <h2 id="additional-resources">Additional Resources</h2>
 <ul>
 <li><a href="https://github.com/Chris-Wolfgang/DateTime-Extensions">GitHub Repository</a></li>
@@ -129,7 +144,7 @@ using Wolfgang.Extensions.DateTime;
     <footer class="border-top text-secondary">
       <div class="container-xxl">
         <div class="flex-fill">
-          Made with DocFX
+          Made with DocFX <script>(function(){var r='/';if(window.location.hostname.endsWith('.github.io')){var s=window.location.pathname.split('/').filter(Boolean);if(s.length)r='/'+s[0]+'/';}var t=document.createElement('script');t.src=r+'public/version-picker.js';t.async=true;document.head.appendChild(t);})();</script>
         </div>
       </div>
     </footer>

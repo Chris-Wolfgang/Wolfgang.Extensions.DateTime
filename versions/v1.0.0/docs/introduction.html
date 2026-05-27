@@ -75,19 +75,21 @@
 
 <p>Welcome to Wolfgang.Extensions.DateTime!</p>
 <h2 id="overview">Overview</h2>
-<p>A collection of extension methods for DateTime data type</p>
-<!-- Add your project overview here -->
+<p>Wolfgang.Extensions.DateTime is a .NET library providing extension methods for the <code>System.DateTime</code> type. It adds convenient methods for truncating time precision and navigating to date boundaries (week, month, year).</p>
 <h2 id="key-features">Key Features</h2>
-<!-- List the main features of your project. For example:
-- Feature 1: Description
-- Feature 2: Description
-- Feature 3: Description
--->
+<ul>
+<li><strong>TruncateMilliseconds</strong> — removes milliseconds, returning a DateTime precise to the second</li>
+<li><strong>TruncateSeconds</strong> — removes seconds and milliseconds, returning a DateTime precise to the minute</li>
+<li><strong>FirstOfMonth / EndOfMonth</strong> — navigates to the first or last instant of the month</li>
+<li><strong>FirstOfYear / EndOfYear</strong> — navigates to the first or last instant of the year</li>
+<li><strong>FirstOfWeek / EndOfWeek</strong> — navigates to week boundaries, with culture-aware or explicit <code>DayOfWeek</code> overloads</li>
+<li>All methods preserve <code>DateTimeKind</code> (Local, Utc, Unspecified)</li>
+</ul>
 <h2 id="getting-help">Getting Help</h2>
 <p>If you need help with Wolfgang.Extensions.DateTime, please:</p>
 <ul>
 <li>Check the <a href="getting-started.html">Getting Started</a> guide</li>
-<li>Review the <a href="../api/index.html">API Reference</a></li>
+<li>Review the <a href="https://chris-wolfgang.github.io/DateTime-Extensions/versions/latest/api/Wolfgang.Extensions.DateTime.html">API Reference</a></li>
 <li>Visit the <a href="https://github.com/Chris-Wolfgang/DateTime-Extensions">GitHub repository</a></li>
 <li>Open an issue on <a href="https://github.com/Chris-Wolfgang/DateTime-Extensions/issues">GitHub Issues</a></li>
 </ul>
@@ -111,7 +113,7 @@
     <footer class="border-top text-secondary">
       <div class="container-xxl">
         <div class="flex-fill">
-          Made with DocFX
+          Made with DocFX <script>(function(){var r='/';if(window.location.hostname.endsWith('.github.io')){var s=window.location.pathname.split('/').filter(Boolean);if(s.length)r='/'+s[0]+'/';}var t=document.createElement('script');t.src=r+'public/version-picker.js';t.async=true;document.head.appendChild(t);})();</script>
         </div>
       </div>
     </footer>
