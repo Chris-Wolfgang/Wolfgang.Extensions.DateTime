@@ -47,9 +47,12 @@
   <noscript>
     <p>JavaScript is disabled. <a href="versions/latest/">Click here</a> to continue.</p>
   </noscript>
-  <!-- The workflow's substitution still looks for {{VERSION_LIST}}; leaving
-       it in an HTML comment so the regex replace is a no-op match but the
-       comment is invisible. -->
-  <!-- {{VERSION_LIST}} -->
+  <!-- The docfx.yaml workflow's substitution still looks for {{VERSION_LIST}}
+       but the placeholder is intentionally omitted from this template: a
+       missing pattern is a true no-op for PowerShell's `-replace` (returns
+       the original string unchanged). The in-page <select> dropdown shipped
+       in docfx_project/public/version-picker.js is now the canonical
+       version-selector UI, so no list of links needs to be rendered into
+       the root redirect page. -->
 </body>
 </html>
