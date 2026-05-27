@@ -39,9 +39,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   captures the v1.3.0 public surface (14 extension method overloads +
   the static class); future surface changes will surface as RS0016
   / *REMOVED* diffs at compile time.
-- BenchmarkDotNet baseline project (`benchmarks/Wolfgang.Extensions
-  .DateTime.Benchmarks`) plus `benchmarks.yaml` workflow that publishes
-  trend charts to gh-pages `/dev/bench/`.
+- BenchmarkDotNet baseline project
+  (`benchmarks/Wolfgang.Extensions.DateTime.Benchmarks`) plus
+  `benchmarks.yaml` workflow that publishes trend charts to gh-pages
+  `/dev/bench/`.
 - `<RepositoryUrl>` and `<PackageTags>` package metadata in src csproj.
 
 ### Changed
