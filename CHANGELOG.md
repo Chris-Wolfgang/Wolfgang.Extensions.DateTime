@@ -7,9 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-Docs, examples, CI, and an internal-only refactor. The public API and
-runtime behavior are unchanged from v1.3.0; no new NuGet release will
-be cut for this set of changes.
+### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+## [1.3.1] - 2026-05-28
 
 ### Added
 
@@ -27,21 +37,16 @@ be cut for this set of changes.
 - CI: canonical workflow sync (Stage 2 coverage regex, ruleset
   enforcement, version-picker.js header).
 
-### Deprecated
-
-## [1.3.1] - 2026-05-28
-
 ### Fixed
 
 - **Binding stability on .NET Framework consumers.** v1.3.0 inadvertently
   shipped with `AssemblyVersion=1.3.0.0` (SDK-derived from `<Version>`
-  after the explicit `<AssemblyVersion>1.0.0</AssemblyVersion>` line was
+  after the explicit `<AssemblyVersion>1.0.0.0</AssemblyVersion>` line was
   dropped in the v1.3.0 csproj cleanup). That changed the assembly's
   binding identity vs the 1.0 / 1.1 / 1.2 line, which all shipped with
   `AssemblyVersion=1.0.0.0`. Without a binding redirect, .NET Framework
   consumers upgrading from any of those to v1.3.0 would have hit
-  `FileLoadException: Could not load file or assembly
-  'Wolfgang.Extensions.DateTime, Version=1.3.0.0, ...'`.
+  `FileLoadException: Could not load file or assembly 'Wolfgang.Extensions.DateTime, Version=1.3.0.0, ...'`.
 
   v1.3.1 restores the explicit pin: `<AssemblyVersion>1.0.0.0</AssemblyVersion>`.
   Future minor/patch bumps on the 1.x line will keep this binding identity;
@@ -56,16 +61,9 @@ be cut for this set of changes.
   redirect or a re-reference + recompile to pick up 1.3.1. The damage from
   v1.3.0 cannot be fully undone after release; v1.3.1 stops the bleeding
   for everyone who hasn't yet adopted v1.3.0.
-
-### Removed
-
-### Fixed
-
 - `PublicAPI.Shipped.txt`: promoted the four Q/H entries that were left in
   `PublicAPI.Unshipped.txt` at the v1.3.0 tag. The methods themselves
   shipped in v1.3.0; this is a metadata correction, not an API change.
-
-### Security
 
 ## [1.3.0] - 2026-05-26
 
