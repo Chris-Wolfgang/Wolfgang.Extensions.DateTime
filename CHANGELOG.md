@@ -7,15 +7,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+Docs-and-tooling-only update. The library binary is byte-identical to
+v1.3.0; no new NuGet release will be cut for this set of changes.
+
 ### Added
 
+- Docs site: version picker dropdown on the published DocFX site, with a
+  landing-page redirect to the latest released version.
+- Examples: `FirstOfQuarter` / `EndOfQuarter` / `FirstOfHalf` / `EndOfHalf`
+  demos in both example apps.
+- README: Quick Start + Examples now demonstrate the Q/H methods.
+
 ### Changed
+
+- Internal: extracted a private `MidnightOf` helper to DRY up the
+  `FirstOf*` midnight-construction pattern. No public-API impact.
+- CHANGELOG / `DateTime-Extensions.slnx` housekeeping.
+- CI: canonical workflow sync (Stage 2 coverage regex, ruleset
+  enforcement, version-picker.js header).
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+- `PublicAPI.Shipped.txt`: promoted the four Q/H entries that were left in
+  `PublicAPI.Unshipped.txt` at the v1.3.0 tag. The methods themselves
+  shipped in v1.3.0; this is a metadata correction, not an API change.
 
 ### Security
 
