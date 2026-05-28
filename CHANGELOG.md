@@ -29,6 +29,34 @@ be cut for this set of changes.
 
 ### Deprecated
 
+## [1.3.1] - 2026-05-28
+
+### Fixed
+
+- **Binding stability on .NET Framework consumers.** v1.3.0 inadvertently
+  shipped with `AssemblyVersion=1.3.0.0` (SDK-derived from `<Version>`
+  after the explicit `<AssemblyVersion>1.0.0</AssemblyVersion>` line was
+  dropped in the v1.3.0 csproj cleanup). That changed the assembly's
+  binding identity vs the 1.0 / 1.1 / 1.2 line, which all shipped with
+  `AssemblyVersion=1.0.0.0`. Without a binding redirect, .NET Framework
+  consumers upgrading from any of those to v1.3.0 would have hit
+  `FileLoadException: Could not load file or assembly
+  'Wolfgang.Extensions.DateTime, Version=1.3.0.0, ...'`.
+
+  v1.3.1 restores the explicit pin: `<AssemblyVersion>1.0.0.0</AssemblyVersion>`.
+  Future minor/patch bumps on the 1.x line will keep this binding identity;
+  `AssemblyVersion` will only change on a deliberate breaking API change
+  (i.e., a 2.0 release). `<FileVersion>` now explicitly tracks
+  `$(Version).0` so file-version metadata still reflects every release.
+
+  Pre-1.3.0 → 1.3.1 consumers do not need a binding redirect (the binding
+  identity is the same `1.0.0.0` they already linked against). v1.3.0 →
+  1.3.1 consumers also do not need one going forward, but anyone on v1.3.0
+  today is referencing `Version=1.3.0.0` and will need either a binding
+  redirect or a re-reference + recompile to pick up 1.3.1. The damage from
+  v1.3.0 cannot be fully undone after release; v1.3.1 stops the bleeding
+  for everyone who hasn't yet adopted v1.3.0.
+
 ### Removed
 
 ### Fixed
@@ -142,7 +170,8 @@ be cut for this set of changes.
 - Multi-framework targeting: `net462`, `netstandard2.0`,
   `netcoreapp3.1`, `net8.0`, `net10.0`.
 
-[Unreleased]: https://github.com/Chris-Wolfgang/DateTime-Extensions/compare/v1.3.0...HEAD
+[Unreleased]: https://github.com/Chris-Wolfgang/DateTime-Extensions/compare/v1.3.1...HEAD
+[1.3.1]: https://github.com/Chris-Wolfgang/DateTime-Extensions/compare/v1.3.0...v1.3.1
 [1.3.0]: https://github.com/Chris-Wolfgang/DateTime-Extensions/compare/v1.2.0...v1.3.0
 [1.2.0]: https://github.com/Chris-Wolfgang/DateTime-Extensions/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/Chris-Wolfgang/DateTime-Extensions/compare/v1.0.0...v1.1.0
