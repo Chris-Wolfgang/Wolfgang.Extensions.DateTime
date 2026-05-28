@@ -11,6 +11,21 @@ public static class DateTimeExtensions
 {
 
     /// <summary>
+    /// Returns the midnight DateTime for a specific year/month/day with the
+    /// given Kind. Centralises the 8-parameter <see cref="System.DateTime"/>
+    /// constructor pattern used by every <c>FirstOf*</c> boundary method
+    /// that returns a midnight value: <see cref="FirstOfMonth"/>,
+    /// <see cref="FirstOfYear"/>, <see cref="FirstOfQuarter"/>,
+    /// <see cref="FirstOfHalf"/>, and the explicit-DayOfWeek overload of
+    /// <c>FirstOfWeek</c> (the parameterless overload just delegates to
+    /// that one via the current culture's <c>FirstDayOfWeek</c>).
+    /// </summary>
+    private static System.DateTime MidnightOf(int year, int month, int day, DateTimeKind kind)
+        => new(year, month, day, 0, 0, 0, 0, kind);
+
+
+
+    /// <summary>
     /// Remove the milliseconds and everything after the milliseconds
     /// </summary>
     /// <param name="dateTime">The value to process.</param>
@@ -57,17 +72,7 @@ public static class DateTimeExtensions
     /// <param name="dateTime">The value to process.</param>
     /// <returns>A new DateTime representing the first of the month.</returns>
     public static System.DateTime FirstOfMonth(this System.DateTime dateTime)
-        => new
-            (
-                dateTime.Year,
-                dateTime.Month,
-                1,
-                0,
-                0,
-                0,
-                0,
-                dateTime.Kind
-            );
+        => MidnightOf(dateTime.Year, dateTime.Month, 1, dateTime.Kind);
 
 
 
@@ -96,17 +101,7 @@ public static class DateTimeExtensions
     /// <param name="dateTime">The value to process.</param>
     /// <returns>A new DateTime representing the first of the year.</returns>
     public static System.DateTime FirstOfYear(this System.DateTime dateTime)
-        => new
-            (
-                dateTime.Year,
-                1,
-                1,
-                0,
-                0,
-                0,
-                0,
-                dateTime.Kind
-            );
+        => MidnightOf(dateTime.Year, 1, 1, dateTime.Kind);
 
 
 
@@ -160,17 +155,7 @@ public static class DateTimeExtensions
             firstOfWeek = firstOfWeek.AddDays(-1);
         }
 
-        return new System.DateTime
-        (
-            firstOfWeek.Year,
-            firstOfWeek.Month,
-            firstOfWeek.Day,
-            0,
-            0,
-            0,
-            0,
-            dateTime.Kind
-        );
+        return MidnightOf(firstOfWeek.Year, firstOfWeek.Month, firstOfWeek.Day, dateTime.Kind);
     }
 
 
@@ -218,17 +203,7 @@ public static class DateTimeExtensions
     public static System.DateTime FirstOfQuarter(this System.DateTime dateTime)
     {
         var quarterStartMonth = (((dateTime.Month - 1) / 3) * 3) + 1;
-        return new System.DateTime
-        (
-            dateTime.Year,
-            quarterStartMonth,
-            1,
-            0,
-            0,
-            0,
-            0,
-            dateTime.Kind
-        );
+        return MidnightOf(dateTime.Year, quarterStartMonth, 1, dateTime.Kind);
     }
 
 
@@ -262,17 +237,7 @@ public static class DateTimeExtensions
     public static System.DateTime FirstOfHalf(this System.DateTime dateTime)
     {
         var halfStartMonth = dateTime.Month <= 6 ? 1 : 7;
-        return new System.DateTime
-        (
-            dateTime.Year,
-            halfStartMonth,
-            1,
-            0,
-            0,
-            0,
-            0,
-            dateTime.Kind
-        );
+        return MidnightOf(dateTime.Year, halfStartMonth, 1, dateTime.Kind);
     }
 
 
