@@ -7,6 +7,40 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+Docs, examples, CI, and an internal-only refactor. The public API and
+runtime behavior are unchanged from v1.3.0; no new NuGet release will
+be cut for this set of changes.
+
+### Added
+
+- Docs site: version picker dropdown on the published DocFX site, with a
+  landing-page redirect to the latest released version.
+- Examples: `FirstOfQuarter` / `EndOfQuarter` / `FirstOfHalf` / `EndOfHalf`
+  demos in both example apps.
+- README: Quick Start + Examples now demonstrate the Q/H methods.
+
+### Changed
+
+- Internal: extracted a private `MidnightOf` helper to DRY up the
+  `FirstOf*` midnight-construction pattern. No public-API impact.
+- CHANGELOG / `DateTime-Extensions.slnx` housekeeping.
+- CI: canonical workflow sync (Stage 2 coverage regex, ruleset
+  enforcement, version-picker.js header).
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+- `PublicAPI.Shipped.txt`: promoted the four Q/H entries that were left in
+  `PublicAPI.Unshipped.txt` at the v1.3.0 tag. The methods themselves
+  shipped in v1.3.0; this is a metadata correction, not an API change.
+
+### Security
+
+## [1.3.0] - 2026-05-26
+
 ### Added
 
 - `FirstOfQuarter()` / `EndOfQuarter()` extension methods returning the
@@ -21,6 +55,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   covered by unit tests across every TFM (Theory cases for all 12
   input months on Quarter, all 12 on Half, plus boundary + Kind tests)
   and by gh-pages benchmark chart series.
+- `PublicApiAnalyzer` baseline activated. `PublicAPI.Shipped.txt`
+  captures the v1.3.0 public surface (14 extension method overloads +
+  the static class); future surface changes will surface as RS0016
+  / *REMOVED* diffs at compile time.
+- BenchmarkDotNet baseline project
+  (`benchmarks/Wolfgang.Extensions.DateTime.Benchmarks`) plus
+  `benchmarks.yaml` workflow that publishes trend charts to gh-pages
+  `/dev/bench/`.
+- `<RepositoryUrl>` and `<PackageTags>` package metadata in src csproj.
 
 ### Changed
 
@@ -29,10 +72,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   consolidated location is the single source of truth for the canonical
   template-sync flow; per-project opt-out is still available via overrides
   in a project's own csproj.
-
-### Deprecated
+- README rewritten: filled Quick Start + Examples, added NuGet / build /
+  release badges, moved DocFX troubleshooting out of README into
+  `docs/DOCFX-VERSION-PICKER.md`, corrected analyzer count (7 → 8 with
+  PublicApiAnalyzer), bumped build prereq from .NET 8.0 → 10.0 SDK.
+- `<AssemblyVersion>` dropped from src csproj — let SDK derive from
+  `<Version>` so all version metadata stays in lock-step on every bump
+  (the previously-hardcoded `1.0.0` was stale relative to released
+  package versions from v1.1.0 onward).
+- CHANGELOG seeded with v1.0.0 / v1.1.0 / v1.2.0 entries from git tag
+  history.
 
 ### Removed
+
+- `REPO-INSTRUCTIONS.md` template scaffolding (its own opening said
+  "delete this file after setup"; the repo has been live since v1.0.0).
+- `TEMPLATE-PLACEHOLDERS.md` and `TEMPLATE-REPO-PLACEHOLDERS-EXPLANATION.md`
+  template scaffolding files (also from initial setup, no longer needed).
 
 ### Fixed
 
@@ -86,7 +142,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Multi-framework targeting: `net462`, `netstandard2.0`,
   `netcoreapp3.1`, `net8.0`, `net10.0`.
 
-[Unreleased]: https://github.com/Chris-Wolfgang/DateTime-Extensions/compare/v1.2.0...HEAD
+[Unreleased]: https://github.com/Chris-Wolfgang/DateTime-Extensions/compare/v1.3.0...HEAD
+[1.3.0]: https://github.com/Chris-Wolfgang/DateTime-Extensions/compare/v1.2.0...v1.3.0
 [1.2.0]: https://github.com/Chris-Wolfgang/DateTime-Extensions/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/Chris-Wolfgang/DateTime-Extensions/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/Chris-Wolfgang/DateTime-Extensions/releases/tag/v1.0.0

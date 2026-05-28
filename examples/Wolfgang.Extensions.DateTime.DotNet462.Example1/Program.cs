@@ -29,6 +29,14 @@ namespace Wolfgang.Extensions.DateTime.DotNet462.Example1
             Console.WriteLine($"\t  End of the current week: {System.DateTime.Today.EndOfWeek(DayOfWeek.Saturday)} (Saturday as first of week).");
             Console.WriteLine("\n");
 
+            Console.WriteLine($"\tFirst of the current quarter: {System.DateTime.Today.FirstOfQuarter()}.");
+            Console.WriteLine($"\t  End of the current quarter: {System.DateTime.Today.EndOfQuarter()}.");
+            Console.WriteLine("\n");
+
+            Console.WriteLine($"\tFirst of the current half-year: {System.DateTime.Today.FirstOfHalf()}.");
+            Console.WriteLine($"\t  End of the current half-year: {System.DateTime.Today.EndOfHalf()}.");
+            Console.WriteLine("\n");
+
             var now = System.DateTime.UtcNow;
             Console.WriteLine($"\t                 Now: {now:yyyy-MM-dd hh:mm:ss.fff tt}");
             Console.WriteLine($"\tTruncateMilliseconds: {now.TruncateMilliseconds():yyyy-MM-dd hh:mm:ss.fff tt}");

@@ -1,5 +1,1 @@
 #nullable enable
-static Wolfgang.Extensions.DateTime.DateTimeExtensions.EndOfHalf(this System.DateTime dateTime) -> System.DateTime
-static Wolfgang.Extensions.DateTime.DateTimeExtensions.EndOfQuarter(this System.DateTime dateTime) -> System.DateTime
-static Wolfgang.Extensions.DateTime.DateTimeExtensions.FirstOfHalf(this System.DateTime dateTime) -> System.DateTime
-static Wolfgang.Extensions.DateTime.DateTimeExtensions.FirstOfQuarter(this System.DateTime dateTime) -> System.DateTime
