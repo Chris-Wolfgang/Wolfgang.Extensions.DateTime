@@ -7,8 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-Docs-and-tooling-only update. The library binary is byte-identical to
-v1.3.0; no new NuGet release will be cut for this set of changes.
+Docs, examples, CI, and an internal-only refactor. The public API and
+runtime behavior are unchanged from v1.3.0; no new NuGet release will
+be cut for this set of changes.
 
 ### Added
 
