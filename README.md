@@ -4,7 +4,7 @@ A collection of extension methods for `DateTime` data type in .Net
 
 [![NuGet](https://img.shields.io/nuget/v/Wolfgang.Extensions.DateTime.svg?logo=nuget&label=NuGet)](https://www.nuget.org/packages/Wolfgang.Extensions.DateTime)
 [![NuGet downloads](https://img.shields.io/nuget/dt/Wolfgang.Extensions.DateTime.svg?logo=nuget&label=downloads)](https://www.nuget.org/packages/Wolfgang.Extensions.DateTime)
-[![PR build](https://img.shields.io/github/actions/workflow/status/Chris-Wolfgang/DateTime-Extensions/pr.yaml?event=pull_request&label=PR%20build&logo=github)](https://github.com/Chris-Wolfgang/DateTime-Extensions/actions/workflows/pr.yaml)
+[![PR build](https://img.shields.io/github/actions/workflow/status/Chris-Wolfgang/DateTime-Extensions/pr.yaml?event=pull_request_target&label=PR%20build&logo=github)](https://github.com/Chris-Wolfgang/DateTime-Extensions/actions/workflows/pr.yaml)
 [![Release](https://img.shields.io/github/actions/workflow/status/Chris-Wolfgang/DateTime-Extensions/release.yaml?label=release&logo=github)](https://github.com/Chris-Wolfgang/DateTime-Extensions/actions/workflows/release.yaml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![.NET](https://img.shields.io/badge/.NET-Multi--Targeted-purple.svg)](https://dotnet.microsoft.com/)
