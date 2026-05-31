@@ -85,8 +85,18 @@ jobs:
             'docfx_project/logo.svg',
             'docfx_project/docfx.json'
           )
+          # actions/checkout does not guarantee origin/main is present when
+          # the triggered ref is a tag or non-main branch. Fetch it
+          # explicitly into the remote-tracking ref; if it can't be
+          # fetched, skip the overlay rather than fail the docs deploy.
+          git fetch --no-tags origin main:refs/remotes/origin/main 2>$null
+          $mainSha = (git rev-parse --verify --quiet refs/remotes/origin/main)
+          if (-not $mainSha) {
+            Write-Host "origin/main unavailable after fetch — skipping overlay."
+            exit 0
+          }
+          $mainSha = $mainSha.Trim()
           $headSha = (git rev-parse HEAD).Trim()
-          $mainSha = (git rev-parse origin/main).Trim()
           if ($headSha -eq $mainSha) {
             Write-Host "HEAD == origin/main — overlay is a no-op, skipping."
             exit 0
