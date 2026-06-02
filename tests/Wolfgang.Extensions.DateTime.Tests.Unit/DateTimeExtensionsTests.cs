@@ -381,11 +381,13 @@ public class DateTimeExtensionsTests
         // firstOfWeek (produced by FirstOfWeek) is always midnight, so
         // firstOfWeek.Ticks is a multiple of TimeSpan.TicksPerDay; meanwhile
         // DateTime.MaxValue.Ticks ≡ -1 (mod TicksPerDay). So
-        // (maxTicks - firstOfWeek.Ticks) is always of the form 7n - 1 ticks
-        // and can never equal exactly 7 days of ticks — the equality
-        // boundary of the clamp check is unreachable, and any input whose
-        // firstOfWeek is at least 7 days before MaxValue should return
-        // firstOfWeek + 7 days - 1 tick (not the MaxValue clamp).
+        // (maxTicks - firstOfWeek.Ticks) always equals n * TicksPerDay - 1
+        // for some integer n ≥ 0 — never an exact multiple of TicksPerDay,
+        // and in particular never equal to exactly 7 * TicksPerDay. The
+        // equality boundary of the clamp check is therefore unreachable,
+        // and any input whose firstOfWeek is at least 7 days before
+        // MaxValue should return firstOfWeek + 7 days - 1 tick (not the
+        // MaxValue clamp).
 
         // 7 days + 1 day of headroom before MaxValue keeps us well clear of
         // the clamp branch and exercises the AddDays(7).AddTicks(-1) path.
